@@ -179,5 +179,17 @@ if args.verbose:
     print("Disabling time sync...")
 do('systemctl disable systemd-timesyncd.service') or sys.exit('Error: timesync diasable error')
 
+# Mount /boot partition in read-only mode
+replace_line('/boot           vfat    defaults','/boot           vfat    ro','/etc/fstab')
+
+# Increase commit time on / partition to reduce frequency of SD card writes
+replace_line('defaults,noatime','defaults,noatime,commit=60','/etc/fstab')
+
+# Move log files from the SD card to a tmpfs to further reduce SD card writes
+append_file('/etc/fstab','tmpfs   /var/log    tmpfs    noatime,nosuid,mode=0755,size=50M  0   0')
+# nginx requires the log folder be present; create folder in the tmpfs at each startup
+append_file('/var/spool/cron/crontabs/root','@reboot mkdir /var/log/nginx')
+do('chmod 600 /var/spool/cron/crontabs/root') or sys.exit('Error: chmod failed')
+
 print('DONE!')
 print("Don't forget to change the default password for the user pi!")
