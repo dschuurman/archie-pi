@@ -3,12 +3,12 @@
 **ARCHIE** is an acronym for **A**nother **R**emote **C**ommunity **H**otspot for **I**nstruction 
 and **E**ducation for use with the Raspberry **Pi**.
 
-The ARCHIE Pi implements an offline web server that can be used to deliver enducational content 
+The ARCHIE Pi implements an offline web server that can be used to deliver educational content 
 in remote locations where no internet access is available. Using a variety of open-source software 
 (such as Linux, nginx, and hostapd), this platform provides an "internet in a box" in the form of an
-open wi-fi access point that can accessed by locally connected web browsers.
-This access point runs a local web server which can be used to deliver educational content, 
-including a wide variety of creative commons content such as Wikipedia and Project Gutenberg.
+open wi-fi access point that can be accessed by locally connected web browsers.
+This access point uses a local web server to deliver educational content which may
+include a wide variety of creative commons content such as Wikipedia and Project Gutenberg.
 
 The idea behind the ARCHIE Pi is not novel. The word *another* is included in the acronym to
 acknowledge that it was inspired by other projects, particularly the 
@@ -75,11 +75,13 @@ This command will prompt you to set a new password.
 It is recommended that you change the default
 password for security purposes.
 
-Next, install the `git` package and download the `archie-pi` repository to the Raspberry Pi. 
-This can be done from the command line as follows:
-
+Next, install the `git` package as follows:
 ```
 sudo apt install git
+```
+With `git` installed, the `archie-pi` repository can be installed from 
+the command line as follows:
+```
 git clone https://github.com/dschuurman/archie-pi.git
 ```
 Once the repository to downloaded, enter the project folder as follows:
@@ -103,8 +105,8 @@ the access point complies with local wi-fi communications regulations and
 frequency channels.* A list of standard two-letter country codes is available 
 [here](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
 
-Next, run the setup script specifyig the correct country code. The country code for the US is shown below, 
-but it is your responsibility to substitue the correct country code for your region:
+Next, run the setup script specifying the correct country code. The country code for the US is shown below, 
+but it is your responsibility to substitute the correct country code for your region:
 ```
 sudo python3 setup.py --country US
 ```
@@ -119,7 +121,7 @@ by pointing a browser to the address:
 http://10.10.10.10
 ```
 
-## Installing Content
+### Installing Content
 
 Once the `setup.py` script is complete, you are ready to add some web content. 
 To add content, another script is provided named `module-installer.py`.
@@ -131,10 +133,23 @@ To run the module installer, type:
 ```
 sudo python3 module-installer.py
 ```
-A menu will appear allowig you to select and install various modules. 
+A menu will appear allowing you to select and install various modules. 
 Once the script completes, the content should be displayed at: `http://10.10.10.10`.
 
 At this point the ethernet cable is no longer needed and may be removed. 
 Note that some content requires substantial storage space,
 so it is important to ensure that you select an adequately sized microSD card or
 USB drive.
+
+### Installing Custom Content
+
+While the `module-installer` provides a convenient way to add existing content, 
+you can also curate your own content and manually add it to your ARCHIE Pi. 
+The content may include PHP code and any file formats viewable by a standard 
+web browser (PDF, HTML, MP4, JPG, etc.). Content must be placed in its own folder in the 
+`/var/www/modules` directory with file ownerships set to the web server user (`www-data`).
+A file named `index.htmlf` must be placed in the content folder which will be automatically 
+imported and listed on the main page of the ARCHIE Pi. The content of the file should be 
+nested within a `<div class="indexmodule">` tag which will apply the appropriate formatting
+from an existing CSS file. The `index.htmlf` file should include the module name, 
+an optional icon, and a short description of the module with hyperlinks to the content.

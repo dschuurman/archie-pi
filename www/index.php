@@ -10,11 +10,11 @@
     <td><img src="archie-pi.png"></td>
 </tr>
 <tr>
-    <td><b>A</b>nother <b>R</b>emote <b>C</b>ommunity <b>H</b>otspot for <b>I</b>nstruction and <b>E</b>ducation</td>
+    <td style="font-size:1.2em;"><b>A</b>nother <b>R</b>emote <b>C</b>ommunity <b>H</b>otspot for <b>I</b>nstruction and <b>E</b>ducation</td>
 </tr>
 </table>
 
-<h3>Welcome to the ARCHIE Pi! Installed modules are listed below:</h3>
+<p>Welcome to the <b>ARCHIE Pi</b>! Installed modules are listed below:</p>
 <?php
 // Show each installed module on the top level page
 $files = scandir('/var/www/modules');

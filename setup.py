@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # Script to setup ARCHIE Pi (Another Remote Community Hotspot for Instruction and Education)
 # on a Raspberry Pi (all versions) running Raspberry Pi OS Lite.
 #
