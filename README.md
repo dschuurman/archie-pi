@@ -21,15 +21,14 @@ This project includes a script to setup the ARCHIE Pi on a fresh image of Raspbe
 another script to install selected open education resources.
 
 One of concerns of the developers of this project is *robustness*. This is crucial since the ARCHIE Pi
-is typically deployed in remote locations without ready access to replacement parts or IT support.
+is intended to be deployed in remote locations without ready access to replacement parts or IT support.
 Of particular concern is the reliability of the microSD card under conditions
-in which power may be lost at any time. 
-Sudden power loss can lead to SD card corruption if it
+in which power may be lost. Sudden power loss *can* lead to SD card corruption if it
 occurs during a write operation to the SD card.
-
-For this reason, several measures are taken to reduce the frequency of microSD card writes.
-*This work is ongoing, and ultimately the goal is to mount the microSD card in read-only mode
-to eliminate the possibility of any microSD card writes.*
+To address this, various adjustments are made to the system configuration to mount the 
+microSD card in read-only mode eliminating the possibility of any microSD card writes.
+Consequently, the ARCHIE Pi does not require a formal shutdown procedure and may be simply
+unplugged.
 
 ## Requirements
 
@@ -62,18 +61,15 @@ Plug in an ethernet cable connected to the internet and power up the Raspberry P
 The ethernet cable is necessary since the installation script configures the 
 wireless interface as an open wi-fi access point.
 
-Raspberry Pi OS Lite boots to a terminal window
-with a login prompt. 
-The default user is `pi` and the default password
-is `raspberry`. 
+Raspberry Pi OS Lite boots to a terminal window with a login prompt. 
+The default user is `pi` and the default password is `raspberry`. 
 After logging into the Raspberry Pi, you may wish to
 change the default password by typing:
 ```
 passwd
 ```
 This command will prompt you to set a new password.
-It is recommended that you change the default
-password for security purposes.
+It is recommended that you change the default password for security purposes.
 
 Next, install the `git` package as follows:
 ```
@@ -129,14 +125,17 @@ This script provides a friendly interface from which you can select various
 Open Education Resources available from [oer2go.org](http://oer2go.org/) and
 install them on your ARCHIE Pi.
 
-To run the module installer, type:
+Before running the installer, ensure an ethernet cable is plugged in with access
+to the internet. Next, run the module installer as follows:
 ```
 sudo python3 module-installer.py
 ```
 A menu will appear allowing you to select and install various modules. 
 Once the script completes, the content should be displayed at: `http://10.10.10.10`.
 
-At this point the ethernet cable is no longer needed and may be removed. 
+The installation may take some time, depending in the size of the package(s)
+and the speed of your connection. Once installation is completed, the ethernet cable is no 
+longer needed and may be removed. 
 Note that some content requires substantial storage space,
 so it is important to ensure that you select an adequately sized microSD card or
 USB drive.

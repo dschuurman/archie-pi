@@ -154,11 +154,12 @@ do('service nginx restart') or sys.exit('Error: unable to restart nginx')
 if args.verbose:
     print('ARCHIE Pi installed successfully. It can be accessed using wi-fi at: http://10.10.10.10.')
 
-########################################################
+###############################################################
 # Step 4: Harden the install 
-# Purpose: lessen the likelihood of SD card corruption
-# by reducing the frequency of SD card writes
-#########################################################
+# Avoid possible SD card corruption that can occur when writing 
+# during a power failure by mounting SD card in read-only mode. 
+# Tweak various settings and use tmpfs folders where needed.
+################################################################
 
 # Disable swap to eliminate swap writes to SD card
 if args.verbose:
@@ -168,28 +169,42 @@ do('dphys-swapfile uninstall') or sys.exit('Error: swap uninstall failed!')
 do('update-rc.d dphys-swapfile remove') or sys.exit('Error: swapfile remove failed!')
 do('apt -y purge dphys-swapfile') or sys.exit('Error: could not purge swapfile')
 
-# Disable periodic man pages indexing
+# Disable periodic man page indexing
 if args.verbose:
     print("Disabling periodic man page indexing...")
 do('chmod -x /etc/cron.daily/man-db') or sys.exit('Error: disable periodic man page indexing failed')
 do('chmod -x /etc/cron.weekly/man-db') or sys.exit('Error: disable periodic man page indexing failed')
 
-# Disable time sync (and associated SD card writes) since our access point has no internet
+# Disable time sync (and associated SD card writes) since the access point typically has no internet
 if args.verbose:
     print("Disabling time sync...")
 do('systemctl disable systemd-timesyncd.service') or sys.exit('Error: timesync diasable error')
 
-# Mount /boot partition in read-only mode
-replace_line('/boot           vfat    defaults','/boot           vfat    ro','/etc/fstab')
+# Mount /boot and / partition in read-only mode to eliminate possiblitiy SD card writes
+replace_line('vfat    defaults','vfat    ro','/etc/fstab')
+replace_line('defaults,noatime','ro','/etc/fstab')
 
-# Increase commit time on / partition to reduce frequency of SD card writes
-replace_line('defaults,noatime','defaults,noatime,commit=60','/etc/fstab')
+# Move folders that require writing from the SD card to various tmpfs partitions
+append_file('/etc/fstab','tmpfs   /var/log    tmpfs    noatime,nosuid,mode=0755,size=50M  0 0') or sys.exit('fstab append error')
+append_file('/etc/fstab','tmpfs   /tmp        tmpfs    noatime,nosuid,mode=0755,size=10M  0 0') or sys.exit('fstab append error')
+append_file('/etc/fstab','tmpfs   /var/lib/dhcpcd5     tmpfs    noatime,nosuid,mode=0755,size=32k  0 0') or sys.exit('fstab append error')
+append_file('/etc/fstab','tmpfs   /var/lib/logrotate   tmpfs    nodev,noatime,nosuid,mode=0755,size=16k  0 0') or sys.exit('fstab append error')
+append_file('/etc/fstab','tmpfs   /var/lib/php         tmpfs    nodev,noatime,nosuid,mode=0777,size=64k  0 0') or sys.exit('fstab append error')
 
-# Move log files from the SD card to a tmpfs to further reduce SD card writes
-append_file('/etc/fstab','tmpfs   /var/log    tmpfs    noatime,nosuid,mode=0755,size=50M  0   0')
 # nginx requires the log folder be present; create folder in the tmpfs at each startup
-append_file('/var/spool/cron/crontabs/root','@reboot mkdir /var/log/nginx')
+append_file('/var/spool/cron/crontabs/root','@reboot mkdir /var/log/nginx') or sys.exit('crontab append error')
 do('chmod 600 /var/spool/cron/crontabs/root') or sys.exit('Error: chmod failed')
+
+# Move dhcp-leasefile to a tmpfs folder
+append_file('/etc/dnsmasq.conf','dhcp-leasefile=/var/log/dnsmasq.leases') or sys.exit('Error updating dhcp-leasefile location')
+
+# Move hwclock to a tmpfs folder
+do('rm /etc/fake-hwclock.data') or sys.exit('Error removing existing hwclock file')
+do('ln -s /tmp/fake-hwclock.data /etc/fake-hwclock.data') or sys.exit('Error moving hwclock data file')
+
+# Move resolv.conf to a tmpfs folder
+do('rm /etc/resolv.conf') or sys.exit('Error removing existing resolv.conf')
+do('ln -s /tmp/resolv.conf /etc/resolv.conf') or sys.exit('Error creating link to resolv.conf')
 
 print('DONE!')
 print("Don't forget to change the default password for the user pi!")

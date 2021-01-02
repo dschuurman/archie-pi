@@ -78,6 +78,9 @@ for letter in OPTIONS.keys():
         print(OPTIONS[letter], end=', ')
 print('\b\b...\n')
 
+# Temporarily mount root partion in read-write mode for adding content
+do('mount -o remount,rw /')
+
 # Install the selected modules from http://oer2go.org
 for selection in selections:
     if OPTIONS[selection] == 'Blockly':
@@ -147,4 +150,8 @@ for selection in selections:
 
 # update ownership of modules folder to web user (www-data)
 do('chown -R www-data.www-data /var/www/modules') or sys.exit('Error changing ownership of modules folder to www-data')
+
+# Once content is installed, return root partion to read-only mode
+do('mount -o remount,ro /')
+
 print('DONE!')
