@@ -24,28 +24,24 @@ One of concerns of the developers of this project is *robustness*. This is cruci
 is intended to be deployed in remote locations without ready access to replacement parts or IT support.
 Of particular concern is the reliability of the microSD card under conditions
 in which power may be lost. Sudden power loss *can* lead to SD card corruption if it
-occurs during a write operation to the SD card.
+occurs during a write operation on the microSD card.
 To address this, various adjustments are made to the system configuration to mount the 
-microSD card in read-only mode eliminating the possibility of any microSD card writes.
+microSD card in *read-only* mode, eliminating the possibility of any microSD card writes.
 Consequently, the ARCHIE Pi does not require a formal shutdown procedure and may be simply
 unplugged.
 
 ## Requirements
 
-The ARCHIE Pi platform requires a recent version of 
-Raspberry PI OS Lite and runs on any recent model of
-the Raspberry Pi (including the latest Raspberry Pi 4).
+The ARCHIE Pi platform requires a recent version of Raspberry PI OS Lite 
+and runs on any recent model of the Raspberry Pi (including the latest Raspberry Pi 4).
 
-Depending on the amount of content you want to install,
-a suitably sized microSD card is required. 
-Note that
-not all microSD cards are created equal, so you may want to consult the 
+A suitably sized microSD card is required, depending on the amount of content you want to install.
+Note that not all microSD cards are created equal in terms of speed and reliability, so you may want to consult the 
 [Raspberry Pi microSD guidelines](https://www.raspberrypi.org/documentation/installation/sd-cards.md).
-It is recommended that you select a high-speed microSD card,
-such as cards rated for UHS Speed Class 3.
+It is recommended that you select a high-speed microSD card, such as cards rated for UHS Speed Class 3.
 
 Note that it is possible to use an external USB *drive* rather than a microSD card. 
-For more information, see the Raspberry Pi documentation describing 
+For more information, consult the Raspberry Pi documentation describing 
 [USB mass storage devices](https://www.raspberrypi.org/documentation/hardware/raspberrypi/bootmodes/msd.md).
 
 ## Installation instructions
@@ -145,10 +141,22 @@ USB drive.
 While the `module-installer` provides a convenient way to add existing content, 
 you can also curate your own content and manually add it to your ARCHIE Pi. 
 The content may include PHP code and any file formats viewable by a standard 
-web browser (PDF, HTML, MP4, JPG, etc.). Content must be placed in its own folder in the 
-`/var/www/modules` directory with file ownerships set to the web server user (`www-data`).
+web browser (PDF, HTML, MP4, JPG, etc.). 
+Before any content can be written (or any updates applied), the root partition 
+on the SD card must first be changed from read-only mode to read-write mode as follows:
+```
+sudo mount -o remount,rw /
+```
+Web content should be placed in its own folder in the `/var/www/modules` folder 
+with file ownerships set to the web server user (`www-data`).
 A file named `index.htmlf` must be placed in the content folder which will be automatically 
 imported and listed on the main page of the ARCHIE Pi. The content of the file should be 
 nested within a `<div class="indexmodule">` tag which will apply the appropriate formatting
 from an existing CSS file. The `index.htmlf` file should include the module name, 
 an optional icon, and a short description of the module with hyperlinks to the content.
+
+Once the content is setup, the SD card root partition should be returned to read-only
+mode as follows:
+```
+sudo mount -o remount,ro /
+```
