@@ -122,7 +122,8 @@ Open Education Resources available from [oer2go.org](http://oer2go.org/) and
 install them on your ARCHIE Pi.
 
 Before running the installer, ensure an ethernet cable is plugged in with access
-to the internet. Next, run the module installer as follows:
+to the internet and that you are in the `archie-pi` folder. 
+Next, run the module installer as follows:
 ```
 sudo python3 module-installer.py
 ```
@@ -130,8 +131,7 @@ A menu will appear allowing you to select and install various modules.
 Once the script completes, the content should be displayed at: `http://10.10.10.10`.
 
 The installation may take some time, depending in the size of the package(s)
-and the speed of your connection. Once installation is completed, the ethernet cable is no 
-longer needed and may be removed. 
+and the speed of your connection. 
 Note that some content requires substantial storage space,
 so it is important to ensure that you select an adequately sized microSD card or
 USB drive.
@@ -160,3 +160,15 @@ mode as follows:
 ```
 sudo mount -o remount,ro /
 ```
+### Final Steps
+
+After the setup and installation scripts have run successfully,
+the ethernet cable is no longer needed and may be removed. 
+At this point you should also reboot the Raspberry Pi so that the 
+new configuration settings can take effect. This can
+be accomplished by typing the following from the command line:
+```
+sudo reboot
+```
+After the Raspberry Pi reboots, ensure that the wi-fi access point is visible 
+and then confirm that you are able to access the web content as expected.
