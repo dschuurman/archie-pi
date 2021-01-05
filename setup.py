@@ -187,6 +187,7 @@ replace_line('defaults,noatime','ro','/etc/fstab')
 # Move folders that require writing from the SD card to various tmpfs partitions
 append_file('/etc/fstab','tmpfs   /var/log    tmpfs     noatime,nosuid,mode=0755,size=50M  0 0') or sys.exit('fstab append error')
 append_file('/etc/fstab','tmpfs   /tmp        tmpfs     noatime,nosuid,mode=0755,size=10M  0 0') or sys.exit('fstab append error')
+append_file('/etc/fstab','tmpfs   /var/tmp    tmpfs     noatime,nosuid,mode=0755,size=64k  0 0') or sys.exit('fstab append error')
 append_file('/etc/fstab','tmpfs   /var/lib/dhcpcd5      tmpfs   noatime,nosuid,mode=0755,size=64k  0 0') or sys.exit('fstab append error')
 append_file('/etc/fstab','tmpfs   /var/lib/logrotate    tmpfs   nodev,noatime,nosuid,mode=0755,size=16k  0 0') or sys.exit('fstab append error')
 append_file('/etc/fstab','tmpfs   /var/lib/php/sessions tmpfs   nodev,noatime,nosuid,mode=0777,size=64k  0 0') or sys.exit('fstab append error')

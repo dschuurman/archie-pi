@@ -20,10 +20,10 @@ The ARCHIE Pi is compatible with the latest Raspberry Pi operating system and ha
 This project includes a script to setup the ARCHIE Pi on a fresh image of Raspberry Pi OS Lite and
 another script to install selected open education resources.
 
-One of concerns of the developers of this project is *robustness*. This is crucial since the ARCHIE Pi
+The developers of this project were concerned about *robustness*. This is crucial since the ARCHIE Pi
 is intended to be deployed in remote locations without ready access to replacement parts or IT support.
 Of particular concern is the reliability of the microSD card under conditions
-in which power may be lost. Sudden power loss *can* lead to SD card corruption if it
+in which power may be suddenly lost. Sudden power loss *can* lead to SD card corruption if it
 occurs during a write operation on the microSD card.
 To address this, various adjustments are made to the system configuration to mount the 
 microSD card in *read-only* mode, eliminating the possibility of any microSD card writes.
@@ -76,7 +76,7 @@ the command line as follows:
 ```
 git clone https://github.com/dschuurman/archie-pi.git
 ```
-Once the repository to downloaded, enter the project folder as follows:
+Once the repository is downloaded, enter the project folder as follows:
 ```
 cd archie-pi
 ```
