@@ -71,19 +71,18 @@ parser.add_argument("--ssid", dest="ssid", help="Wi-Fi acces point station id",
                     type=str, required=False, default='ARCHIE-Pi')
 args = parser.parse_args()
 
-#########################################
+##################################
 # Step 1: Update and upgrade OS
-#########################################
+##################################
 if args.verbose:
     print('Staring ARCHIE Pi setup...')
 
 do('apt update -y') or sys.exit('Error: Unable to update Raspberry Pi OS.')
 do('apt dist-upgrade -y') or sys.exit('Error: Unable to dist-upgrade Raspberry Pi OS.')
-do('apt autoremove -y') or sys.exit('Error: Unable to autoremove install files.')
 
-#########################################
+###############################
 # Step 2: Setup wifi hotspot
-#########################################
+###############################
 if args.verbose:
     print('Setting up wifi hotspot...')
 
@@ -126,11 +125,12 @@ do('service dnsmasq start') or sys.exit('Error: service dnsmasq failed to start'
 ####################################################
 if args.verbose:
     print('Setting up web server...')
-#Install nginx on Raspberry Pi:
+# Install nginx on Raspberry Pi:
 do('apt install nginx -y') or sys.exit('Unable to install nginx')
 
-# #Install PHP FastCGI Process Manager:
-do('apt install php php-fpm php-cli -y') or sys.exit('Error: unable to install php and libapache2-mod-php')
+# Install PHP and SQLite3:
+do('apt install php php-fpm php-cli -y') or sys.exit('Error: unable to install php')
+do('apt install php-sqlite3 -y') or sys.exit('Error: unable to install sqlite3')
 
 # Enable PHP in nginx config file
 conf_file = '/etc/nginx/sites-enabled/default'
@@ -168,6 +168,7 @@ do('dphys-swapfile swapoff') or sys.exit('Error: swapoff failed!')
 do('dphys-swapfile uninstall') or sys.exit('Error: swap uninstall failed!')
 do('update-rc.d dphys-swapfile remove') or sys.exit('Error: swapfile remove failed!')
 do('apt -y purge dphys-swapfile') or sys.exit('Error: could not purge swapfile')
+do('apt autoremove -y') or sys.exit('Error: autoremove failed')
 
 # Disable periodic man page indexing
 if args.verbose:
@@ -184,7 +185,7 @@ do('systemctl disable systemd-timesyncd.service') or sys.exit('Error: timesync d
 replace_line('vfat    defaults','vfat    ro','/etc/fstab')
 replace_line('defaults,noatime','ro','/etc/fstab')
 
-# Move folders that require writing from the SD card to various tmpfs partitions
+# Move folders that require writing from the SD card to various tmpfs mounts
 append_file('/etc/fstab','tmpfs   /var/log    tmpfs     noatime,nosuid,mode=0755,size=50M  0 0') or sys.exit('fstab append error')
 append_file('/etc/fstab','tmpfs   /tmp        tmpfs     noatime,nosuid,mode=0755,size=10M  0 0') or sys.exit('fstab append error')
 append_file('/etc/fstab','tmpfs   /var/tmp    tmpfs     noatime,nosuid,mode=0755,size=64k  0 0') or sys.exit('fstab append error')

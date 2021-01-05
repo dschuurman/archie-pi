@@ -15,17 +15,19 @@ import sys
 import subprocess
 import curses
 
-# List of modules to install
-OPTIONS = {'a':'Blockly', 'b':'Wikipedia', 'c':'CK-12', 'd':'Boundless', 'e':'Mustard Seed Books', 
-           'f':'Project Gutenberg', 'g':'Math Expression', 'h':'World Map', 'i':'Algebra2Go', 
-           'j':'Understanding Algebra', 'k':'Khan Academy' }
-
 # Helper functions
 def do(cmd):
     ''' Execute system command and return result
     '''
     result = subprocess.run(cmd.split(), stderr=sys.stderr, stdout=sys.stdout)
     return (result.returncode == 0)
+
+# collection of available modules
+OPTIONS = {'a':'Wikipedia', 'b':'Blockly', 'c':'CK-12', 'd':'Boundless', 'e':'Mustard Seed Books', 
+        'f':'Project Gutenberg', 'g':'Math Expression', 'h':'World Map', 'i':'Algebra2Go', 
+        'j':'Understanding Algebra', 'k':'Khan Academy', 'l':'openstax Textbooks', 'm':'Rasp Pi User Guide',
+        'n':'Scratch', 'r':'Blockly (Spanish)', 's':'Wikipedia (Spanish)', 't':'Khan Academy (Spanish)',
+        'z':'Wikipedia (French)' }
 
 # Prompt user to select modules to install
 screen = curses.initscr()
@@ -83,72 +85,81 @@ do('mount -o remount,rw /')
 
 # Install the selected modules from http://oer2go.org
 for selection in selections:
-    if OPTIONS[selection] == 'Blockly':
-        print("Installing Blockly games...")
-        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-blockly-games /var/www/modules') or sys.exit('Error installing Blockly')
-        print('Done')
-
-    # Install Wikipedia for schools (static version does not require kiwix)
-    elif OPTIONS[selection] == 'Wikipedia':
+    if OPTIONS[selection] == 'Wikipedia':     # Wikipedia for schools (static version does not require kiwix)
         print('Installing Wikipedia for schools...')
-        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-wikipedia_for_schools-static /var/www/modules') or sys.exit('Error installing Wikipedia')
+        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-wikipedia_for_schools-static /var/www/modules') or sys.exit('Error installing content')
         print('Done')
-
-    # Install CK-12 open textbooks for schools
+    elif OPTIONS[selection] == 'Blockly':
+        print("Installing Blockly games...")
+        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-blockly-games /var/www/modules') or sys.exit('Error installing content')
+        print('Done')
     elif OPTIONS[selection] == 'CK-12':
         print('Installing CK-12...')
-        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-ck12 /var/www/modules') or sys.exit('Error installing CK-12')
+        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-ck12 /var/www/modules') or sys.exit('Error installing content')
         print('Done')
-
-    # Install Boundless open textbooks for schools
     elif OPTIONS[selection] == 'Boundless':
         print('Installing Boundless...')
-        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-boundless-static /var/www/modules') or sys.exit('Error installing Boundless open textbooks')
+        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-boundless-static /var/www/modules') or sys.exit('Error installing content')
         print('Done\n')
-
-    # Install mustard seed books
     elif OPTIONS[selection] == 'Mustard Seed Books':
         print('Installing Mustard Seed Books...')
-        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-mustardseedbooks /var/www/modules') or sys.exit('Error installing mustard seed books')
+        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-mustardseedbooks /var/www/modules') or sys.exit('Error installing content')
         print('Done\n')
-
-    # Install great books from project gutenberg
     elif OPTIONS[selection] == 'Project Gutenberg':
         print('Installing Project Gutenberg...')
-        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-ebooks /var/www/modules') or sys.exit('Error installing project gutenberg')
+        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-ebooks /var/www/modules') or sys.exit('Error installing content')
         print('Done\n')
-
-    # Install math expression
     elif OPTIONS[selection] == 'Math Expression':
         print('Installing Math Expression...')
-        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-math_expression /var/www/modules') or sys.exit('Error installing math expression')
+        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-math_expression /var/www/modules') or sys.exit('Error installing content')
         print('Done\n')
-
-    # Install World Map
     elif OPTIONS[selection] == 'World Map':
         print("Installing World Map...")
-        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-worldmap-10 /var/www/modules') or sys.exit('Error installing World Map')
+        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-worldmap-10 /var/www/modules') or sys.exit('Error installing content')
         print('Done\n')
-
-    # Install Algebra2Go
     elif OPTIONS[selection] == 'Algebra2Go':
         print("Installing Algebra2Go...")
-        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-algebra2go /var/www/modules') or sys.exit('Error installing Algebra2Go')
+        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-algebra2go /var/www/modules') or sys.exit('Error installing content')
         print('Done\n')
-
-   # Install Understanding Algebra
     elif OPTIONS[selection] == 'Understanding Algebra':
         print("Installing Understanding Algebra...")
-        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-understanding_algebra /var/www/modules') or sys.exit('Error installing Understanding Algebra')
+        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-understanding_algebra /var/www/modules') or sys.exit('Error installing content')
         print('Done\n')
-
-   # Install Khan Academy
     elif OPTIONS[selection] == 'Khan Academy':
         print('Installing Khan Academy...')
-        do("rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-kaos /var/www/modules")or sys.exit('Error installing Khan Academy content')
+        do("rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-kaos /var/www/modules") or sys.exit('Error installing content')
         print('Done\n')
+    elif OPTIONS[selection] == 'openstax Textbooks':
+        print('Installing openstax Textbooks...')
+        do("rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-openstax /var/www/modules") or sys.exit('Error installing content')
+        print('Done\n')
+    elif OPTIONS[selection] == 'Rasp Pi User Guide':
+        print('Installing Rasp Pi User Guide...')
+        do("rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-rpi_guide /var/www/modules") or sys.exit('Error installing content')
+        print('Done\n')
+    elif OPTIONS[selection] == 'Scratch':
+        print('Installing Scratch...')
+        do("rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-scratch /var/www/modules") or sys.exit('Error installing content')
+        print('Done\n')
+    elif OPTIONS[selection] == 'Blockly (Spanish)':
+        print("Installing Blockly games (Spanish)...")
+        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/es-blockly-games /var/www/modules') or sys.exit('Error installing content')
+        print('Done')
+    elif OPTIONS[selection] == 'Khan Academy (Spanish)':
+        print('Installing Khan Academy (Spanish)...')
+        do("rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/es-kaos /var/www/modules") or sys.exit('Error installing content')
+        print('Done\n')
+    elif OPTIONS[selection] == 'Wikipedia (Spanish)':
+        print('Installing Wikipedia for schools (Spanish)...')
+        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/es-wikipedia-static /var/www/modules') or sys.exit('Error installing content')
+        print('Done')
+    elif OPTIONS[selection] == 'Wikipedia (French)':
+        print('Installing Wikipedia for schools (French)...')
+        do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/fr-wikipedia-static /var/www/modules') or sys.exit('Error installing content')
+        print('Done')
 
 # update ownership of modules folder to web user (www-data)
+print('Setting module folder permissions...')
 do('chown -R www-data.www-data /var/www/modules') or sys.exit('Error changing ownership of modules folder to www-data')
 
 # Once content is installed, return root partion to read-only mode

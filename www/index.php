@@ -28,7 +28,7 @@ foreach ($files as $file) {
 ?>
 
 <p>
-<b>ARCHIE Pi</b> version 0.2, December 2020
+<b>ARCHIE Pi</b> version 0.21, December 2020
 <br><a href="about.html">About</a> the ARCHIE Pi
 </p>
 </body>

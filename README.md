@@ -172,3 +172,5 @@ sudo reboot
 ```
 After the Raspberry Pi reboots, ensure that the wi-fi access point is visible 
 and then confirm that you are able to access the web content as expected.
+At this point, the ARCHIE Pi can run *headless*, without a screen or
+keyboard attached.
