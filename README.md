@@ -1,7 +1,7 @@
 # archie-pi
 
 **ARCHIE** is an acronym for **A**nother **R**emote **C**ommunity **H**otspot for **I**nstruction 
-and **E**ducation for use with the Raspberry **Pi**.
+and **E**ducation for use with the [Raspberry Pi](https://www.raspberrypi.org).
 
 The ARCHIE Pi implements an offline web server that can be used to deliver educational content 
 in remote locations where no internet access is available. Using a variety of open-source software 
@@ -35,7 +35,8 @@ unplugged.
 The ARCHIE Pi platform requires a recent version of Raspberry PI OS Lite 
 and runs on any recent model of the Raspberry Pi (including the latest Raspberry Pi 4).
 
-A suitably sized microSD card is required, depending on the amount of content you want to install.
+A suitably sized microSD card is required, depending on the amount of content you want to install
+(we have used 64GB and 128GB cards).
 Note that not all microSD cards are created equal in terms of speed and reliability, so you may want to consult the 
 [Raspberry Pi microSD guidelines](https://www.raspberrypi.org/documentation/installation/sd-cards.md).
 It is recommended that you select a high-speed microSD card, such as cards rated for UHS Speed Class 3.
@@ -118,8 +119,8 @@ http://10.10.10.10
 Once the `setup.py` script is complete, you are ready to add some web content. 
 To add content, another script is provided named `module-installer.py`.
 This script provides a friendly interface from which you can select various 
-Open Education Resources available from [oer2go.org](http://oer2go.org/) and
-install them on your ARCHIE Pi.
+Open Education Resources, like those available from [oer2go.org](http://oer2go.org/),
+and install them on your ARCHIE Pi.
 
 Before running the installer, ensure an ethernet cable is plugged in with access
 to the internet and that you are in the `archie-pi` folder. 
@@ -172,5 +173,5 @@ sudo reboot
 ```
 After the Raspberry Pi reboots, ensure that the wi-fi access point is visible 
 and then confirm that you are able to access the web content as expected.
-At this point, the ARCHIE Pi can run *headless*, without a screen or
+At this point, the ARCHIE Pi can run *headless*, without a monitor or
 keyboard attached.
