@@ -23,11 +23,11 @@ def do(cmd):
     return (result.returncode == 0)
 
 # collection of available modules
-OPTIONS = {'a':'Wikipedia', 'b':'Blockly', 'c':'CK-12', 'd':'Boundless', 'e':'Mustard Seed Books', 
-        'f':'Project Gutenberg', 'g':'Math Expression', 'h':'World Map', 'i':'Algebra2Go', 
-        'j':'Understanding Algebra', 'k':'Khan Academy', 'l':'openstax Textbooks', 'm':'Rasp Pi User Guide',
-        'n':'Scratch', 'r':'Blockly (Spanish)', 's':'Wikipedia (Spanish)', 't':'Khan Academy (Spanish)',
-        'z':'Wikipedia (French)' }
+OPTIONS = { 'a':'Wikipedia', 'b':'Blockly', 'c':'CK-12', 'd':'Boundless', 'e':'Mustard Seed Books', 
+            'f':'Project Gutenberg', 'g':'Math Expression', 'h':'World Map', 'i':'Algebra2Go', 
+            'j':'Understanding Algebra', 'k':'Khan Academy', 'l':'openstax Textbooks', 'm':'Rasp Pi User Guide',
+            'n':'Scratch', 'r':'Blockly (Spanish)', 's':'Wikipedia (Spanish)', 't':'Khan Academy (Spanish)',
+            'u':'Wikipedia (French)', 'z':'Kuyers Christian Education Resources' }
 
 # Prompt user to select modules to install
 screen = curses.initscr()
@@ -46,7 +46,7 @@ while True:
             screen.addstr(row, column, '{}) {}'.format(key,OPTIONS[key]))
         # Alternate between left and right columns
         if column == 5:
-            column = 40
+            column = 48
         else:
             column = 5
             row += 1
@@ -156,6 +156,11 @@ for selection in selections:
     elif OPTIONS[selection] == 'Wikipedia (French)':
         print('Installing Wikipedia for schools (French)...')
         do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/fr-wikipedia-static /var/www/modules') or sys.exit('Error installing content')
+        print('Done')
+    elif OPTIONS[selection] == 'Kuyers Christian Education Resources':
+        print('Installing Kuyers Christian Education Resources...')
+        do('git clone https://github.com/dschuurman/en-kuyers-cer.git') or sys.exit('Error installing content')
+        do('mv en-kuyers-cer /var/www/modules') or sys.exit('Error moving content')
         print('Done')
 
 # update ownership of modules folder to web user (www-data)
