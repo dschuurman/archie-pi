@@ -55,10 +55,10 @@ Raspberry Pi documentation for
 on how to install an image of the OS).
 
 Plug in an ethernet cable connected to the internet and power up the Raspberry Pi.
-The ethernet cable is necessary since the installation script configures the 
-wireless interface as an open wi-fi access point.
+The ethernet cable is necessary for internet access since the wireless interface 
+will be configured during the installation as an open wi-fi access point.
 
-Raspberry Pi OS Lite boots to a terminal window with a login prompt. 
+Raspberry Pi OS Lite will boot into a terminal window with a login prompt. 
 The default user is `pi` and the default password is `raspberry`. 
 After logging into the Raspberry Pi, you may wish to
 change the default password by typing:
@@ -72,10 +72,10 @@ Next, install the `git` package as follows:
 ```
 sudo apt install git
 ```
-With `git` installed, the `archie-pi` repository can be installed from 
-the command line as follows:
+With `git` installed, the latest revision of the `archie-pi` repository can 
+be installed from the command line as follows:
 ```
-git clone https://github.com/dschuurman/archie-pi.git
+git clone --depth 1 https://github.com/dschuurman/archie-pi.git
 ```
 Once the repository is downloaded, enter the project folder as follows:
 ```
