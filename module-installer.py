@@ -159,7 +159,7 @@ for selection in selections:
         print('Done')
     elif OPTIONS[selection] == 'Kuyers Christian Education Resources':
         print('Installing Kuyers Christian Education Resources...')
-        do('git clone https://github.com/dschuurman/en-kuyers-cer.git') or sys.exit('Error installing content')
+        do('git clone --depth 1 https://github.com/dschuurman/en-kuyers-cer.git') or sys.exit('Error installing content')
         do('mv en-kuyers-cer /var/www/modules') or sys.exit('Error moving content')
         print('Done')
 
