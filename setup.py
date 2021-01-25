@@ -208,5 +208,9 @@ do('ln -s /tmp/fake-hwclock.data /etc/fake-hwclock.data') or sys.exit('Error mov
 do('rm /etc/resolv.conf') or sys.exit('Error removing existing resolv.conf')
 do('ln -s /tmp/resolv.conf /etc/resolv.conf') or sys.exit('Error creating link to resolv.conf')
 
+# Clean up
+do('rm -r .git/') or sys.exit('Error removing .git folder')
+do('rm -r www/') or sys.exit('Error removing www folder')
+
 print('DONE!')
 print("Don't forget to change the default password for the user pi!")
