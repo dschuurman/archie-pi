@@ -3,6 +3,7 @@
 <head>
     <title>ARCHIE Pi</title>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 </head>
 <body>
 <table>
@@ -28,7 +29,7 @@ foreach ($files as $file) {
 ?>
 
 <p>
-<b>ARCHIE Pi</b> version 0.21, December 2020
+<b>ARCHIE Pi</b> version 0.22, January 2021
 <br><a href="about.html">About</a> the ARCHIE Pi
 </p>
 </body>
