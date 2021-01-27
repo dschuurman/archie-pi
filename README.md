@@ -5,10 +5,10 @@ and **E**ducation for use with the [Raspberry Pi](https://www.raspberrypi.org).
 
 The ARCHIE Pi implements an offline web server that can be used to deliver educational content 
 in remote locations where no internet access is available. Using a variety of open-source software 
-(such as Linux, nginx, and hostapd), this platform provides an "internet in a box" in the form of an
+(such as Linux, nginx, kiwix, and hostapd), this platform provides an "internet in a box" in the form of an
 open wi-fi access point that can be accessed by locally connected web browsers.
 This access point uses a local web server to deliver educational content which may
-include a wide variety of creative commons content such as Wikipedia and Project Gutenberg.
+include a wide variety of open educational resources like Wikipedia and Project Gutenberg.
 
 The idea behind the ARCHIE Pi is not novel. The word *another* is included in the acronym to
 acknowledge that it was inspired by other projects, particularly the 
@@ -19,6 +19,9 @@ acknowledge that it was inspired by other projects, particularly the
 The ARCHIE Pi is compatible with the latest Raspberry Pi operating system and hardware versions.
 This project includes a script to setup the ARCHIE Pi on a fresh image of Raspberry Pi OS Lite and
 another script to install selected open education resources.
+
+The ARCHIE Pi runs both a web server (nginx) for delivering general web content as well as a Kiwix 
+server for delivering wiki content stored in [ZIM](https://wiki.openzim.org/wiki/OpenZIM) files.
 
 The developers of this project were concerned about *robustness*. This is crucial since the ARCHIE Pi
 is intended to be deployed in remote locations without ready access to replacement parts or IT support.
@@ -119,8 +122,8 @@ http://10.10.10.10
 Once the `setup.py` script is complete, you are ready to add some web content. 
 To add content, another script is provided named `module-installer.py`.
 This script provides a friendly interface from which you can select various 
-Open Education Resources, like those available from [oer2go.org](http://oer2go.org/),
-and install them on your ARCHIE Pi.
+Open Education Resources, like those available from [kiwix.org](https://www.kiwix.org/)
+and [oer2go.org](http://oer2go.org/), and install them on your ARCHIE Pi.
 
 Before running the installer, ensure an ethernet cable is plugged in with access
 to the internet and that you are in the `archie-pi` folder. 
@@ -129,7 +132,8 @@ Next, run the module installer as follows:
 sudo python3 module-installer.py
 ```
 A menu will appear allowing you to select and install various modules. 
-Once the script completes, the content should be displayed at: `http://10.10.10.10`.
+Once the script completes, the content should be displayed at: `http://10.10.10.10`
+(note that some content may require a reboot before it appears - see the instructions given in the final steps).
 
 The installation may take some time, depending in the size of the package(s)
 and the speed of your connection. 

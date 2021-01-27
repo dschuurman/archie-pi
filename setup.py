@@ -91,11 +91,9 @@ do('apt-get -y install hostapd dnsmasq') or sys.exit('Unable to install hostapd.
 do('systemctl stop hostapd') or sys.exit('Error: unable to stop hostapd.')
 do('systemctl stop dnsmasq') or sys.exit('Error: unable to stop dnsmasq.')
 
-# update dhcpd.conf and link resolv.conf to /tmp (later to be made a tmpfs)
+# update dhcpd.conf
 settings='interface wlan0\nstatic ip_address=10.10.10.10\nnohook wpa_supplicant\n'
 append_file('/etc/dhcpcd.conf', settings)
-do('rm /etc/resolv.conf') or sys.exit('Error removing existing resolv.conf')
-do('ln -s /tmp/resolv.conf /etc/resolv.conf') or sys.exit('Error creating link to resolv.conf')
 do('systemctl restart dhcpcd') or sys.exit('Error: dhcpcd restart failed')
 
 # adjust settings in hostapd config file
@@ -156,8 +154,19 @@ do('service nginx restart') or sys.exit('Error: unable to restart nginx')
 if args.verbose:
     print('ARCHIE Pi installed successfully. It can be accessed using wi-fi at: http://10.10.10.10.')
 
+####################################################
+# Step 4: Setup Kiwix server 
+####################################################
+if args.verbose:
+    print('Setting up kiwix server (requires a reboot to run)...')
+do('wget -nv --show-progress -O /home/pi/kiwix-tools.tgz http://download.kiwix.org/release/kiwix-tools/kiwix-tools_linux-armhf-3.1.2-4.tar.gz')
+do('mkdir /home/pi/kiwix')
+do('tar xzf /home/pi/kiwix-tools.tgz -C /home/pi/kiwix --strip-components=1')
+do('rm /home/pi/kiwix-tools.tgz')
+replace_line('fi','fi\n\n/home/pi/kiwix/kiwix-serve --library --port 81 --blockexternal --daemon /home/pi/kiwix/library_zim.xml', '/etc/rc.local') or sys.exit('rc.local line not found')
+
 ###############################################################
-# Step 4: Harden the install 
+# Step 5: Harden the install 
 # Avoid possible SD card corruption that can occur when writing 
 # during a power failure by mounting SD card in read-only mode. 
 # Tweak various settings and use tmpfs folders where needed.
@@ -206,9 +215,15 @@ append_file('/etc/dnsmasq.conf','dhcp-leasefile=/var/log/dnsmasq.leases') or sys
 do('rm /etc/fake-hwclock.data') or sys.exit('Error removing existing hwclock file')
 do('ln -s /tmp/fake-hwclock.data /etc/fake-hwclock.data') or sys.exit('Error moving hwclock data file')
 
+# Move resolv.conf to a tmpfs folder
+do('systemctl stop dhcpcd') or sys.exit('Error: dhcpcd stop failed')
+do('rm /etc/resolv.conf')
+do('ln -s /tmp/resolv.conf /etc/resolv.conf') or sys.exit('Error creating link to resolv.conf')
+do('systemctl start dhcpcd') or sys.exit('Error: dhcpcd start failed')
+
 # Clean up
-do('rm -r .git/') or sys.exit('Error removing .git folder')
-do('rm -r www/') or sys.exit('Error removing www folder')
+do('rm -r .git/')
+do('rm -r www/')
 
 print('DONE!')
 print("Don't forget to change the default password for the user pi!")
