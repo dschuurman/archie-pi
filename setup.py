@@ -91,9 +91,11 @@ do('apt-get -y install hostapd dnsmasq') or sys.exit('Unable to install hostapd.
 do('systemctl stop hostapd') or sys.exit('Error: unable to stop hostapd.')
 do('systemctl stop dnsmasq') or sys.exit('Error: unable to stop dnsmasq.')
 
-# update dhcpd.conf file
+# update dhcpd.conf and link resolv.conf to /tmp (later to be made a tmpfs)
 settings='interface wlan0\nstatic ip_address=10.10.10.10\nnohook wpa_supplicant\n'
 append_file('/etc/dhcpcd.conf', settings)
+do('rm /etc/resolv.conf') or sys.exit('Error removing existing resolv.conf')
+do('ln -s /tmp/resolv.conf /etc/resolv.conf') or sys.exit('Error creating link to resolv.conf')
 do('systemctl restart dhcpcd') or sys.exit('Error: dhcpcd restart failed')
 
 # adjust settings in hostapd config file
@@ -203,10 +205,6 @@ append_file('/etc/dnsmasq.conf','dhcp-leasefile=/var/log/dnsmasq.leases') or sys
 # Move hwclock to a tmpfs folder
 do('rm /etc/fake-hwclock.data') or sys.exit('Error removing existing hwclock file')
 do('ln -s /tmp/fake-hwclock.data /etc/fake-hwclock.data') or sys.exit('Error moving hwclock data file')
-
-# Move resolv.conf to a tmpfs folder
-do('rm /etc/resolv.conf') or sys.exit('Error removing existing resolv.conf')
-do('ln -s /tmp/resolv.conf /etc/resolv.conf') or sys.exit('Error creating link to resolv.conf')
 
 # Clean up
 do('rm -r .git/') or sys.exit('Error removing .git folder')
