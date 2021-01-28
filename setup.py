@@ -159,11 +159,11 @@ if args.verbose:
 ####################################################
 if args.verbose:
     print('Setting up kiwix server (requires a reboot to run)...')
-do('wget -nv --show-progress -O /home/pi/kiwix-tools.tgz http://download.kiwix.org/release/kiwix-tools/kiwix-tools_linux-armhf-3.1.2-4.tar.gz')
+do('wget -nv --show-progress -O /home/pi/kiwix-tools.tgz https://download.kiwix.org/release/kiwix-tools/kiwix-tools_linux-armhf-3.1.2-3.tar.gz')
 do('mkdir /home/pi/kiwix')
 do('tar xzf /home/pi/kiwix-tools.tgz -C /home/pi/kiwix --strip-components=1')
 do('rm /home/pi/kiwix-tools.tgz')
-replace_line('fi','fi\n\n/home/pi/kiwix/kiwix-serve --library --port 81 --blockexternal --daemon /home/pi/kiwix/library_zim.xml', '/etc/rc.local') or sys.exit('rc.local line not found')
+replace_line('fi','fi\n\n/home/pi/kiwix/kiwix-serve --library --port 81 --blockexternal --nolibrarybutton --daemon /home/pi/kiwix/library_zim.xml', '/etc/rc.local') or sys.exit('rc.local line not found')
 
 ###############################################################
 # Step 5: Harden the install 
