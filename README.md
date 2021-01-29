@@ -160,8 +160,14 @@ nested within a `<div class="indexmodule">` tag which will apply the appropriate
 from an existing CSS file. The `index.htmlf` file should include the module name, 
 an optional icon, and a short description of the module with hyperlinks to the content.
 
-Once the content is setup, the SD card root partition should be returned to read-only
-mode as follows:
+It is also possible to add content in the form of [ZIM](https://wiki.openzim.org/wiki/OpenZIM) files.
+The ARCHIE Pi runs a [kiwix server](https://wiki.kiwix.org/wiki/Kiwix-serve) and new ZIM
+files can be included. It is recommended that new ZIM files should go in a subfolder of `/var/www/modules` 
+along with an appropriate `index.htmlf` file. ZIM files should be added to the kwiix library using 
+the `kiwix-manage` tool which can be found, along with the XML library file, in `/home/pi/kiwix`.
+
+Once new content is setup, the SD card root partition should be returned to read-only
+mode by rebooting the ARCHIE Pi by or as follows:
 ```
 sudo mount -o remount,ro /
 ```
