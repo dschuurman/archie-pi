@@ -179,7 +179,6 @@ do('dphys-swapfile swapoff') or sys.exit('Error: swapoff failed!')
 do('dphys-swapfile uninstall') or sys.exit('Error: swap uninstall failed!')
 do('update-rc.d dphys-swapfile remove') or sys.exit('Error: swapfile remove failed!')
 do('apt -y purge dphys-swapfile') or sys.exit('Error: could not purge swapfile')
-do('apt autoremove -y') or sys.exit('Error: autoremove failed')
 
 # Disable periodic man page indexing
 if args.verbose:
@@ -221,9 +220,14 @@ do('rm /etc/resolv.conf')
 do('ln -s /tmp/resolv.conf /etc/resolv.conf') or sys.exit('Error creating link to resolv.conf')
 do('systemctl start dhcpcd') or sys.exit('Error: dhcpcd start failed')
 
-# Clean up
-do('rm -r .git/')
-do('rm -r www/')
+############################
+# Step 6: Clean up
+############################
+do('apt autoremove -y')
+do('apt clean')
+do('rm -r /home/pi/archie-pi/.git/')
+do('rm -r /home/pi/archie-pi/www/')
 
 print('DONE!')
+print("Note that some new settings require a reboot to take effect.")
 print("Don't forget to change the default password for the user pi!")

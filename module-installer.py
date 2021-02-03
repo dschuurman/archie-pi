@@ -173,7 +173,7 @@ for selection in selections:
         print('Installing Wikibooks (French)...')
         do('mkdir /var/www/modules/fr-wikibooks')
         do('wget -nv --show-progress -O /var/www/modules/fr-wikibooks/fr-wikibooks.zim https://download.kiwix.org/zim/wikibooks/wikibooks_fr_all_maxi_2021-01.zim')
-        do('/home/pi/kiwix/kiwix-manage /home/pi/kiwix/library_zim.xml add /var/www/modules/fr-wikibooks/es-wikibooks.zim')
+        do('/home/pi/kiwix/kiwix-manage /home/pi/kiwix/library_zim.xml add /var/www/modules/fr-wikibooks/fr-wikibooks.zim')
         html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/fr-wikibooks">Wikibooks (French)</a></h2>\n</div>'
         append_file('/var/www/modules/fr-wikibooks/index.htmlf', html)
         print('Done')
@@ -310,5 +310,5 @@ do('chown -R www-data.www-data /var/www/modules') or sys.exit('Error changing ow
 # Once content is installed, return root partion to read-only mode
 do('mount -o remount,ro /')
 
-print('DONE! Note that a reboot is required for some modules to become active')
+print('DONE! Note that a reboot is required for some modules to become active.')
 print('Please note that each content module is subject to its own license terms and conditions.')
