@@ -17,10 +17,9 @@ import fileinput
 # Helper functions
 
 def do(cmd):
-    ''' Execute system command and return result
+    ''' Show and execute system command and return result
     '''
-    if args.verbose:
-        print('-> {}'.format(cmd))
+    print('-> {}'.format(cmd))
     result = subprocess.run(cmd.split(), stderr=sys.stderr, stdout=sys.stdout)
     return (result.returncode == 0)
 
@@ -36,7 +35,7 @@ def append_file(file, line):
     return True
 
 def replace_line(orig_line, new_line, infile):
-    ''' Replace a matching line in a specified file
+    ''' Replace a line with matching text in a specified file
     '''
     found = False
     for line in fileinput.input(infile, inplace = True):
@@ -63,8 +62,6 @@ def uncomment_line(matching_text, infile):
 # Step 0: read comand line parameters
 #########################################
 parser = argparse.ArgumentParser()
-parser.add_argument("-v", action="store_true", default=False, required=False,
- 			        dest="verbose", help="verbose output")
 parser.add_argument("--country", dest="country", help="Wi-Fi country code",
                     type=str, required=True)
 parser.add_argument("--ssid", dest="ssid", help="Wi-Fi acces point station id",
@@ -74,17 +71,14 @@ args = parser.parse_args()
 ##################################
 # Step 1: Update and upgrade OS
 ##################################
-if args.verbose:
-    print('Staring ARCHIE Pi setup...')
-
+print('Staring ARCHIE Pi setup...')
 do('apt update -y') or sys.exit('Error: Unable to update Raspberry Pi OS.')
 do('apt dist-upgrade -y') or sys.exit('Error: Unable to dist-upgrade Raspberry Pi OS.')
 
 ###############################
 # Step 2: Setup wifi hotspot
 ###############################
-if args.verbose:
-    print('Setting up wifi hotspot...')
+print('Setting up wifi hotspot...')
 
 # install hostapd
 do('apt-get -y install hostapd dnsmasq') or sys.exit('Unable to install hostapd.')
@@ -123,8 +117,7 @@ do('service dnsmasq start') or sys.exit('Error: service dnsmasq failed to start'
 ####################################################
 # Step 3: Setup web server and ARCHIE Pi index page
 ####################################################
-if args.verbose:
-    print('Setting up web server...')
+print('Setting up web server...')
 # Install nginx on Raspberry Pi:
 do('apt install nginx -y') or sys.exit('Unable to install nginx')
 
@@ -134,16 +127,15 @@ do('apt install php-sqlite3 -y') or sys.exit('Error: unable to install sqlite3')
 
 # Enable PHP in nginx config file
 conf_file = '/etc/nginx/sites-enabled/default'
-replace_line('root /var/www/html;','root /var/www;',conf_file) or sys.exit('')
-replace_line('index index.html index.htm index.nginx-debian.html;','index index.php index.html index.htm index.nginx-debian.html;', conf_file) or sys.exit('line not found')
-uncomment_line('location ~ \\.php$', conf_file) or sys.exit('')
-uncomment_line('include snippets/fastcgi-php.conf', conf_file) or sys.exit('')
-uncomment_line('fastcgi_pass unix', conf_file) or sys.exit('')
-replace_line('fastcgi_pass unix:/run/php/php7.3-fpm.sock;','fastcgi_pass unix:/run/php/php7.3-fpm.sock; }',conf_file) or sys.exit('')
+replace_line('root /var/www/html;','root /var/www;',conf_file) or sys.exit('web config update failed')
+replace_line('index index.html index.htm index.nginx-debian.html;','index index.php index.html index.htm index.nginx-debian.html;', conf_file) or sys.exit('web config update failed')
+uncomment_line('location ~ \\.php$', conf_file) or sys.exit('web config update failed')
+uncomment_line('include snippets/fastcgi-php.conf', conf_file) or sys.exit('web config update failed')
+uncomment_line('fastcgi_pass unix', conf_file) or sys.exit('web config update failed')
+replace_line('fastcgi_pass unix:/run/php/php7.3-fpm.sock;','fastcgi_pass unix:/run/php/php7.3-fpm.sock; }',conf_file) or sys.exit('web config update failed')
 
 # Install ARCHIE Pi web front page:
-if args.verbose:
-    print('Installing ARCHIE Pi web front end...')
+print('Installing ARCHIE Pi web front end...')
 do('cp -r www/. /var/www/') or sys.exit('Error copying www files to /var/www')
 do('mkdir /var/www/modules') or sys.exit('mkdir failed')
 do('chown -R www-data.www-data /var/www') or sys.exit('Error: unable tochange ownership of /var/www to www-data')
@@ -151,14 +143,10 @@ do('chown -R www-data.www-data /var/www') or sys.exit('Error: unable tochange ow
 # Restart nginx service
 do('service nginx restart') or sys.exit('Error: unable to restart nginx')
 
-if args.verbose:
-    print('ARCHIE Pi installed successfully. It can be accessed using wi-fi at: http://10.10.10.10.')
-
 ####################################################
 # Step 4: Setup Kiwix server 
 ####################################################
-if args.verbose:
-    print('Setting up kiwix server (requires a reboot to run)...')
+print('Setting up kiwix server (requires a reboot to run)...')
 do('wget -nv --show-progress -O /home/pi/kiwix-tools.tgz https://download.kiwix.org/release/kiwix-tools/kiwix-tools_linux-armhf-3.1.2-3.tar.gz')
 do('mkdir /home/pi/kiwix')
 do('tar xzf /home/pi/kiwix-tools.tgz -C /home/pi/kiwix --strip-components=1')
@@ -171,24 +159,22 @@ replace_line('fi','fi\n\n/home/pi/kiwix/kiwix-serve --library --port 81 --blocke
 # during a power failure by mounting SD card in read-only mode. 
 # Tweak various settings and use tmpfs folders where needed.
 ################################################################
+print('Begin hardening the installation...')
 
 # Disable swap to eliminate swap writes to SD card
-if args.verbose:
-    print("Disabling swap...")
+print('Disabling swap...')
 do('dphys-swapfile swapoff') or sys.exit('Error: swapoff failed!')
 do('dphys-swapfile uninstall') or sys.exit('Error: swap uninstall failed!')
 do('update-rc.d dphys-swapfile remove') or sys.exit('Error: swapfile remove failed!')
 do('apt -y purge dphys-swapfile') or sys.exit('Error: could not purge swapfile')
 
 # Disable periodic man page indexing
-if args.verbose:
-    print("Disabling periodic man page indexing...")
+print("Disabling periodic man page indexing...")
 do('chmod -x /etc/cron.daily/man-db') or sys.exit('Error: disable periodic man page indexing failed')
 do('chmod -x /etc/cron.weekly/man-db') or sys.exit('Error: disable periodic man page indexing failed')
 
 # Disable time sync (and associated SD card writes) since the access point typically has no internet
-if args.verbose:
-    print("Disabling time sync...")
+print("Disabling time sync...")
 do('systemctl disable systemd-timesyncd.service') or sys.exit('Error: timesync diasable error')
 
 # Mount /boot and / partition in read-only mode to eliminate possiblitiy SD card writes
@@ -228,6 +214,6 @@ do('apt clean')
 do('rm -r /home/pi/archie-pi/.git/')
 do('rm -r /home/pi/archie-pi/www/')
 
-print('DONE!')
-print("Note that some new settings require a reboot to take effect.")
-print("Don't forget to change the default password for the user pi!")
+print('ARCHIE Pi installed successfully. It can be accessed using wi-fi at: http://10.10.10.10.')
+print('Note that some new settings require a reboot to take effect.')
+print('Don\'t forget to change the default password for the user pi!')

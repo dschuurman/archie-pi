@@ -36,7 +36,7 @@ unplugged.
 ## Requirements
 
 The ARCHIE Pi platform requires a recent version of Raspberry PI OS Lite 
-and runs on any recent model of the Raspberry Pi (including the latest Raspberry Pi 4).
+and runs on any recent model of the Raspberry Pi that includes a builtin wifi adapter (including the latest Raspberry Pi 4).
 
 A suitably sized microSD card is required, depending on the amount of content you want to install
 (we have used 64GB and 128GB cards).
@@ -52,19 +52,23 @@ For more information, consult the Raspberry Pi documentation describing
 
 Create a fresh image of the latest 
 [Raspberry PI OS Lite](https://www.raspberrypi.org/software/operating-systems/)
-on a suitably sized microSD card (consult the
-Raspberry Pi documentation for 
+on a suitably sized microSD card (see note above). We recommend the Lite version
+of the Raspberry Pi software since it requires less space on the SD card. 
+Consult the Raspberry Pi documentation for 
 [instructions](https://www.raspberrypi.org/software/) 
-on how to install an image of the OS).
+on how to install an image of the OS (using a handy tool called the
+[Raspberry Pi Imager](https://www.raspberrypi.com/news/raspberry-pi-imager-imaging-utility/) is recommended).
 
-Plug in an ethernet cable connected to the internet and power up the Raspberry Pi.
-The ethernet cable is necessary for internet access since the wireless interface 
-will be configured during the installation as an open wi-fi access point.
+Note that the installation requires an Ethernet connection during setup since the wifi adapter 
+will be configured as an access point during the installation and therefore cannot be used as an
+internet connection. Once the setup is complete the Ethernet connection is no longer required.
 
-Raspberry Pi OS Lite will boot into a terminal window with a login prompt. 
+Plug in an ethernet cable with internet access and power up the Raspberry Pi.
+Raspberry Pi OS Lite will boot and require you to perform a few basic setup steps to configure
+the language and the keyboard. Once this is complete you should be left at a command-line prompt.
+
 The default user is `pi` and the default password is `raspberry`. 
-After logging into the Raspberry Pi, you may wish to
-change the default password by typing:
+You may wish to change the default password by typing:
 ```
 passwd
 ```
@@ -73,7 +77,7 @@ It is recommended that you change the default password for security purposes.
 
 Next, install the `git` package as follows:
 ```
-sudo apt install git
+sudo apt -y install git
 ```
 With `git` installed, the latest revision of the `archie-pi` repository can 
 be installed from the command line as follows:
@@ -108,16 +112,21 @@ sudo python3 setup.py --country US
 ```
 
 Once the setup script has completed successfully, an open wi-fi access point should 
-appear with an SSID of **ARCHIE-Pi** (unless a different SSID was selected using 
+be advertised from the Raspberry Pi with an SSID of **ARCHIE-Pi** (unless a different SSID was selected using 
 the `--ssid` command line argument). 
-
-Once you connect to the access point, you can view the top-level ARCHIE Pi webpage 
-by pointing a browser to the address: 
+Using another device (such as a laptop or smartphone) connect to this access point.
+You should now be able to view the top-level ARCHIE Pi webpage 
+by pointing your browser to the address: 
 ```
 http://10.10.10.10
 ```
 
-### Installing Content
+> ***Note:***
+> If the `setup.py` script fails for some reason you will need to correct the problem and start the installation again
+> from a fresh installation of Raspberry Pi OS Lite. Attempting to run the script a second
+> time will result in duplicate configuration file modifications which will cause problems.
+
+### Installing Content on the ARCHIE Pi
 
 Once the `setup.py` script is complete, you are ready to add some web content. 
 To add content, another script is provided named `module-installer.py`.
