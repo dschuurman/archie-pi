@@ -115,12 +115,11 @@ Once the setup script has completed successfully, an open wi-fi access point sho
 be advertised from the Raspberry Pi with an SSID of **ARCHIE-Pi** (unless a different SSID was selected using 
 the `--ssid` command line argument). 
 Using another device (such as a laptop or smartphone) connect to this access point.
-You should now be able to view the top-level ARCHIE Pi webpage 
-by pointing your browser to the address: 
+You should now be able to view the top-level ARCHIE Pi webpage by pointing your browser to the address: 
 ```
 http://10.10.10.10
 ```
-
+Note that installing web content for the ARCHIE Pi is described in the following section.
 > ***Note:***
 > If the `setup.py` script fails for some reason you will need to correct the problem and start the installation again
 > from a fresh installation of Raspberry Pi OS Lite. Attempting to run the script a second

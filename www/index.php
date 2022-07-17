@@ -15,21 +15,27 @@
 </tr>
 </table>
 
-<p>Welcome to the <b>ARCHIE Pi</b>! Installed modules are listed below:</p>
+<p>Welcome to the <b>ARCHIE Pi</b>!</p>
 <?php
-// Show each installed module on the top level page
+// Show each installed module on the top level page (if any are installed)
 $files = scandir('/var/www/modules');
-foreach ($files as $file) {
-   if ($file == '.') continue;
-   if ($file == '..') continue;
-   $module = '/var/www/modules/'.$file.'/index.htmlf';
-   $dir = 'modules/'.$file;
-   include $module;
-   }
+if (count($files) == 2) {
+    echo "<b>No modules currently installed.</b>";
+ }
+ else {
+    echo "Installed modules are listed below:<br>";
+    foreach ($files as $file) {
+    if ($file == '.') continue;
+    if ($file == '..') continue;
+    $module = '/var/www/modules/'.$file.'/index.htmlf';
+    $dir = 'modules/'.$file;
+    include $module;
+    }
+ }
 ?>
 
 <p>
-<b>ARCHIE Pi</b> version 0.22, January 2021
+<b>ARCHIE Pi</b> version 0.23, July 2022
 <br><a href="about.html">About</a> the ARCHIE Pi
 </p>
 </body>

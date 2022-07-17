@@ -19,7 +19,7 @@ import fileinput
 def do(cmd):
     ''' Show and execute system command and return result
     '''
-    print('-> {}'.format(cmd))
+    print(f'-> {cmd}')
     result = subprocess.run(cmd.split(), stderr=sys.stderr, stdout=sys.stdout)
     return (result.returncode == 0)
 
@@ -31,6 +31,7 @@ def append_file(file, line):
         f.write(line + '\n')
         f.close()
     except:
+        print(f'unable to append line to file {file}')
         return False
     return True
 
@@ -47,7 +48,7 @@ def replace_line(orig_line, new_line, infile):
     return found
 
 def uncomment_line(matching_text, infile):
-    ''' Uncomment a matching line in a specified file
+    ''' Uncomment a line with matching text in a specified file
     '''
     found = False
     for line in fileinput.input(infile, inplace = True):
@@ -56,6 +57,20 @@ def uncomment_line(matching_text, infile):
             found = True
         else:
             print(line, end='')
+    return found
+
+def uncomment_line_after(matching_text, infile):
+    ''' Uncomment line *after* a line with matching text in a specified file
+    '''
+    found = False
+    lastline = ''
+    for line in fileinput.input(infile, inplace = True):
+        if not found and matching_text in lastline:
+            print(line.replace('#',''), end='')
+            found = True
+        else:
+            print(line, end='')
+        lastline = line
     return found
 
 #########################################
@@ -91,7 +106,7 @@ append_file('/etc/dhcpcd.conf', settings)
 do('systemctl restart dhcpcd') or sys.exit('Error: dhcpcd restart failed')
 
 # adjust settings in hostapd config file
-settings='interface=wlan0\ndriver=nl80211\nhw_mode=g\nchannel=4\nieee80211n=1\nwmm_enabled=0\nauth_algs=1\nssid={}\nieee80211d=1\ncountry_code={}\n'.format(args.ssid,args.country)
+settings=f'interface=wlan0\ndriver=nl80211\nhw_mode=g\nchannel=4\nieee80211n=1\nwmm_enabled=0\nauth_algs=1\nssid={args.ssid}\nieee80211d=1\ncountry_code={args.country}\n'
 append_file('/etc/hostapd/hostapd.conf', settings) or sys.exit('Error: hostapd.conf append failed')
 replace_line('#DAEMON_CONF=""','DAEMON_CONF="/etc/hostapd/hostapd.conf"','/etc/default/hostapd') or sys.exit('Error: Line to replace not found in hostapd')
 
@@ -101,7 +116,7 @@ settings='interface=wlan0\ndhcp-range=10.10.10.11,10.10.10.61,12h\n'
 append_file('/etc/dnsmasq.conf', settings) or sys.exit('Error adding lines to dnsmasq.conf file')
 
 # Add the country code to wpa_supplicant.conf in case it is needed
-append_file('/etc/wpa_supplicant/wpa_supplicant.conf','country={}'.format(args.country)) or sys.exit('Error adding country code')
+append_file('/etc/wpa_supplicant/wpa_supplicant.conf',f'country={args.country}') or sys.exit('Error adding country code')
 
 # Disable Bluetooth and enable wifi
 # NOTE: wifi should only be enabled when country code is set properly (which it should be here)
@@ -127,17 +142,17 @@ do('apt install php-sqlite3 -y') or sys.exit('Error: unable to install sqlite3')
 
 # Enable PHP in nginx config file
 conf_file = '/etc/nginx/sites-enabled/default'
-replace_line('root /var/www/html;','root /var/www;',conf_file) or sys.exit('web config update failed')
-replace_line('index index.html index.htm index.nginx-debian.html;','index index.php index.html index.htm index.nginx-debian.html;', conf_file) or sys.exit('web config update failed')
-uncomment_line('location ~ \\.php$', conf_file) or sys.exit('web config update failed')
-uncomment_line('include snippets/fastcgi-php.conf', conf_file) or sys.exit('web config update failed')
-uncomment_line('fastcgi_pass unix', conf_file) or sys.exit('web config update failed')
-replace_line('fastcgi_pass unix:/run/php/php7.3-fpm.sock;','fastcgi_pass unix:/run/php/php7.3-fpm.sock; }',conf_file) or sys.exit('web config update failed')
+replace_line('root /var/www/html;','root /var/www;',conf_file) or sys.exit('Error: nginx config update failed')
+replace_line('index index.html index.htm index.nginx-debian.html;','index index.php index.html index.htm;', conf_file) or sys.exit('Error: nginx config update failed')
+uncomment_line('location ~ \\.php$', conf_file) or sys.exit('Error: nginx config update failed')
+uncomment_line('include snippets/fastcgi-php.conf', conf_file) or sys.exit('Error: nginx config update failed')
+uncomment_line('fastcgi_pass unix', conf_file) or sys.exit('Error: nginx config update failed')
+uncomment_line_after('fastcgi_pass 127.0.0.1',conf_file) or sys.exit('Error: nginx config update failed')
 
 # Install ARCHIE Pi web front page:
 print('Installing ARCHIE Pi web front end...')
 do('cp -r www/. /var/www/') or sys.exit('Error copying www files to /var/www')
-do('mkdir /var/www/modules') or sys.exit('mkdir failed')
+do('mkdir /var/www/modules') or sys.exit('modules mkdir failed')
 do('chown -R www-data.www-data /var/www') or sys.exit('Error: unable tochange ownership of /var/www to www-data')
 
 # Restart nginx service
@@ -214,6 +229,7 @@ do('apt clean')
 do('rm -r /home/pi/archie-pi/.git/')
 do('rm -r /home/pi/archie-pi/www/')
 
-print('ARCHIE Pi installed successfully. It can be accessed using wi-fi at: http://10.10.10.10.')
-print('Note that some new settings require a reboot to take effect.')
+print('\nThe ARCHIE Pi access point has installed successfully!')
+print(f'Connect a computer to the wifi access point named {args.ssid} and point a browser to: http://10.10.10.10.')
+print('Note that some new settings will require a reboot to take effect\nand you will need to install some web content next.')
 print('Don\'t forget to change the default password for the user pi!')
