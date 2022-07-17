@@ -64,8 +64,8 @@ will be configured as an access point during the installation and therefore cann
 internet connection. Once the setup is complete the Ethernet connection is no longer required.
 
 Plug in an ethernet cable with internet access and power up the Raspberry Pi.
-Raspberry Pi OS Lite will boot and require you to perform a few basic setup steps to configure
-the language and the keyboard. Once this is complete you should be left at a command-line prompt.
+Raspberry Pi OS Lite will perform an initial boot requiring you to configure
+the language and the keyboard settings. Once this is complete, you should see a command-line prompt appear.
 
 The default user is `pi` and the default password is `raspberry`. 
 You may wish to change the default password by typing:
@@ -127,10 +127,10 @@ Note that installing web content for the ARCHIE Pi is described in the following
 
 ### Installing Content on the ARCHIE Pi
 
-Once the `setup.py` script is complete, you are ready to add some web content. 
-To add content, another script is provided named `module-installer.py`.
+Once the ARCHIE Pi is successfully installed, you are ready to add some web content. 
+To add web content, another script is provided named `module-installer.py`.
 This script provides a friendly interface from which you can select various 
-Open Education Resources, like those available from [kiwix.org](https://www.kiwix.org/)
+Open Education Resources (OERs), like those available from [kiwix.org](https://www.kiwix.org/)
 and [oer2go.org](http://oer2go.org/), and install them on your ARCHIE Pi.
 
 Before running the installer, ensure an ethernet cable is plugged in with access

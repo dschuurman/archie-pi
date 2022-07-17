@@ -87,6 +87,7 @@ args = parser.parse_args()
 # Step 1: Update and upgrade OS
 ##################################
 print('Staring ARCHIE Pi setup...')
+do('service console-setup restart') or sys.exit('console-setup restart failed')
 do('apt update -y') or sys.exit('Error: Unable to update Raspberry Pi OS.')
 do('apt dist-upgrade -y') or sys.exit('Error: Unable to dist-upgrade Raspberry Pi OS.')
 
@@ -200,7 +201,7 @@ replace_line('defaults,noatime','ro','/etc/fstab')
 append_file('/etc/fstab','tmpfs   /var/log    tmpfs     noatime,nosuid,mode=0755,size=50M  0 0') or sys.exit('fstab append error')
 append_file('/etc/fstab','tmpfs   /tmp        tmpfs     noatime,nosuid,mode=0755,size=10M  0 0') or sys.exit('fstab append error')
 append_file('/etc/fstab','tmpfs   /var/tmp    tmpfs     noatime,nosuid,mode=0755,size=64k  0 0') or sys.exit('fstab append error')
-append_file('/etc/fstab','tmpfs   /var/lib/dhcpcd5      tmpfs   noatime,nosuid,mode=0755,size=64k  0 0') or sys.exit('fstab append error')
+append_file('/etc/fstab','tmpfs   /var/lib/dhcpcd       tmpfs   noatime,nosuid,mode=0755,size=64k  0 0') or sys.exit('fstab append error')
 append_file('/etc/fstab','tmpfs   /var/lib/logrotate    tmpfs   nodev,noatime,nosuid,mode=0755,size=16k  0 0') or sys.exit('fstab append error')
 append_file('/etc/fstab','tmpfs   /var/lib/php/sessions tmpfs   nodev,noatime,nosuid,mode=0777,size=64k  0 0') or sys.exit('fstab append error')
 
