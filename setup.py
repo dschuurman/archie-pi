@@ -73,6 +73,21 @@ def uncomment_line_after(matching_text, infile):
         lastline = line
     return found
 
+def get_latest_kiwix_tools(filename_prefix, url):
+    ''' The kiwix tools package is constantly being updated to more recent versions so
+        this function determines the url for the most recent kiwix tools. Since files are normally
+        listed by increasing date, the last matching file is assumed to be the latest.
+    '''
+    cmd = f'lynx -dump -listonly -nonumbers {url}'
+    result = subprocess.run(cmd.split(), stdout=subprocess.PIPE)
+    files = result.stdout.decode('utf-8')
+    files_list = files.split('\n')
+    matching_filenames = []   # list of matching filenames
+    for file in files_list:
+        if filename_prefix in file:
+            matching_filenames.append(file)
+    return matching_filenames[-1]  # the last matching file listed should be the most recent
+
 #########################################
 # Step 0: read comand line parameters
 #########################################
@@ -83,13 +98,14 @@ parser.add_argument("--ssid", dest="ssid", help="Wi-Fi acces point station id",
                     type=str, required=False, default='ARCHIE-Pi')
 args = parser.parse_args()
 
-##################################
-# Step 1: Update and upgrade OS
-##################################
+#########################################################
+# Step 1: Update and upgrade OS and install dependencies
+#########################################################
 print('Staring ARCHIE Pi setup...')
-do('service console-setup restart') or sys.exit('console-setup restart failed')
+do('service console-setup restart')
 do('apt update -y') or sys.exit('Error: Unable to update Raspberry Pi OS.')
 do('apt dist-upgrade -y') or sys.exit('Error: Unable to dist-upgrade Raspberry Pi OS.')
+do('apt -y install lynx') or sys.exit('Error: cannot install lynx dependency')
 
 ###############################
 # Step 2: Setup wifi hotspot
@@ -163,10 +179,13 @@ do('service nginx restart') or sys.exit('Error: unable to restart nginx')
 # Step 4: Setup Kiwix server 
 ####################################################
 print('Setting up kiwix server (requires a reboot to run)...')
-do('wget -nv --show-progress -O /home/pi/kiwix-tools.tgz https://download.kiwix.org/release/kiwix-tools/kiwix-tools_linux-armhf-3.1.2-3.tar.gz')
+filename = get_latest_kiwix_tools('kiwix-tools_linux-armhf','https://download.kiwix.org/release/kiwix-tools/')
+print(f'Downloading {filename}...')
+do(f'wget -nv --show-progress -O /home/pi/kiwix-tools.tgz {filename}') or sys.exit('kiwix download failed')
 do('mkdir /home/pi/kiwix')
 do('tar xzf /home/pi/kiwix-tools.tgz -C /home/pi/kiwix --strip-components=1')
 do('rm /home/pi/kiwix-tools.tgz')
+do('touch /home/pi/kiwix/library_zim.xml')
 replace_line('fi','fi\n\n/home/pi/kiwix/kiwix-serve --library --port 81 --blockexternal --nolibrarybutton --daemon /home/pi/kiwix/library_zim.xml', '/etc/rc.local') or sys.exit('rc.local line not found')
 
 ###############################################################

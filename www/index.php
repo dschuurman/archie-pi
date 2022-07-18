@@ -35,7 +35,7 @@ if (count($files) == 2) {
 ?>
 
 <p>
-<b>ARCHIE Pi</b> version 0.23, July 2022
+<b>ARCHIE Pi</b> version 0.24, July 2022
 <br><a href="about.html">About</a> the ARCHIE Pi
 </p>
 </body>
