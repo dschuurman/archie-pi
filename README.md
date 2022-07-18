@@ -174,7 +174,8 @@ files can be included. It is recommended that new ZIM files should go in a subfo
 along with an appropriate `index.htmlf` file. ZIM files should be added to the kiwix library using 
 the `kiwix-manage` tool which can be found, along with the XML library file, in `/home/pi/kiwix`.
 Note that some ZIM files are extremely large and so they should be chosen such that they fit the
-memory limitations of the Raspberry Pi.
+memory limitations of the Raspberry Pi (since the SD card is mounted *read-only* there
+is no swap space, thus programs must fit in the available RAM).
 
 Once new content is setup, the SD card root partition should be returned to read-only
 mode by rebooting the ARCHIE Pi by or as follows:

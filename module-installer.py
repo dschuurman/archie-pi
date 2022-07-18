@@ -12,8 +12,9 @@
 # GNU General Public License for more details.
 
 import sys
-import subprocess
 import curses
+import os
+import subprocess
 
 # Helper functions
 def do(cmd):
@@ -55,9 +56,12 @@ OPTIONS = { 'a':'Blockly', 'b':'Blockly (Spanish)', 'c':'CK-12', 'd':'Boundless'
             'j':'Scratch', 'k':'Khan Academy (English)', 'l':'Khan Academy (Spanish)',
             'm':'Wikipedia for schools', 'n':'Wikipedia (English)', 'o':'Wikipedia (Spanish)', 'p':'Wikipedia (French)', 
             'q':'Wiktionary (English)', 'r':'Wiktionary (Spanish)', 's':'Wiktionary (French)', 
-            't':'Vikidia (English)', 'u':'Vikidia (Spanish)', 'v':'Vikidia (French)', 'z':'Kuyers Christian Ed Resources',
-            'A':'Wikivoyage (English)', 'B':'Wikivoyage (Spanish)', 'C':'Wikivoyage (French)',
-            'D':'PhET Simulations (English)', 'E':'PhET Simulations (Spanish)', 'F':'PhET Simulations (French)' }
+            't':'Vikidia (English)', 'u':'Vikidia (Spanish)', 'v':'Vikidia (French)', 'w':'Kuyers Christian Ed Resources',
+            'x':'Wikivoyage (English)', 'y':'Wikivoyage (Spanish)', 'z':'Wikivoyage (French)',
+            'A':'PhET Simulations (English)', 'B':'PhET Simulations (Spanish)', 'C':'PhET Simulations (French)' }
+
+# Set home folder location (username may be different than the default pi)
+HOME = f'/home/{os.getlogin()}'
 
 # Prompt user to select modules to install
 screen = curses.initscr()
@@ -131,10 +135,10 @@ for selection in selections:
         filename = get_latest_kiwix_filename('wikipedia_en_simple_all_mini_',kiwix_url)
         print(f'Downloading {filename}...')
         do(f'wget -nv --show-progress -O /var/www/modules/en-wikipedia/en-wikipedia.zim {filename}')
-        do('/home/pi/kiwix/kiwix-manage /home/pi/kiwix/library_zim.xml add /var/www/modules/en-wikipedia/en-wikipedia.zim')
+        do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/en-wikipedia/en-wikipedia.zim')
         html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/en-wikipedia">Wikipedia (English)</a></h2>\n</div>'
         append_file('/var/www/modules/en-wikipedia/index.htmlf', html)
-        print('Done')
+        print('Done - this module will become active after the next reboot')
     elif OPTIONS[selection] == 'Wikipedia (Spanish)':
         print('Installing Wikipedia (Spanish)...')
         do('mkdir /var/www/modules/es-wikipedia')
@@ -143,10 +147,10 @@ for selection in selections:
         filename = get_latest_kiwix_filename('wikipedia_es_top_mini_',kiwix_url)
         print(f'Downloading {filename}...')
         do(f'wget -nv --show-progress -O /var/www/modules/es-wikipedia/es-wikipedia.zim {filename}')
-        do('/home/pi/kiwix/kiwix-manage /home/pi/kiwix/library_zim.xml add /var/www/modules/es-wikipedia/es-wikipedia.zim')
+        do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/es-wikipedia/es-wikipedia.zim')
         html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/es-wikipedia">Wikipedia (Spanish)</a></h2>\n</div>'
         append_file('/var/www/modules/es-wikipedia/index.htmlf', html)
-        print('Done')
+        print('Done - this module will become active after the next reboot')
     elif OPTIONS[selection] == 'Wikipedia (French)':
         print('Installing Wikipedia (French)...')
         do('mkdir /var/www/modules/fr-wikipedia')
@@ -155,10 +159,10 @@ for selection in selections:
         filename = get_latest_kiwix_filename('wikipedia_fr_top_mini_',kiwix_url)
         print(f'Downloading {filename}...')
         do(f'wget -nv --show-progress -O /var/www/modules/fr-wikipedia/fr-wikipedia.zim {filename}')
-        do('/home/pi/kiwix/kiwix-manage /home/pi/kiwix/library_zim.xml add /var/www/modules/fr-wikipedia/fr-wikipedia.zim')
+        do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/fr-wikipedia/fr-wikipedia.zim')
         html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/fr-wikipedia">Wikipedia (French)</a></h2>\n</div>'
         append_file('/var/www/modules/fr-wikipedia/index.htmlf', html)
-        print('Done')
+        print('Done - this module will become active after the next reboot')
     elif OPTIONS[selection] == 'Wiktionary (English)':
         print('Installing Wiktionary (English)...')
         do('mkdir /var/www/modules/en-wiktionary')
@@ -167,10 +171,10 @@ for selection in selections:
         filename = get_latest_kiwix_filename('wiktionary_en_simple_all_maxi_',kiwix_url)
         print(f'Downloading {filename}...')
         do(f'wget -nv --show-progress -O /var/www/modules/en-wiktionary/en-wiktionary.zim {filename}')
-        do('/home/pi/kiwix/kiwix-manage /home/pi/kiwix/library_zim.xml add /var/www/modules/en-wiktionary/en-wiktionary.zim')
+        do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/en-wiktionary/en-wiktionary.zim')
         html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/en-wiktionary">Wiktionary (English)</a></h2>\n</div>'
         append_file('/var/www/modules/en-wiktionary/index.htmlf', html)
-        print('Done')
+        print('Done - this module will become active after the next reboot')
     elif OPTIONS[selection] == 'Wiktionary (Spanish)':
         print('Installing Wiktionary (Spanish)...')
         do('mkdir /var/www/modules/es-wiktionary')
@@ -178,10 +182,10 @@ for selection in selections:
         filename = get_latest_kiwix_filename('wiktionary_es_all_maxi_',kiwix_url)
         print(f'Downloading {filename}...')
         do(f'wget -nv --show-progress -O /var/www/modules/es-wiktionary/es-wiktionary.zim {filename}')
-        do('/home/pi/kiwix/kiwix-manage /home/pi/kiwix/library_zim.xml add /var/www/modules/es-wiktionary/es-wiktionary.zim')
+        do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/es-wiktionary/es-wiktionary.zim')
         html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/es-wiktionary">Wiktionary (Spanish)</a></h2>\n</div>'
         append_file('/var/www/modules/es-wiktionary/index.htmlf', html)
-        print('Done')
+        print('Done - this module will become active after the next reboot')
     elif OPTIONS[selection] == 'Wiktionary (French)':
         print('Installing Wiktionary (French)...')
         do('mkdir /var/www/modules/fr-wiktionary')
@@ -189,10 +193,10 @@ for selection in selections:
         filename = get_latest_kiwix_filename('wiktionary_fr_app_maxi_',kiwix_url)
         print(f'Downloading {filename}...')
         do(f'wget -nv --show-progress -O /var/www/modules/fr-wiktionary/fr-wiktionary.zim {filename}')
-        do('/home/pi/kiwix/kiwix-manage /home/pi/kiwix/library_zim.xml add /var/www/modules/fr-wiktionary/fr-wiktionary.zim')
+        do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/fr-wiktionary/fr-wiktionary.zim')
         html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/fr-wiktionary">Wiktionary (French)</a></h2>\n</div>'
         append_file('/var/www/modules/fr-wiktionary/index.htmlf', html)
-        print('Done')
+        print('Done - this module will become active after the next reboot')
     elif OPTIONS[selection] == 'Vikidia (English)':
         print('Installing Vikidia (English)...')
         do('mkdir /var/www/modules/en-vikidia')
@@ -200,10 +204,10 @@ for selection in selections:
         filename = get_latest_kiwix_filename('vikidia_en_all_maxi_',kiwix_url)
         print(f'Downloading {filename}...')
         do(f'wget -nv --show-progress -O /var/www/modules/en-vikidia/en-vikidia.zim {filename}')
-        do('/home/pi/kiwix/kiwix-manage /home/pi/kiwix/library_zim.xml add /var/www/modules/en-vikidia/en-vikidia.zim')
+        do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/en-vikidia/en-vikidia.zim')
         html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/en-vikidia">Vikidia (English)</a></h2>\n</div>'
         append_file('/var/www/modules/en-vikidia/index.htmlf', html)
-        print('Done')
+        print('Done - this module will become active after the next reboot')
     elif OPTIONS[selection] == 'Vikidia (Spanish)':
         print('Installing Vikidia (Spanish)...')
         do('mkdir /var/www/modules/es-vikidia')
@@ -211,10 +215,10 @@ for selection in selections:
         filename = get_latest_kiwix_filename('vikidia_es_all_maxi_',kiwix_url)
         print(f'Downloading {filename}...')
         do(f'wget -nv --show-progress -O /var/www/modules/es-vikidia/es-vikidia.zim {filename}')
-        do('/home/pi/kiwix/kiwix-manage /home/pi/kiwix/library_zim.xml add /var/www/modules/es-vikidia/es-vikidia.zim')
+        do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/es-vikidia/es-vikidia.zim')
         html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/es-vikidia">Vikidia (Spanish)</a></h2>\n</div>'
         append_file('/var/www/modules/es-vikidia/index.htmlf', html)
-        print('Done')
+        print('Done - this module will become active after the next reboot')
     elif OPTIONS[selection] == 'Vikidia (French)':
         print('Installing Vikidia (French)...')
         do('mkdir /var/www/modules/fr-vikidia')
@@ -222,10 +226,10 @@ for selection in selections:
         filename = get_latest_kiwix_filename('vikidia_fr_all_maxi_',kiwix_url)
         print(f'Downloading {filename}...')
         do(f'wget -nv --show-progress -O /var/www/modules/fr-vikidia/fr-vikidia.zim {filename}')
-        do('/home/pi/kiwix/kiwix-manage /home/pi/kiwix/library_zim.xml add /var/www/modules/fr-vikidia/fr-vikidia.zim')
+        do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/fr-vikidia/fr-vikidia.zim')
         html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/fr-vikidia">Vikidia (French)</a></h2>\n</div>'
         append_file('/var/www/modules/fr-vikidia/index.htmlf', html)
-        print('Done')
+        print('Done - this module will become active after the next reboot')
     elif OPTIONS[selection] == 'Wikivoyage (English)':
         print('Installing Wikivoyage (English)...')
         do('mkdir /var/www/modules/en-wikivoyage')
@@ -233,10 +237,10 @@ for selection in selections:
         filename = get_latest_kiwix_filename('wikivoyage_en_all_maxi_',kiwix_url)
         print(f'Downloading {filename}...')
         do(f'wget -nv --show-progress -O /var/www/modules/en-wikivoyage/en-wikivoyage.zim {filename}')
-        do('/home/pi/kiwix/kiwix-manage /home/pi/kiwix/library_zim.xml add /var/www/modules/en-wikivoyage/en-wikivoyage.zim')
+        do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/en-wikivoyage/en-wikivoyage.zim')
         html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/en-wikivoyage">Wikivoyage (English)</a></h2>\n</div>'
         append_file('/var/www/modules/en-wikivoyage/index.htmlf', html)
-        print('Done')
+        print('Done - this module will become active after the next reboot')
     elif OPTIONS[selection] == 'Wikivoyage (Spanish)':
         print('Installing Wikivoyage (Spanish)...')
         do('mkdir /var/www/modules/es-wikivoyage')
@@ -244,10 +248,10 @@ for selection in selections:
         filename = get_latest_kiwix_filename('wikivoyage_es_all_maxi_',kiwix_url)
         print(f'Downloading {filename}...')
         do(f'wget -nv --show-progress -O /var/www/modules/es-wikivoyage/es-wikivoyage.zim {filename}')
-        do('/home/pi/kiwix/kiwix-manage /home/pi/kiwix/library_zim.xml add /var/www/modules/es-wikivoyage/es-wikivoyage.zim')
+        do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/es-wikivoyage/es-wikivoyage.zim')
         html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/es-wikivoyage">Wikivoyage (Spanish)</a></h2>\n</div>'
         append_file('/var/www/modules/es-wikivoyage/index.htmlf', html)
-        print('Done')
+        print('Done - this module will become active after the next reboot')
     elif OPTIONS[selection] == 'Wikivoyage (French)':
         print('Installing Wikivoyage (French)...')
         do('mkdir /var/www/modules/fr-wikivoyage')
@@ -255,20 +259,20 @@ for selection in selections:
         filename = get_latest_kiwix_filename('wikivoyage_fr_all_maxi_',kiwix_url)
         print(f'Downloading {filename}...')
         do(f'wget -nv --show-progress -O /var/www/modules/fr-wikivoyage/fr-wikivoyage.zim {filename}')
-        do('/home/pi/kiwix/kiwix-manage /home/pi/kiwix/library_zim.xml add /var/www/modules/fr-wikivoyage/fr-wikivoyage.zim')
+        do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/fr-wikivoyage/fr-wikivoyage.zim')
         html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/fr-wikivoyage">Wikivoyage (French)</a></h2>\n</div>'
         append_file('/var/www/modules/fr-wikivoyage/index.htmlf', html)
-        print('Done')
+        print('Done - this module will become active after the next reboot')
     elif OPTIONS[selection] == 'PhET Simulations (English)':
         print('Installing PhET Simulations (English)...')
         do('mkdir /var/www/modules/en-phet')
         kiwix_url = 'https://download.kiwix.org/zim/phet'
         filename = get_latest_kiwix_filename('phet_en_',kiwix_url)
-        do(f'wget -nv --show-progress -O /var/www/modules/en-phet/en-phet.zim {kiwix_url}/{filename}')
-        do('/home/pi/kiwix/kiwix-manage /home/pi/kiwix/library_zim.xml add /var/www/modules/en-phet/en-phet.zim')
+        do(f'wget -nv --show-progress -O /var/www/modules/en-phet/en-phet.zim {filename}')
+        do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/en-phet/en-phet.zim')
         html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/en-phet">PhET Interactive Simulations (English)</a></h2>\n</div>'
         append_file('/var/www/modules/en-phet/index.htmlf', html)
-        print('Done')
+        print('Done - this module will become active after the next reboot')
     elif OPTIONS[selection] == 'PhET Simulations (Spanish)':
         print('Installing PhET Simulations (Spanish)...')
         do('mkdir /var/www/modules/es-phet')
@@ -276,10 +280,10 @@ for selection in selections:
         filename = get_latest_kiwix_filename('phet_es_',kiwix_url)
         print(f'Downloading {filename}...')
         do(f'wget -nv --show-progress -O /var/www/modules/es-phet/es-phet.zim {filename}')
-        do('/home/pi/kiwix/kiwix-manage /home/pi/kiwix/library_zim.xml add /var/www/modules/es-phet/es-phet.zim')
+        do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/es-phet/es-phet.zim')
         html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/es-phet">PhET Interactive Simulations (Spanish)</a></h2>\n</div>'
         append_file('/var/www/modules/es-phet/index.htmlf', html)
-        print('Done')
+        print('Done - this module will become active after the next reboot')
     elif OPTIONS[selection] == 'PhET Simulations (French)':
         print('Installing PhET Simulations (French)...')
         do('mkdir /var/www/modules/fr-phet')
@@ -287,10 +291,10 @@ for selection in selections:
         filename = get_latest_kiwix_filename('phet_fr_',kiwix_url)
         print(f'Downloading {filename}...')
         do(f'wget -nv --show-progress -O /var/www/modules/fr-phet/fr-phet.zim {filename}')
-        do('/home/pi/kiwix/kiwix-manage /home/pi/kiwix/library_zim.xml add /var/www/modules/fr-phet/fr-phet.zim')
+        do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/fr-phet/fr-phet.zim')
         html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/fr-phet">PhET Interactive Simulations (French)</a></h2>\n</div>'
         append_file('/var/www/modules/fr-phet/index.htmlf', html)
-        print('Done')
+        print('Done - this module will become active after the next reboot')
     elif OPTIONS[selection] == 'Blockly':
         print("Installing Blockly games...")
         do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-blockly-games /var/www/modules') or sys.exit('Error installing content')

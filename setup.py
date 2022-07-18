@@ -10,6 +10,7 @@
 # GNU General Public License for more details.
 
 import argparse
+import os
 import sys
 import subprocess
 import fileinput
@@ -88,15 +89,19 @@ def get_latest_kiwix_tools(filename_prefix, url):
             matching_filenames.append(file)
     return matching_filenames[-1]  # the last matching file listed should be the most recent
 
-#########################################
-# Step 0: read comand line parameters
-#########################################
+##########################################################
+# Step 0: read comand line parameters and set home folder
+##########################################################
 parser = argparse.ArgumentParser()
 parser.add_argument("--country", dest="country", help="Wi-Fi country code",
                     type=str, required=True)
 parser.add_argument("--ssid", dest="ssid", help="Wi-Fi acces point station id",
                     type=str, required=False, default='ARCHIE-Pi')
 args = parser.parse_args()
+
+# Set home folder location (username may be different than the default pi)
+HOME = f'/home/{os.getlogin()}'
+print(f'Home folder set to: {HOME}')
 
 #########################################################
 # Step 1: Update and upgrade OS and install dependencies
@@ -181,12 +186,12 @@ do('service nginx restart') or sys.exit('Error: unable to restart nginx')
 print('Setting up kiwix server (requires a reboot to run)...')
 filename = get_latest_kiwix_tools('kiwix-tools_linux-armhf','https://download.kiwix.org/release/kiwix-tools/')
 print(f'Downloading {filename}...')
-do(f'wget -nv --show-progress -O /home/pi/kiwix-tools.tgz {filename}') or sys.exit('kiwix download failed')
-do('mkdir /home/pi/kiwix')
-do('tar xzf /home/pi/kiwix-tools.tgz -C /home/pi/kiwix --strip-components=1')
-do('rm /home/pi/kiwix-tools.tgz')
-do('touch /home/pi/kiwix/library_zim.xml')
-replace_line('fi','fi\n\n/home/pi/kiwix/kiwix-serve --library --port 81 --blockexternal --nolibrarybutton --daemon /home/pi/kiwix/library_zim.xml', '/etc/rc.local') or sys.exit('rc.local line not found')
+do(f'wget -nv --show-progress -O {HOME}/kiwix-tools.tgz {filename}') or sys.exit('kiwix download failed')
+do(f'mkdir {HOME}/kiwix')
+do(f'tar xzf {HOME}/kiwix-tools.tgz -C {HOME}/kiwix --strip-components=1')
+do(f'rm {HOME}/kiwix-tools.tgz')
+do(f'touch {HOME}/kiwix/library_zim.xml')
+replace_line('fi',f'fi\n\n{HOME}/kiwix/kiwix-serve --library --port 81 --blockexternal --nolibrarybutton --daemon {HOME}/kiwix/library_zim.xml', '/etc/rc.local') or sys.exit('rc.local line not updated')
 
 ###############################################################
 # Step 5: Harden the install 
@@ -196,7 +201,8 @@ replace_line('fi','fi\n\n/home/pi/kiwix/kiwix-serve --library --port 81 --blocke
 ################################################################
 print('Begin hardening the installation...')
 
-# Disable swap to eliminate swap writes to SD card
+# Disable swap to eliminate swap writes to SD card.
+# Note that this will limit running programs to the physcial memory space
 print('Disabling swap...')
 do('dphys-swapfile swapoff') or sys.exit('Error: swapoff failed!')
 do('dphys-swapfile uninstall') or sys.exit('Error: swap uninstall failed!')
@@ -246,8 +252,8 @@ do('systemctl start dhcpcd') or sys.exit('Error: dhcpcd start failed')
 ############################
 do('apt autoremove -y')
 do('apt clean')
-do('rm -r /home/pi/archie-pi/.git/')
-do('rm -r /home/pi/archie-pi/www/')
+do(f'rm -r {HOME}/archie-pi/.git/')
+do(f'rm -r {HOME}/archie-pi/www/')
 
 print('\nThe ARCHIE Pi access point has installed successfully!')
 print(f'Connect a computer to the wifi access point named {args.ssid} and point a browser to: http://10.10.10.10.')
