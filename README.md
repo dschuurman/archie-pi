@@ -131,7 +131,7 @@ Once the ARCHIE Pi is successfully installed, you are ready to add some web cont
 To add web content, another script is provided named `module-installer.py`.
 This script provides a friendly interface from which you can select various 
 Open Education Resources (OERs), like those available from [kiwix.org](https://www.kiwix.org/)
-and [oer2go.org](http://oer2go.org/), and install them on your ARCHIE Pi.
+and [worldpossible.org](https://rachel.worldpossible.org/content), and install them on your ARCHIE Pi.
 
 Before running the installer, ensure an ethernet cable is plugged in with access
 to the internet and that you are in the `archie-pi` folder. 
