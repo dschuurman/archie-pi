@@ -180,7 +180,7 @@ is no swap space, thus programs must fit in the available RAM).
 Once new content is installed, the ownership for all the web files and folders in `/var/www/modules` 
 should be set as follows:
 ```
-chown -R www-data.www-data /var/www/modules
+sudo chown -R www-data.www-data /var/www/modules
 ```
 This may take a moment to complete. Once it is finished, the SD card root partition should be 
 returned back to read-only mode by rebooting the ARCHIE Pi by typing:
