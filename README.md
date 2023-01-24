@@ -140,7 +140,7 @@ Next, run the module installer as follows:
 sudo python3 module-installer.py
 ```
 A menu will appear allowing you to select and install various modules. 
-Once the script completes, the content should be displayed at: `http://10.10.10.10`
+Once the script completes, the new content should be visible at: `http://10.10.10.10`
 (note that some content may require a reboot before it appears - see the instructions given in the final steps).
 
 The installation may take some time, depending in the size of the package(s)
@@ -177,11 +177,19 @@ Note that some ZIM files are extremely large and so they should be chosen such t
 memory limitations of the Raspberry Pi (since the SD card is mounted *read-only* there
 is no swap space, thus programs must fit in the available RAM).
 
-Once new content is setup, the SD card root partition should be returned to read-only
-mode by rebooting the ARCHIE Pi by or as follows:
+Once new content is installed, the ownership for all the web files and folders in `/var/www/modules` 
+should be set as follows:
+```
+chown -R www-data.www-data /var/www/modules
+```
+This may take a moment to complete. Once it is finished, the SD card root partition should be 
+returned back to read-only mode by rebooting the ARCHIE Pi by typing:
 ```
 sudo mount -o remount,ro /
 ```
+Note that the `module-installer.py` script performs all of these steps automatically; 
+these steps are only required when installing custom content.
+
 ### Final Steps
 
 After the setup and installation scripts have run successfully,
