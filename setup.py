@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # Script to setup ARCHIE Pi (Another Remote Community Hotspot for Instruction and Education)
 # on a Raspberry Pi (all versions) running Raspberry Pi OS Lite.
 #
@@ -112,7 +113,7 @@ do('apt update -y') or sys.exit('Error: Unable to update Raspberry Pi OS.')
 do('apt dist-upgrade -y') or sys.exit('Error: Unable to dist-upgrade Raspberry Pi OS.')
 do('apt -y install lynx') or sys.exit('Error: cannot install lynx dependency')
 do('apt -y install python3-pip') or sys.exit('Error: cannot install pip3 dependency')
-do('pip3 -y install psutil pycountry') or sys.exit('Error: cannot install pip3 dependencies')
+do('pip3 install psutil pycountry') or sys.exit('Error: cannot install pip3 dependencies')
 
 ###############################
 # Step 2: Setup wifi hotspot

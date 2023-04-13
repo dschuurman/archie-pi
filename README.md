@@ -93,7 +93,7 @@ including a parameter to set the SSID of the access point and the
 country code for the wi-fi interface.
 To learn more about the command line parameters, type:
 ```
-python3 setup.py --help
+sudo ./setup.py --help
 ```
 The only mandatory parameter is the `--country` parameter. 
 This should be set to the country code corresponding
@@ -105,11 +105,7 @@ frequency channels.* A list of standard two-letter country codes is available
 Next, run the setup script specifying the correct country code. The country code for the US is shown below, 
 but it is your responsibility to substitute the correct country code for your region:
 ```
-sudo python3 setup.py --country US
-```
-Note that you can modify the country code at a later time using the `set-country.py` utility as follows:
-```
-sudo python3 set-country.py
+sudo ./setup.py --country US
 ```
 
 Once the setup script has completed successfully, an open wi-fi access point should 
@@ -138,7 +134,7 @@ Before running the installer, ensure an ethernet cable is plugged in with access
 to the internet and that you are in the `archie-pi` folder. 
 Next, run the module installer as follows:
 ```
-sudo python3 module-installer.py
+sudo ./module-installer.py
 ```
 A menu will appear allowing you to select and install various modules. 
 Once the script completes, the new content should be visible at: `http://10.10.10.10`
@@ -190,6 +186,13 @@ sudo mount -o remount,ro /
 ```
 Note that the `module-installer.py` script performs all of these steps automatically; 
 these steps are only required when installing custom content.
+
+### Setting the Country Code
+At any point after the initial setup is complete, you can modify the Wi-Fi country code using 
+the `set-country.py` utility as follows:
+```
+sudo ./set-country.py
+```
 
 ### Final Steps
 

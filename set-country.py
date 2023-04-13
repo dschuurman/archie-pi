@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # Script to configure wifi country using an ISO 3166 alpha2 country code
 # for the ARCHIE Pi (Another Remote Community Hotspot for Instruction and Education)
 # on a Raspberry Pi (all versions) running Raspberry Pi OS Lite.

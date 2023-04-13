@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # Friendly script to install Open Enducation Resources (OER) for the 
 # ARCHIE Pi project (Another Remote Community Hotspot for Instruction and Education).
 # This script installs modules from various open education resources
