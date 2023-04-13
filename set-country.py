@@ -2,7 +2,7 @@
 # for the ARCHIE Pi (Another Remote Community Hotspot for Instruction and Education)
 # on a Raspberry Pi (all versions) running Raspberry Pi OS Lite.
 #
-# (C) 2020 faculty and students from Calvin University
+# (C) 2023 faculty and students from Calvin University
 #
 # License: GNU General Public License (GPL) v3
 # This program is distributed in the hope that it will be useful,

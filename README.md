@@ -107,16 +107,20 @@ but it is your responsibility to substitute the correct country code for your re
 ```
 sudo python3 setup.py --country US
 ```
+Note that you can modify the country code at a later time using the `set-country.py` utility as follows:
+```
+sudo python3 set-country.py
+```
 
 Once the setup script has completed successfully, an open wi-fi access point should 
-be advertised from the Raspberry Pi with an SSID of **ARCHIE-Pi** (unless a different SSID was selected using 
-the `--ssid` command line argument). 
-Using another device (such as a laptop or smartphone) connect to this access point.
-You should now be able to view the default ARCHIE Pi webpage by pointing your browser to the address: 
+be advertised from the Raspberry Pi with an SSID of **ARCHIE-Pi** (unless a different SSID was selected 
+using the `--ssid` command line argument). Using another device (such as a laptop or smartphone) connect 
+to this access point. You should now be able to view the default ARCHIE Pi webpage by pointing your browser 
+to the address: 
 ```
 http://10.10.10.10
 ```
-Note that you will still need to install content for the ARCHIE Pi, a process described in the following section.
+Note that you will still need to install content for the ARCHIE Pi, a process described in the section that follows.
 > ***Note:***
 > If the `setup.py` script fails for some reason you will need to correct the problem and start the installation again
 > from a fresh installation of Raspberry Pi OS Lite. Attempting to run the script a second
