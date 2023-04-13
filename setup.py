@@ -112,7 +112,7 @@ do('apt update -y') or sys.exit('Error: Unable to update Raspberry Pi OS.')
 do('apt dist-upgrade -y') or sys.exit('Error: Unable to dist-upgrade Raspberry Pi OS.')
 do('apt -y install lynx') or sys.exit('Error: cannot install lynx dependency')
 do('apt -y install python3-pip') or sys.exit('Error: cannot install pip3 dependency')
-do('pip3 -y install psutil') or sys.exit('Error: cannot install psutil dependency')
+do('pip3 -y install psutil pycountry') or sys.exit('Error: cannot install pip3 dependencies')
 
 ###############################
 # Step 2: Setup wifi hotspot
@@ -140,7 +140,10 @@ settings='interface=wlan0\ndhcp-range=10.10.10.11,10.10.10.61,12h\n'
 append_file('/etc/dnsmasq.conf', settings) or sys.exit('Error adding lines to dnsmasq.conf file')
 
 # Add the country code to wpa_supplicant.conf in case it is needed
-append_file('/etc/wpa_supplicant/wpa_supplicant.conf',f'country={args.country}') or sys.exit('Error adding country code')
+append_file('/etc/wpa_supplicant/wpa_supplicant.conf',f'country={args.country}') or sys.exit('Error: adding wpa country code')
+
+# update regulatory domain configuration file
+replace_line('REGDOMAIN=',f'REGDOMAIN={args.country}','/etc/default/crda') or sys.exit('Error: crda country update failed')
 
 # Disable Bluetooth and enable wifi
 # NOTE: wifi should only be enabled when country code is set properly (which it should be here)
