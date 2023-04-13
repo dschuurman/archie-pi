@@ -11,7 +11,7 @@ This access point uses a local web server to deliver educational content which m
 include a wide variety of open educational resources like Wikipedia and Project Gutenberg.
 
 The idea behind the ARCHIE Pi is not novel. The word *another* is included in the acronym to
-acknowledge that it was inspired by other projects, particularly the 
+acknowledge that it was inspired by other projects, such as the 
 [RACHEL Pi](http://rachelfriends.org/rachel-pi-howto.html) project.
 
 ## Features
@@ -35,8 +35,8 @@ unplugged.
 
 ## Requirements
 
-The ARCHIE Pi platform requires a recent version of Raspberry PI OS Lite 
-and runs on any recent model of the Raspberry Pi that includes a builtin wifi adapter (including the latest Raspberry Pi 4).
+The ARCHIE Pi platform requires a recent version of Raspberry PI OS Lite
+(32-bit or 64-bit) and runs on any recent model of the Raspberry Pi that includes a builtin wifi adapter (including the latest Raspberry Pi 4).
 
 A suitably sized microSD card is required, depending on the amount of content you want to install
 (we have used 64GB and 128GB cards).
@@ -52,8 +52,10 @@ For more information, consult the Raspberry Pi documentation describing
 
 Create a fresh image of the latest 
 [Raspberry PI OS Lite](https://www.raspberrypi.org/software/operating-systems/)
-on a suitably sized microSD card (see note above). We recommend the Lite version
-of the Raspberry Pi software since it requires less space on the SD card. 
+on a suitably sized microSD card. Either 32-bit or 64-bit versions
+of the OS can be used, but the 64-bit version is recommended if you
+are using a Raspberry Pi model 3 B+ or newer model. We recommend the Lite version
+of the Raspberry Pi OS since it requires less space on the SD card. 
 Consult the Raspberry Pi documentation for 
 [instructions](https://www.raspberrypi.org/software/) 
 on how to install an image of the OS (using a handy tool called the
@@ -64,19 +66,14 @@ will be configured as an access point during the installation and therefore cann
 internet connection. Once the setup is complete the Ethernet connection is no longer required.
 
 Plug in an ethernet cable with internet access and power up the Raspberry Pi.
-Raspberry Pi OS Lite will perform an initial boot requiring you to configure
-the language and the keyboard settings. Once this is complete, you should see a command-line prompt appear.
-
-The default user is `pi` and the default password is `raspberry`. 
-You may wish to change the default password by typing:
-```
-passwd
-```
-This command will prompt you to set a new password.
-It is recommended that you change the default password for security purposes.
+Raspberry Pi OS Lite will perform an initial boot requiring you to configure a username, password, and
+the keyboard settings. A typical default username for
+the Raspberry Pi is `pi` and you can select a suitable password (for security purposes, avoid using the default
+password of `raspberry`).
 
 Next, install the `git` package as follows:
 ```
+sudo apt update
 sudo apt -y install git
 ```
 With `git` installed, the latest revision of the `archie-pi` repository can 
@@ -84,7 +81,7 @@ be installed from the command line as follows:
 ```
 git clone --depth 1 https://github.com/dschuurman/archie-pi.git
 ```
-Once the repository is downloaded, enter the project folder as follows:
+Once this repository is downloaded, enter the project folder as follows:
 ```
 cd archie-pi
 ```
@@ -115,11 +112,11 @@ Once the setup script has completed successfully, an open wi-fi access point sho
 be advertised from the Raspberry Pi with an SSID of **ARCHIE-Pi** (unless a different SSID was selected using 
 the `--ssid` command line argument). 
 Using another device (such as a laptop or smartphone) connect to this access point.
-You should now be able to view the top-level ARCHIE Pi webpage by pointing your browser to the address: 
+You should now be able to view the default ARCHIE Pi webpage by pointing your browser to the address: 
 ```
 http://10.10.10.10
 ```
-Note that installing web content for the ARCHIE Pi is described in the following section.
+Note that you will still need to install content for the ARCHIE Pi, a process described in the following section.
 > ***Note:***
 > If the `setup.py` script fails for some reason you will need to correct the problem and start the installation again
 > from a fresh installation of Raspberry Pi OS Lite. Attempting to run the script a second
