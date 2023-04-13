@@ -14,6 +14,7 @@
 import sys
 import curses
 import os
+import psutil
 import subprocess
 
 # Helper functions
@@ -88,7 +89,7 @@ try:
             else:
                 column = 5
                 row += 1
-        screen.addstr(row+2, 5, 'Type the letter(s) for the module(s) you wish to install.')
+        screen.addstr(row+2, 5, f"Type the letter(s) for the module(s) you wish to install ({(psutil.disk_usage('/').free)//(2**30)}GB free).")
         screen.addstr(row+3, 5, 'To quit, press "ctrl-c", to begin installation, press ENTER')
         screen.refresh()
         

@@ -111,6 +111,8 @@ do('service console-setup restart')
 do('apt update -y') or sys.exit('Error: Unable to update Raspberry Pi OS.')
 do('apt dist-upgrade -y') or sys.exit('Error: Unable to dist-upgrade Raspberry Pi OS.')
 do('apt -y install lynx') or sys.exit('Error: cannot install lynx dependency')
+do('apt -y install python3-pip') or sys.exit('Error: cannot install pip3 dependency')
+do('pip3 -y install psutil') or sys.exit('Error: cannot install psutil dependency')
 
 ###############################
 # Step 2: Setup wifi hotspot
@@ -224,7 +226,7 @@ replace_line('defaults,noatime','ro','/etc/fstab')
 
 # Move folders that require writing from the SD card to various tmpfs mounts
 append_file('/etc/fstab','tmpfs   /var/log    tmpfs     noatime,nosuid,mode=0755,size=50M  0 0') or sys.exit('fstab append error')
-append_file('/etc/fstab','tmpfs   /tmp        tmpfs     noatime,nosuid,mode=0755,size=10M  0 0') or sys.exit('fstab append error')
+append_file('/etc/fstab','tmpfs   /tmp        tmpfs     noatime,nosuid,mode=0755,size=20M  0 0') or sys.exit('fstab append error')
 append_file('/etc/fstab','tmpfs   /var/tmp    tmpfs     noatime,nosuid,mode=0755,size=64k  0 0') or sys.exit('fstab append error')
 append_file('/etc/fstab','tmpfs   /var/lib/dhcpcd       tmpfs   noatime,nosuid,mode=0755,size=64k  0 0') or sys.exit('fstab append error')
 append_file('/etc/fstab','tmpfs   /var/lib/logrotate    tmpfs   nodev,noatime,nosuid,mode=0755,size=16k  0 0') or sys.exit('fstab append error')
