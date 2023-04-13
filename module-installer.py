@@ -353,14 +353,15 @@ for selection in selections:
         do('mv en-kuyers-cer /var/www/modules') or sys.exit('Error moving content')
         print('Done')
 
-# update ownership of modules folder to web user (www-data)
-print('Setting module folder permissions (this may take a moment)...')
+# update ownership and permissions of modules
+print('Setting module folder permissions and ownership (this may take a moment)...')
 do('chown -R www-data.www-data /var/www/modules') or sys.exit('Error changing ownership of modules folder to www-data')
+do('chmod -R 755 /var/www/modules') or sys.exit('Error changing permissions of module files')
 
-# Once content is installed, return root partion to read-only mode
+# Once content is installed and configured, return root partion to read-only mode
 do('mount -o remount,ro /')
 
-print('DONE!')
+print('\nDONE!')
 print('** Each content module is subject to its own license terms and conditions.')
 print('** Note that a reboot may be required for some modules to become active.')
 print("** To reboot, type 'sudo reboot' at the command-line.")
