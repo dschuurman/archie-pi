@@ -60,7 +60,8 @@ OPTIONS = { 'a':'Blockly', 'b':'Blockly (Spanish)', 'c':'CK-12', 'd':'Boundless'
             'q':'Wiktionary (English)', 'r':'Wiktionary (Spanish)', 's':'Wiktionary (French)', 
             't':'Vikidia (English)', 'u':'Vikidia (Spanish)', 'v':'Vikidia (French)', 'w':'Kuyers Christian Ed Resources',
             'x':'Wikivoyage (English)', 'y':'Wikivoyage (Spanish)', 'z':'Wikivoyage (French)',
-            'A':'PhET Simulations (English)', 'B':'PhET Simulations (Spanish)', 'C':'PhET Simulations (French)' }
+            'A':'PhET Simulations (English)', 'B':'PhET Simulations (Spanish)', 'C':'PhET Simulations (French)',
+            'S':'Science Made Easy videos' }
 
 # root URL for Kiwix resources
 KIWIX_URL = 'http://download.kiwix.org/zim/'
@@ -352,11 +353,18 @@ for selection in selections:
     elif OPTIONS[selection] == 'Kuyers Christian Ed Resources':
         print('Installing Kuyers Christian Education Resources...')
         do('git clone --depth 1 https://github.com/dschuurman/en-kuyers-cer.git') or sys.exit('Error installing content')
+        do('rm -rf en-kuyers-cer/.git')
         do('mv en-kuyers-cer /var/www/modules') or sys.exit('Error moving content')
+        print('Done')
+    elif OPTIONS[selection] == 'Science Made Easy videos':
+        print('Installing Science Made Easy videos...')
+        do('git clone --depth 1 https://github.com/dschuurman/science-made-easy.git') or sys.exit('Error installing content')
+        do('rm -rf science-made-easy/.git')
+        do('mv science-made-easy /var/www/modules/en-science-made-easy') or sys.exit('Error moving content')
         print('Done')
 
 # update ownership and permissions of modules
-print('Setting module folder permissions and ownership (this may take a moment)...')
+print('Setting module folder permissions and ownerships (this may take a while)...')
 do('chown -R www-data.www-data /var/www/modules') or sys.exit('Error changing ownership of modules folder to www-data')
 do('chmod -R 755 /var/www/modules') or sys.exit('Error changing permissions of module files')
 
