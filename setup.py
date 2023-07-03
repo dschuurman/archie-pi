@@ -258,8 +258,6 @@ do('systemctl start dhcpcd') or sys.exit('Error: dhcpcd start failed')
 ############################
 do('apt autoremove -y')
 do('apt clean')
-do(f'rm -r {HOME}/archie-pi/.git/')
-do(f'rm -r {HOME}/archie-pi/www/')
 
 print('\nThe ARCHIE Pi access point has installed successfully!')
 print(f'Connect a computer to the wifi access point named {args.ssid} and point a browser to: http://10.10.10.10.')
