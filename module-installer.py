@@ -58,16 +58,16 @@ def main(screen):
     ''' module installer main function
     '''
 
-    # collection of available modules
-    OPTIONS = { 'a':'Blockly', 'b':'Blockly (Spanish)', 'c':'CK-12', 'd':'Boundless', 'e':'Mustard Seed Books', 
-                'f':'Project Gutenberg', 'g':'World Map', 'h':'openstax Textbooks', 'i':'Rasp Pi User Guide', 
-                'j':'Scratch', 'k':'Khan Academy (English)', 'l':'Khan Academy (Spanish)',
-                'm':'Wikipedia for schools', 'n':'Wikipedia (English)', 'o':'Wikipedia (Spanish)', 'p':'Wikipedia (French)', 
-                'q':'Wiktionary (English)', 'r':'Wiktionary (Spanish)', 's':'Wiktionary (French)', 
-                't':'Vikidia (English)', 'u':'Vikidia (Spanish)', 'v':'Vikidia (French)', 'w':'Kuyers Christian Ed Resources',
-                'x':'Wikivoyage (English)', 'y':'Wikivoyage (Spanish)', 'z':'Wikivoyage (French)',
-                'A':'PhET Simulations (English)', 'B':'PhET Simulations (Spanish)', 'C':'PhET Simulations (French)',
-                'S':'Science Made Easy videos' }
+    # collection of available modules and related information
+    OPTIONS = { 'a':'Blockly (4.5MB)', 'b':'Blockly (Spanish)', 'c':'CK-12 (2.1GB)', 'd':'Boundless (3.5GB)', 'e':'Mustard Seed Books (39MB)', 
+                'f':'Project Gutenberg', 'g':'World Map (20GB)', 'h':'openstax Textbooks', 'i':'Rasp Pi User Guide (6MB)', 
+                'j':'Scratch (254MB)', 'k':'Khan Academy (English) (12GB)', 'l':'Khan Academy (Spanish)',
+                'm':'Wikipedia for schools (6.1GB)', 'n':'Wikipedia (English)', 'o':'Wikipedia (Spanish)', 'p':'Wikipedia (French)', 
+                'q':'Wiktionary (English) (48MB)', 'r':'Wiktionary (Spanish)', 's':'Wiktionary (French)', 
+                't':'Vikidia (English) (47MB)', 'u':'Vikidia (Spanish)', 'v':'Vikidia (French)', 'w':'Kuyers Christian Ed Resources (44MB)',
+                'x':'Wikivoyage (English) (761MB)', 'y':'Wikivoyage (Spanish)', 'z':'Wikivoyage (French)',
+                'A':'PhET Simulations (English) (66MB)', 'B':'PhET Simulations (Spanish)', 'C':'PhET Simulations (French)',
+                'S':'Science Made Easy videos (1.7GB)' }
 
     # root URL for Kiwix resources
     KIWIX_URL = 'http://download.kiwix.org/zim/'
@@ -129,11 +129,11 @@ def main(screen):
 
     # Install the selected modules from various open education resources
     for selection in selections:
-        if OPTIONS[selection] == 'Wikipedia for schools':     # Wikipedia for schools (static version does not require kiwix)
+        if selection == 'm':     # Wikipedia for schools (static version does not require kiwix)
             print('Installing Wikipedia for schools...')
             do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-wikipedia_for_schools-static /var/www/modules') or sys.exit('Error installing content')
             print('Done')
-        elif OPTIONS[selection] == 'Wikipedia (English)':
+        elif selection == 'n':
             print('Installing Wikipedia (English)...')
             do('mkdir /var/www/modules/en-wikipedia')
             kiwix_url = KIWIX_URL + 'wikipedia'
@@ -145,7 +145,7 @@ def main(screen):
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/en-wikipedia">Wikipedia (English)</a></h2>\n</div>'
             append_file('/var/www/modules/en-wikipedia/index.htmlf', html)
             print('Done - this module will become active after the next reboot')
-        elif OPTIONS[selection] == 'Wikipedia (Spanish)':
+        elif selection == 'r':
             print('Installing Wikipedia (Spanish)...')
             do('mkdir /var/www/modules/es-wikipedia')
             kiwix_url = KIWIX_URL + 'wikipedia'
@@ -157,7 +157,7 @@ def main(screen):
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/es-wikipedia">Wikipedia (Spanish)</a></h2>\n</div>'
             append_file('/var/www/modules/es-wikipedia/index.htmlf', html)
             print('Done - this module will become active after the next reboot')
-        elif OPTIONS[selection] == 'Wikipedia (French)':
+        elif selection == 'p':
             print('Installing Wikipedia (French)...')
             do('mkdir /var/www/modules/fr-wikipedia')
             kiwix_url = KIWIX_URL + 'wikipedia'
@@ -169,7 +169,7 @@ def main(screen):
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/fr-wikipedia">Wikipedia (French)</a></h2>\n</div>'
             append_file('/var/www/modules/fr-wikipedia/index.htmlf', html)
             print('Done - this module will become active after the next reboot')
-        elif OPTIONS[selection] == 'Wiktionary (English)':
+        elif selection == 'q':
             print('Installing Wiktionary (English)...')
             do('mkdir /var/www/modules/en-wiktionary')
             kiwix_url = KIWIX_URL + 'wiktionary'
@@ -181,7 +181,7 @@ def main(screen):
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/en-wiktionary">Wiktionary (English)</a></h2>\n</div>'
             append_file('/var/www/modules/en-wiktionary/index.htmlf', html)
             print('Done - this module will become active after the next reboot')
-        elif OPTIONS[selection] == 'Wiktionary (Spanish)':
+        elif selection == 'r':
             print('Installing Wiktionary (Spanish)...')
             do('mkdir /var/www/modules/es-wiktionary')
             kiwix_url = KIWIX_URL + 'wiktionary'
@@ -192,7 +192,7 @@ def main(screen):
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/es-wiktionary">Wiktionary (Spanish)</a></h2>\n</div>'
             append_file('/var/www/modules/es-wiktionary/index.htmlf', html)
             print('Done - this module will become active after the next reboot')
-        elif OPTIONS[selection] == 'Wiktionary (French)':
+        elif selection == 's':
             print('Installing Wiktionary (French)...')
             do('mkdir /var/www/modules/fr-wiktionary')
             kiwix_url = KIWIX_URL + 'wiktionary'
@@ -203,7 +203,7 @@ def main(screen):
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/fr-wiktionary">Wiktionary (French)</a></h2>\n</div>'
             append_file('/var/www/modules/fr-wiktionary/index.htmlf', html)
             print('Done - this module will become active after the next reboot')
-        elif OPTIONS[selection] == 'Vikidia (English)':
+        elif selection == 't':
             print('Installing Vikidia (English)...')
             do('mkdir /var/www/modules/en-vikidia')
             kiwix_url = KIWIX_URL + 'vikidia'
@@ -214,7 +214,7 @@ def main(screen):
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/en-vikidia">Vikidia (English)</a></h2>\n</div>'
             append_file('/var/www/modules/en-vikidia/index.htmlf', html)
             print('Done - this module will become active after the next reboot')
-        elif OPTIONS[selection] == 'Vikidia (Spanish)':
+        elif selection == 'u':
             print('Installing Vikidia (Spanish)...')
             do('mkdir /var/www/modules/es-vikidia')
             kiwix_url = KIWIX_URL + 'vikidia'
@@ -225,7 +225,7 @@ def main(screen):
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/es-vikidia">Vikidia (Spanish)</a></h2>\n</div>'
             append_file('/var/www/modules/es-vikidia/index.htmlf', html)
             print('Done - this module will become active after the next reboot')
-        elif OPTIONS[selection] == 'Vikidia (French)':
+        elif selection == 'v':
             print('Installing Vikidia (French)...')
             do('mkdir /var/www/modules/fr-vikidia')
             kiwix_url = KIWIX_URL + 'vikidia'
@@ -236,7 +236,7 @@ def main(screen):
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/fr-vikidia">Vikidia (French)</a></h2>\n</div>'
             append_file('/var/www/modules/fr-vikidia/index.htmlf', html)
             print('Done - this module will become active after the next reboot')
-        elif OPTIONS[selection] == 'Wikivoyage (English)':
+        elif selection == 'x':
             print('Installing Wikivoyage (English)...')
             do('mkdir /var/www/modules/en-wikivoyage')
             kiwix_url = KIWIX_URL + 'wikivoyage'
@@ -247,7 +247,7 @@ def main(screen):
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/en-wikivoyage">Wikivoyage (English)</a></h2>\n</div>'
             append_file('/var/www/modules/en-wikivoyage/index.htmlf', html)
             print('Done - this module will become active after the next reboot')
-        elif OPTIONS[selection] == 'Wikivoyage (Spanish)':
+        elif selection == 'y':
             print('Installing Wikivoyage (Spanish)...')
             do('mkdir /var/www/modules/es-wikivoyage')
             kiwix_url = KIWIX_URL + 'wikivoyage'
@@ -258,7 +258,7 @@ def main(screen):
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/es-wikivoyage">Wikivoyage (Spanish)</a></h2>\n</div>'
             append_file('/var/www/modules/es-wikivoyage/index.htmlf', html)
             print('Done - this module will become active after the next reboot')
-        elif OPTIONS[selection] == 'Wikivoyage (French)':
+        elif selection == 'z':
             print('Installing Wikivoyage (French)...')
             do('mkdir /var/www/modules/fr-wikivoyage')
             kiwix_url = KIWIX_URL + 'wikivoyage'
@@ -269,7 +269,7 @@ def main(screen):
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/fr-wikivoyage">Wikivoyage (French)</a></h2>\n</div>'
             append_file('/var/www/modules/fr-wikivoyage/index.htmlf', html)
             print('Done - this module will become active after the next reboot')
-        elif OPTIONS[selection] == 'PhET Simulations (English)':
+        elif selection == 'A':
             print('Installing PhET Simulations (English)...')
             do('mkdir /var/www/modules/en-phet')
             kiwix_url = KIWIX_URL + 'phet'
@@ -280,7 +280,7 @@ def main(screen):
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/en-phet">PhET Interactive Simulations (English)</a></h2>\n</div>'
             append_file('/var/www/modules/en-phet/index.htmlf', html)
             print('Done - this module will become active after the next reboot')
-        elif OPTIONS[selection] == 'PhET Simulations (Spanish)':
+        elif selection == 'B':
             print('Installing PhET Simulations (Spanish)...')
             do('mkdir /var/www/modules/es-phet')
             kiwix_url = KIWIX_URL + 'phet'
@@ -291,7 +291,7 @@ def main(screen):
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/es-phet">PhET Interactive Simulations (Spanish)</a></h2>\n</div>'
             append_file('/var/www/modules/es-phet/index.htmlf', html)
             print('Done - this module will become active after the next reboot')
-        elif OPTIONS[selection] == 'PhET Simulations (French)':
+        elif selection == 'C':
             print('Installing PhET Simulations (French)...')
             do('mkdir /var/www/modules/fr-phet')
             kiwix_url = KIWIX_URL + 'phet'
@@ -302,61 +302,61 @@ def main(screen):
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/fr-phet">PhET Interactive Simulations (French)</a></h2>\n</div>'
             append_file('/var/www/modules/fr-phet/index.htmlf', html)
             print('Done - this module will become active after the next reboot')
-        elif OPTIONS[selection] == 'Blockly':
+        elif selection == 'a':
             print("Installing Blockly games...")
             do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-blockly-games /var/www/modules') or sys.exit('Error installing content')
             print('Done')
-        elif OPTIONS[selection] == 'Blockly (Spanish)':
+        elif selection == 'b':
             print("Installing Blockly games (Spanish)...")
             do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/es-blockly-games /var/www/modules') or sys.exit('Error installing content')
             print('Done')
-        elif OPTIONS[selection] == 'CK-12':
+        elif selection == 'c':
             print('Installing CK-12...')
             do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-ck12 /var/www/modules') or sys.exit('Error installing content')
             print('Done')
-        elif OPTIONS[selection] == 'Boundless':
+        elif selection == 'd':
             print('Installing Boundless...')
             do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-boundless-static /var/www/modules') or sys.exit('Error installing content')
             print('Done\n')
-        elif OPTIONS[selection] == 'Mustard Seed Books':
+        elif selection == 'e':
             print('Installing Mustard Seed Books...')
             do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-mustardseedbooks /var/www/modules') or sys.exit('Error installing content')
             print('Done\n')
-        elif OPTIONS[selection] == 'Project Gutenberg':
+        elif selection == 'f':
             print('Installing Project Gutenberg...')
             do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-ebooks /var/www/modules') or sys.exit('Error installing content')
             print('Done\n')
-        elif OPTIONS[selection] == 'World Map':
+        elif selection == 'g':
             print("Installing World Map...")
             do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-worldmap-10 /var/www/modules') or sys.exit('Error installing content')
             print('Done\n')
-        elif OPTIONS[selection] == 'Khan Academy (English)':
+        elif selection == 'k':
             print('Installing Khan Academy (English)...')
             do("rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-kaos /var/www/modules") or sys.exit('Error installing content')
             print('Done\n')
-        elif OPTIONS[selection] == 'Khan Academy (Spanish)':
+        elif selection == 'l':
             print('Installing Khan Academy (Spanish)...')
             do("rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/es-kaos /var/www/modules") or sys.exit('Error installing content')
             print('Done\n')
-        elif OPTIONS[selection] == 'openstax Textbooks':
+        elif selection == 'h':
             print('Installing openstax Textbooks...')
             do("rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-openstax /var/www/modules") or sys.exit('Error installing content')
             print('Done\n')
-        elif OPTIONS[selection] == 'Rasp Pi User Guide':
+        elif selection == 'i':
             print('Installing Rasp Pi User Guide...')
             do("rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-rpi_guide /var/www/modules") or sys.exit('Error installing content')
             print('Done\n')
-        elif OPTIONS[selection] == 'Scratch':
+        elif selection == 'j':
             print('Installing Scratch...')
             do("rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-scratch /var/www/modules") or sys.exit('Error installing content')
             print('Done\n')
-        elif OPTIONS[selection] == 'Kuyers Christian Ed Resources':
+        elif selection == 'w':
             print('Installing Kuyers Christian Education Resources...')
             do('git clone --depth 1 https://github.com/dschuurman/en-kuyers-cer.git') or sys.exit('Error installing content')
             do('rm -rf en-kuyers-cer/.git')
             do('mv en-kuyers-cer /var/www/modules') or sys.exit('Error moving content')
             print('Done')
-        elif OPTIONS[selection] == 'Science Made Easy videos':
+        elif selection == 'S':
             print('Installing Science Made Easy videos...')
             do('git clone --depth 1 https://github.com/dschuurman/science-made-easy.git') or sys.exit('Error installing content')
             do('rm -rf science-made-easy/.git')
