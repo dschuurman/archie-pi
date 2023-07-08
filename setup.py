@@ -115,6 +115,10 @@ do('apt -y install lynx') or sys.exit('Error: cannot install lynx dependency')
 do('apt -y install python3-pip') or sys.exit('Error: cannot install pip3 dependency')
 do('pip3 install psutil pycountry xmltodict') or sys.exit('Error: cannot install pip3 dependencies')
 
+# Set current data and time
+do('apt -y install ntpdate') or sys.exit('Error: cannot install ntpdate')
+do('ntpdate 0.pool.ntp.org')
+
 ###############################
 # Step 2: Setup wifi hotspot
 ###############################

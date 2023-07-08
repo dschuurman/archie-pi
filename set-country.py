@@ -53,6 +53,9 @@ do('mount -o remount,rw /')
 replace_line('country=', f'country={code}', '/etc/wpa_supplicant/wpa_supplicant.conf') or sys.exit('Error changing country code')
 replace_line('REGDOMAIN=', f'REGDOMAIN={code}', '/etc/default/crda') or sys.exit('Error changing regulatory domain setting')
 
+# Once country is configured, return root partion to read-only mode
+do('mount -o remount,ro /')
+
 # Once content is installed and configured, suggest a reboot
 print("** Update requires a reboot to activate: type 'sudo reboot' at the command-line.")
 print('\nDONE!')
