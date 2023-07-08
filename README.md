@@ -122,10 +122,10 @@ Note that you will still need to install content for the ARCHIE Pi, a process de
 > from a fresh installation of Raspberry Pi OS Lite. Attempting to run the script a second
 > time will result in duplicate configuration file modifications which will cause problems.
 
-### Installing Content on the ARCHIE Pi
+### Installing and Removing Content on the ARCHIE Pi
 
 Once the ARCHIE Pi is successfully installed, you are ready to add some web content. 
-To add web content, another script is provided named `module-installer.py`.
+To add web content, another script is provided named `install-modules.py`.
 This script provides a friendly interface from which you can select various 
 Open Education Resources (OERs), like those available from [kiwix.org](https://www.kiwix.org/)
 and [worldpossible.org](https://rachel.worldpossible.org/content), and install them on your ARCHIE Pi.
@@ -134,7 +134,7 @@ Before running the installer, ensure an ethernet cable is plugged in with access
 to the internet and that you are in the `archie-pi` folder. 
 Next, run the module installer as follows:
 ```
-sudo ./module-installer.py
+sudo ./install-modules.py
 ```
 A menu will appear allowing you to select and install various modules. 
 Once the script completes, the new content should be visible at: `http://10.10.10.10`
@@ -146,9 +146,18 @@ Note that some content requires substantial storage space,
 so it is important to ensure that you select an adequately sized microSD card or
 USB drive.
 
+Another script is included module removal. To remove a module, type:
+```
+sudo ./remove-module.py
+```
+An enumerated list of all installed modules will appear. Note that it may take a few moments for the complete
+list to appear since the file storage size is computed as the the list is displayed.
+Enter the number corresponding to the module you wish to remove and it will be removed.
+Type `q` to exit the script.
+
 ### Installing Custom Content
 
-While the `module-installer` provides a convenient way to add existing content, 
+While the `install-modules` provides a convenient way to add existing content, 
 you can also curate your own content and manually add it to your ARCHIE Pi. 
 The content may include PHP code and any file formats viewable by a standard 
 web browser (PDF, HTML, MP4, JPG, etc.). 
@@ -184,7 +193,7 @@ returned back to read-only mode by rebooting the ARCHIE Pi by typing:
 ```
 sudo mount -o remount,ro /
 ```
-Note that the `module-installer.py` script performs all of these steps automatically; 
+Note that the `install-modules.py` script performs all of these steps automatically; 
 these steps are only required when installing custom content.
 
 ### Setting the Country Code

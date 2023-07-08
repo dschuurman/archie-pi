@@ -4,7 +4,7 @@
 # This script installs modules from various open education resources
 # which are subject to their own license terms and conditions.
 #
-# (C) 2020 faculty and students from Calvin University
+# (C) 2020-2023 faculty and students from Calvin University
 #
 # License: GNU General Public License (GPL) v3
 # This program is distributed in the hope that it will be useful,
@@ -371,7 +371,7 @@ def main(screen):
     # Once content is installed and configured, return root partion to read-only mode
     do('mount -o remount,ro /')
 
-    print('\nDONE!')
+    print(f"\nDONE! ({(psutil.disk_usage('/').free)//(2**30)}GB free).")
     print('** Each content module is subject to its own license terms and conditions.')
     print('** Note that a reboot may be required for some modules to become active.')
     print("** To reboot, type 'sudo reboot' at the command-line.")
