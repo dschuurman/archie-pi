@@ -55,8 +55,8 @@ def get_zim_id(zim_file):
     return None
 
 # Display all installed modules
-
-print('\nSearching for all installed modules (this will take a few moments)...')
+print(f"\nCurrent free disk space: {(psutil.disk_usage('/').free)//(2**30)}GB free.")
+print('Searching for all installed modules (this will take a few moments)...')
 print('Installed modules:')
 counter = 0
 installed_modules = {}
