@@ -124,11 +124,8 @@ def main(screen):
     # Temporarily mount root partion in read-write mode for adding content
     do('mount -o remount,rw /')
 
-    # Update current date and time and check dependencies
-    do('apt -y install ntpdate') or sys.exit('Error: cannot install ntpdate')
+    # Update current date and time
     do('ntpdate 0.pool.ntp.org')
-    do('pip3 install psutil pycountry xmltodict') or sys.exit('Error: cannot install pip3 dependencies')
-    do('apt -y install lynx') or sys.exit('Error: cannot install lynx dependency')
 
     # Install the selected modules from various open education resources
     for selection in selections:
