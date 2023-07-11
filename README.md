@@ -118,9 +118,10 @@ http://10.10.10.10
 ```
 Note that you will still need to install content for the ARCHIE Pi, a process described in the section that follows.
 > ***Note:***
+> The `setup.py` script requires a fresh install of the Raspberry Pi OS.
 > If the `setup.py` script fails for some reason you will need to correct the problem and start the installation again
-> from a fresh installation of Raspberry Pi OS Lite. Attempting to run the script a second
-> time will result in duplicate configuration file modifications which will cause problems.
+> from a fresh installation of Raspberry Pi OS. Attempting to run the `setup.py` script a second
+> time will result in duplicate configuration modifications which will fail or cause problems.
 
 ### Installing and Removing Content on the ARCHIE Pi
 

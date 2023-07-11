@@ -90,6 +90,10 @@ def get_latest_kiwix_tools(filename_prefix, url):
             matching_filenames.append(file)
     return matching_filenames[-1]  # the last matching file listed should be the most recent
 
+# Begin setup program
+print('Welcome to the ARCHIE Pi setup.')
+print('Note that this setup program requires a fresh install of the Raspberry Pi OS.')
+
 ##########################################################
 # Step 0: read comand line parameters and set home folder
 ##########################################################
@@ -264,6 +268,7 @@ do('apt autoremove -y')
 do('apt clean')
 
 print('\nThe ARCHIE Pi access point has installed successfully!')
+print('Note that this program cannot be rerun since it requires a fresh install of the OS.')
 print(f'Connect a computer to the wifi access point named {args.ssid} and point a browser to: http://10.10.10.10.')
-print('Note that some new settings will require a reboot to take effect\nand you will need to install some web content next.')
+print('Note that these new settings will require a reboot to take effect\nand you will need to install some content modules next.')
 print('Don\'t forget to change the default password for the user pi!')
