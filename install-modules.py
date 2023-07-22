@@ -59,7 +59,7 @@ def main(screen):
     '''
 
     # collection of available modules and related information
-    OPTIONS = { 'a':'Blockly (4.5MB)', 'b':'Blockly (Spanish)', 'c':'CK-12 (2.1GB)', 'd':'Boundless (3.5GB)', 'e':'Mustard Seed Books (39MB)', 
+    OPTIONS = { 'a':'Understanding Algebra (100MB)', 'b':'Blockly (English) (4.5MB)', 'c':'CK-12 (2.1GB)', 'd':'Boundless (3.5GB)', 'e':'Mustard Seed Books (39MB)', 
                 'f':'Project Gutenberg', 'g':'World Map (20GB)', 'h':'openstax Textbooks', 'i':'Rasp Pi User Guide (6MB)', 
                 'j':'Scratch (254MB)', 'k':'Khan Academy (English) (12GB)', 'l':'Khan Academy (Spanish)',
                 'm':'Wikipedia for schools (6.1GB)', 'n':'Wikipedia (English)', 'o':'Wikipedia (Spanish)', 'p':'Wikipedia (French)', 
@@ -303,11 +303,11 @@ def main(screen):
             append_file('/var/www/modules/fr-phet/index.htmlf', html)
             print('Done - this module will become active after the next reboot')
         elif selection == 'a':
-            print("Installing Blockly games...")
-            do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-blockly-games /var/www/modules') or sys.exit('Error installing content')
+            print("Installing Understanding Algebra (English)...")
+            do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-understanding_algebra /var/www/modules') or sys.exit('Error installing content')
             print('Done')
         elif selection == 'b':
-            print("Installing Blockly games (Spanish)...")
+            print("Installing Blockly games (English)...")
             do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/es-blockly-games /var/www/modules') or sys.exit('Error installing content')
             print('Done')
         elif selection == 'c':
