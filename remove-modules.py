@@ -49,57 +49,63 @@ def get_zim_id(zim_file):
     with open(f'{HOME}/kiwix/library_zim.xml', 'rb') as file:
         zim_dict = xmltodict.parse(file)
 
-    for item in zim_dict['library']['book']:
-        if zim_file in item['@path']:
-            return item['@id']
+    # if multiple zim files installed then loop through list
+    if isinstance(zim_dict['library']['book'], list):
+        for item in zim_dict['library']['book']:
+            if zim_file in item['@path']:
+                return item['@id']
+    else:   # otherwise check single entry
+        if zim_file in zim_dict['library']['book']['@path']:
+            return zim_file in zim_dict['library']['book']['@path']
     return None
 
-# Display all installed modules
-print(f"\nCurrent free disk space: {(psutil.disk_usage('/').free)//(2**30)}GB free.")
-print('Searching for all installed modules (this will take a few moments)...')
-print('Installed modules:')
-counter = 0
-installed_modules = {}
-with os.scandir('/var/www/modules/') as modules:
-    for module in modules:
-        if module.is_dir():
-            counter += 1
-            filepath = f'/var/www/modules/{module.name}'
-            # Skip unrecognized modules
-            if DIRS_NAMES.get(module.name) == None:
-                print(f'{counter}: {module.name} ({get_dir_size(filepath)})')
-            else:
-                print(f'{counter}: {DIRS_NAMES[module.name]} ({get_dir_size(filepath)})')
-            installed_modules[counter] = module.name
+# loop for removal of multiple modules until user hits 'q'
+while True:
+    # Display all installed modules
+    print(f"\nCurrent free disk space: {(psutil.disk_usage('/').free)//(2**30)}GB free.")
+    print('Searching for all installed modules (this will take a few moments)...')
+    print('Installed modules:')
+    counter = 0
+    installed_modules = {}
+    with os.scandir('/var/www/modules/') as modules:
+        for module in modules:
+            if module.is_dir():
+                counter += 1
+                filepath = f'/var/www/modules/{module.name}'
+                # Skip unrecognized modules
+                if DIRS_NAMES.get(module.name) == None:
+                    print(f'{counter}: {module.name} ({get_dir_size(filepath)})')
+                else:
+                    print(f'{counter}: {DIRS_NAMES[module.name]} ({get_dir_size(filepath)})')
+                installed_modules[counter] = module.name
 
-selection = input("\nEnter the number of the module you wish to remove (enter 'q' to quit): ")
-if selection == '':
-    print('No module selected... Done')
-    sys.exit(0)
-elif selection == 'q':
-    print('Exiting...')
-    sys.exit(0)
+    selection = input("\nEnter the number of the module you wish to remove (enter 'q' to quit): ")
+    if selection == '':
+        print('No module selected... Done')
+        break
+    elif selection == 'q':
+        print('Exiting...')
+        break
 
-# Store module directory name corresponing to selection
-module_dir = installed_modules[int(selection)]
+    # Store module directory name corresponing to selection
+    module_dir = installed_modules[int(selection)]
 
-# Temporarily mount root partion in read-write mode for removing content
-do('mount -o remount,rw /')
+    # Temporarily mount root partion in read-write mode for removing content
+    do('mount -o remount,rw /')
 
-# check for Kixix modules first since they require a special kiwix_mange step
-if module_dir in ['en-wikipedia','es-wikipedia','fr-wikipedia','en-wiktionary','es-wiktionary','fr-wiktionary',
-                  'en-vikidia','es-vikidia','fr-vikidia','en-wikivoyage','es-wikivoyage','fr-wikivoyage','en-phet','es-phet','fr-phet']:
-    print(f'Removing {DIRS_NAMES[module_dir]}...')
-    zimpath = f'/var/www/modules/{module_dir}'
-    id = get_zim_id(zimpath)
-    do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml remove {id}')
-    do(f'rm -rf /var/www/modules/{module_dir}')
-
-# Otherwise, if this is not a Kiwix module, simply delete the corresponding folder
-else:
-    print(f'Removing /var/www/modules/{module_dir}...')
-    do(f'rm -rf /var/www/modules/{module_dir}') or sys.exit('Error moving content')
-    print('Done')
+    # check for Kixix modules first since they require a special kiwix_mange step
+    if module_dir in ['en-wikipedia','es-wikipedia','fr-wikipedia','en-wiktionary','es-wiktionary','fr-wiktionary',
+                    'en-vikidia','es-vikidia','fr-vikidia','en-wikivoyage','es-wikivoyage','fr-wikivoyage','en-phet','es-phet','fr-phet']:
+        print(f'Removing {DIRS_NAMES[module_dir]}...')
+        zimpath = f'/var/www/modules/{module_dir}'
+        id = get_zim_id(zimpath)
+        do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml remove {id}')
+        do(f'rm -rf /var/www/modules/{module_dir}')
+    # Otherwise, if this is not a Kiwix module, simply delete the corresponding folder
+    else:
+        print(f'Removing /var/www/modules/{module_dir}...')
+        do(f'rm -rf /var/www/modules/{module_dir}') or sys.exit('Error moving content')
+        print('Done')
 
 # Once content is installed and configured, return root partion to read-only mode
 do('mount -o remount,ro /')

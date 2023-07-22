@@ -149,12 +149,12 @@ USB drive.
 
 Another script is included module removal. To remove a module, type:
 ```
-sudo ./remove-module.py
+sudo ./remove-modules.py
 ```
 An enumerated list of all installed modules will appear. Note that it may take a few moments for the complete
 list to appear since the file storage size is computed as the the list is displayed.
 Enter the number corresponding to the module you wish to remove and it will be removed.
-Type `q` to exit the script.
+Repeat to remove additional modules or type `q` to exit the script.
 
 ### Installing Custom Content
 

@@ -145,7 +145,7 @@ def main(screen):
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/en-wikipedia">Wikipedia (English)</a></h2>\n</div>'
             append_file('/var/www/modules/en-wikipedia/index.htmlf', html)
             print('Done - this module will become active after the next reboot')
-        elif selection == 'r':
+        elif selection == 'o':
             print('Installing Wikipedia (Spanish)...')
             do('mkdir /var/www/modules/es-wikipedia')
             kiwix_url = KIWIX_URL + 'wikipedia'
@@ -308,7 +308,7 @@ def main(screen):
             print('Done')
         elif selection == 'b':
             print("Installing Blockly games (English)...")
-            do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/es-blockly-games /var/www/modules') or sys.exit('Error installing content')
+            do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-blockly-games /var/www/modules') or sys.exit('Error installing content')
             print('Done')
         elif selection == 'c':
             print('Installing CK-12...')
