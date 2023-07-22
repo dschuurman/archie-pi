@@ -56,7 +56,7 @@ def get_zim_id(zim_file):
                 return item['@id']
     else:   # otherwise check single entry
         if zim_file in zim_dict['library']['book']['@path']:
-            return zim_file in zim_dict['library']['book']['@path']
+            return zim_dict['library']['book']['@id']
     return None
 
 # loop for removal of multiple modules until user hits 'q'
@@ -99,6 +99,8 @@ while True:
         print(f'Removing {DIRS_NAMES[module_dir]}...')
         zimpath = f'/var/www/modules/{module_dir}'
         id = get_zim_id(zimpath)
+        if id == None:
+            sys.exit('Error retrieving id from kiwix XML library')
         do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml remove {id}')
         do(f'rm -rf /var/www/modules/{module_dir}')
     # Otherwise, if this is not a Kiwix module, simply delete the corresponding folder
