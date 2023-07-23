@@ -132,7 +132,6 @@ def main(screen):
         if selection == 'm':     # Wikipedia for schools (static version does not require kiwix)
             print('Installing Wikipedia for schools...')
             do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-wikipedia_for_schools-static /var/www/modules') or sys.exit('Error installing content')
-            print('Done')
         elif selection == 'n':
             print('Installing Wikipedia (English)...')
             do('mkdir /var/www/modules/en-wikipedia')
@@ -144,7 +143,6 @@ def main(screen):
             do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/en-wikipedia/en-wikipedia.zim')
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/en-wikipedia">Wikipedia (English)</a></h2>\n</div>'
             append_file('/var/www/modules/en-wikipedia/index.htmlf', html)
-            print('Done - this module will become active after the next reboot')
         elif selection == 'o':
             print('Installing Wikipedia (Spanish)...')
             do('mkdir /var/www/modules/es-wikipedia')
@@ -156,7 +154,6 @@ def main(screen):
             do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/es-wikipedia/es-wikipedia.zim')
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/es-wikipedia">Wikipedia (Spanish)</a></h2>\n</div>'
             append_file('/var/www/modules/es-wikipedia/index.htmlf', html)
-            print('Done - this module will become active after the next reboot')
         elif selection == 'p':
             print('Installing Wikipedia (French)...')
             do('mkdir /var/www/modules/fr-wikipedia')
@@ -168,7 +165,6 @@ def main(screen):
             do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/fr-wikipedia/fr-wikipedia.zim')
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/fr-wikipedia">Wikipedia (French)</a></h2>\n</div>'
             append_file('/var/www/modules/fr-wikipedia/index.htmlf', html)
-            print('Done - this module will become active after the next reboot')
         elif selection == 'q':
             print('Installing Wiktionary (English)...')
             do('mkdir /var/www/modules/en-wiktionary')
@@ -180,7 +176,6 @@ def main(screen):
             do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/en-wiktionary/en-wiktionary.zim')
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/en-wiktionary">Wiktionary (English)</a></h2>\n</div>'
             append_file('/var/www/modules/en-wiktionary/index.htmlf', html)
-            print('Done - this module will become active after the next reboot')
         elif selection == 'r':
             print('Installing Wiktionary (Spanish)...')
             do('mkdir /var/www/modules/es-wiktionary')
@@ -191,7 +186,6 @@ def main(screen):
             do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/es-wiktionary/es-wiktionary.zim')
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/es-wiktionary">Wiktionary (Spanish)</a></h2>\n</div>'
             append_file('/var/www/modules/es-wiktionary/index.htmlf', html)
-            print('Done - this module will become active after the next reboot')
         elif selection == 's':
             print('Installing Wiktionary (French)...')
             do('mkdir /var/www/modules/fr-wiktionary')
@@ -202,7 +196,6 @@ def main(screen):
             do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/fr-wiktionary/fr-wiktionary.zim')
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/fr-wiktionary">Wiktionary (French)</a></h2>\n</div>'
             append_file('/var/www/modules/fr-wiktionary/index.htmlf', html)
-            print('Done - this module will become active after the next reboot')
         elif selection == 't':
             print('Installing Vikidia (English)...')
             do('mkdir /var/www/modules/en-vikidia')
@@ -213,7 +206,6 @@ def main(screen):
             do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/en-vikidia/en-vikidia.zim')
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/en-vikidia">Vikidia (English)</a></h2>\n</div>'
             append_file('/var/www/modules/en-vikidia/index.htmlf', html)
-            print('Done - this module will become active after the next reboot')
         elif selection == 'u':
             print('Installing Vikidia (Spanish)...')
             do('mkdir /var/www/modules/es-vikidia')
@@ -224,7 +216,6 @@ def main(screen):
             do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/es-vikidia/es-vikidia.zim')
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/es-vikidia">Vikidia (Spanish)</a></h2>\n</div>'
             append_file('/var/www/modules/es-vikidia/index.htmlf', html)
-            print('Done - this module will become active after the next reboot')
         elif selection == 'v':
             print('Installing Vikidia (French)...')
             do('mkdir /var/www/modules/fr-vikidia')
@@ -235,7 +226,6 @@ def main(screen):
             do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/fr-vikidia/fr-vikidia.zim')
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/fr-vikidia">Vikidia (French)</a></h2>\n</div>'
             append_file('/var/www/modules/fr-vikidia/index.htmlf', html)
-            print('Done - this module will become active after the next reboot')
         elif selection == 'x':
             print('Installing Wikivoyage (English)...')
             do('mkdir /var/www/modules/en-wikivoyage')
@@ -246,7 +236,6 @@ def main(screen):
             do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/en-wikivoyage/en-wikivoyage.zim')
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/en-wikivoyage">Wikivoyage (English)</a></h2>\n</div>'
             append_file('/var/www/modules/en-wikivoyage/index.htmlf', html)
-            print('Done - this module will become active after the next reboot')
         elif selection == 'y':
             print('Installing Wikivoyage (Spanish)...')
             do('mkdir /var/www/modules/es-wikivoyage')
@@ -257,7 +246,6 @@ def main(screen):
             do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/es-wikivoyage/es-wikivoyage.zim')
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/es-wikivoyage">Wikivoyage (Spanish)</a></h2>\n</div>'
             append_file('/var/www/modules/es-wikivoyage/index.htmlf', html)
-            print('Done - this module will become active after the next reboot')
         elif selection == 'z':
             print('Installing Wikivoyage (French)...')
             do('mkdir /var/www/modules/fr-wikivoyage')
@@ -268,7 +256,6 @@ def main(screen):
             do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/fr-wikivoyage/fr-wikivoyage.zim')
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/fr-wikivoyage">Wikivoyage (French)</a></h2>\n</div>'
             append_file('/var/www/modules/fr-wikivoyage/index.htmlf', html)
-            print('Done - this module will become active after the next reboot')
         elif selection == 'A':
             print('Installing PhET Simulations (English)...')
             do('mkdir /var/www/modules/en-phet')
@@ -279,7 +266,6 @@ def main(screen):
             do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/en-phet/en-phet.zim')
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/en-phet">PhET Interactive Simulations (English)</a></h2>\n</div>'
             append_file('/var/www/modules/en-phet/index.htmlf', html)
-            print('Done - this module will become active after the next reboot')
         elif selection == 'B':
             print('Installing PhET Simulations (Spanish)...')
             do('mkdir /var/www/modules/es-phet')
@@ -290,7 +276,6 @@ def main(screen):
             do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/es-phet/es-phet.zim')
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/es-phet">PhET Interactive Simulations (Spanish)</a></h2>\n</div>'
             append_file('/var/www/modules/es-phet/index.htmlf', html)
-            print('Done - this module will become active after the next reboot')
         elif selection == 'C':
             print('Installing PhET Simulations (French)...')
             do('mkdir /var/www/modules/fr-phet')
@@ -301,79 +286,68 @@ def main(screen):
             do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/fr-phet/fr-phet.zim')
             html = '<div class="indexmodule">\n<h2><a href="http://<?php echo $_SERVER["SERVER_ADDR"]?>:81/fr-phet">PhET Interactive Simulations (French)</a></h2>\n</div>'
             append_file('/var/www/modules/fr-phet/index.htmlf', html)
-            print('Done - this module will become active after the next reboot')
         elif selection == 'a':
             print("Installing Algebra2Go (English)...")
             do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-algebra2go /var/www/modules') or sys.exit('Error installing content')
-            print('Done')
         elif selection == 'b':
             print("Installing Blockly games (English)...")
             do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-blockly-games /var/www/modules') or sys.exit('Error installing content')
-            print('Done')
         elif selection == 'c':
             print('Installing CK-12...')
             do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-ck12 /var/www/modules') or sys.exit('Error installing content')
-            print('Done')
         elif selection == 'd':
             print('Installing Boundless...')
             do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-boundless-static /var/www/modules') or sys.exit('Error installing content')
-            print('Done\n')
         elif selection == 'e':
             print('Installing Mustard Seed Books...')
             do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-mustardseedbooks /var/www/modules') or sys.exit('Error installing content')
-            print('Done\n')
         elif selection == 'f':
             print('Installing Project Gutenberg...')
             do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-ebooks /var/www/modules') or sys.exit('Error installing content')
-            print('Done\n')
         elif selection == 'g':
             print("Installing World Map...")
             do('rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-worldmap-10 /var/www/modules') or sys.exit('Error installing content')
-            print('Done\n')
         elif selection == 'k':
             print('Installing Khan Academy (English)...')
             do("rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-kaos /var/www/modules") or sys.exit('Error installing content')
-            print('Done\n')
         elif selection == 'l':
             print('Installing Khan Academy (Spanish)...')
             do("rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/es-kaos /var/www/modules") or sys.exit('Error installing content')
-            print('Done\n')
         elif selection == 'h':
             print('Installing openstax Textbooks...')
             do("rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-openstax /var/www/modules") or sys.exit('Error installing content')
-            print('Done\n')
         elif selection == 'i':
             print('Installing Rasp Pi User Guide...')
             do("rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-rpi_guide /var/www/modules") or sys.exit('Error installing content')
-            print('Done\n')
         elif selection == 'j':
             print('Installing Scratch...')
             do("rsync -Paz --info=progress2 --info=name0 rsync://dev.worldpossible.org/rachelmods/en-scratch /var/www/modules") or sys.exit('Error installing content')
-            print('Done\n')
         elif selection == 'w':
             print('Installing Kuyers Christian Education Resources...')
             do('git clone --depth 1 https://github.com/dschuurman/en-kuyers-cer.git') or sys.exit('Error installing content')
             do('rm -rf en-kuyers-cer/.git')
             do('mv en-kuyers-cer /var/www/modules') or sys.exit('Error moving content')
-            print('Done')
         elif selection == 'S':
             print('Installing Science Made Easy videos...')
             do('git clone --depth 1 https://github.com/dschuurman/science-made-easy.git') or sys.exit('Error installing content')
             do('rm -rf science-made-easy/.git')
             do('mv science-made-easy /var/www/modules/en-science-made-easy') or sys.exit('Error moving content')
-            print('Done')
+        print('Done')
 
     # update ownership and permissions of modules
     print('Setting module folder permissions and ownerships (this may take a while)...')
     do('chown -R www-data.www-data /var/www/modules') or sys.exit('Error changing ownership of modules folder to www-data')
     do('chmod -R 755 /var/www/modules') or sys.exit('Error changing permissions of module files')
 
-    # Once content is installed and configured, return root partion to read-only mode
+    # restart kiwix server
+    do('pkill -SIGHUP kiwix-serve')   # restart kiwix server
+
+    # Once content is installed and configured, return root partition to read-only mode
     do('mount -o remount,ro /')
 
     print(f"\nDONE! ({(psutil.disk_usage('/').free)//(2**30)}GB free).")
     print('** Each content module is subject to its own license terms and conditions.')
-    print('** Note that a reboot may be required for some modules to become active.')
+    print('** Note that a reboot is recommended.')
     print("** To reboot, type 'sudo reboot' at the command-line.")
 
 # Use wrapper function to ensure original state of terminal is restored on exit

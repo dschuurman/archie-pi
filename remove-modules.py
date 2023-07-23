@@ -103,16 +103,18 @@ while True:
             sys.exit('Error retrieving id from kiwix XML library')
         do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml remove {id}')
         do(f'rm -rf /var/www/modules/{module_dir}')
+        do('pkill -SIGHUP kiwix-serve')   # restart kiwix server
     # Otherwise, if this is not a Kiwix module, simply delete the corresponding folder
     else:
         print(f'Removing /var/www/modules/{module_dir}...')
         do(f'rm -rf /var/www/modules/{module_dir}') or sys.exit('Error moving content')
-        print('Done')
 
-# Once content is installed and configured, return root partion to read-only mode
+    reply = input('Done.\nDo you want to remove another module? (y/n) ')
+    if reply not in 'yY':
+        break
+
+# Once content is installed and configured, return root partition to read-only mode
 do('mount -o remount,ro /')
 
 print(f"\nDONE! ({(psutil.disk_usage('/').free)//(2**30)}GB free).")
 print('** Each content module is subject to its own license terms and conditions.')
-print('** Note that a reboot may be required.')
-print("** To reboot, type 'sudo reboot' at the command-line.")
