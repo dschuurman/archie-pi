@@ -60,13 +60,13 @@ def main(screen):
 
     # collection of available modules and related information
     OPTIONS = { 'a':'Algebra2Go (1.2GB)', 'b':'Blockly (English) (4.5MB)', 'c':'CK-12 (2.1GB)', 'd':'Boundless (3.5GB)', 'e':'Mustard Seed Books (39MB)', 
-                'f':'Project Gutenberg', 'g':'World Map (20GB)', 'h':'openstax Textbooks', 'i':'Rasp Pi User Guide (6MB)', 
-                'j':'Scratch (254MB)', 'k':'Khan Academy (English) (12GB)', 'l':'Khan Academy (Spanish)',
-                'm':'Wikipedia for schools (6.1GB)', 'n':'Wikipedia (English)', 'o':'Wikipedia (Spanish)', 'p':'Wikipedia (French)', 
-                'q':'Wiktionary (English) (48MB)', 'r':'Wiktionary (Spanish)', 's':'Wiktionary (French)', 
-                't':'Vikidia (English) (47MB)', 'u':'Vikidia (Spanish)', 'v':'Vikidia (French)', 'w':'Kuyers Christian Ed Resources (44MB)',
-                'x':'Wikivoyage (English) (761MB)', 'y':'Wikivoyage (Spanish)', 'z':'Wikivoyage (French)',
-                'A':'PhET Simulations (English) (66MB)', 'B':'PhET Simulations (Spanish)', 'C':'PhET Simulations (French)',
+                'f':'Project Gutenberg (897MB)', 'g':'World Map (20GB)', 'h':'openstax Textbooks (2.9GB)', 'i':'Rasp Pi User Guide (6MB)', 
+                'j':'Scratch (254MB)', 'k':'Khan Academy (English) (12GB)', 'l':'Khan Academy (Spanish) (8.7GB)',
+                'm':'Wikipedia for schools (6.1GB)', 'n':'Wikipedia (English) (367MB)', 'o':'Wikipedia (Spanish) (187MB)', 'p':'Wikipedia (French) (1.5GB)', 
+                'q':'Wiktionary (English) (48MB)', 'r':'Wiktionary (Spanish) (658MB)', 's':'Wiktionary (French) (1.5GB)', 
+                't':'Vikidia (English) (47MB)', 'u':'Vikidia (Spanish) (47MB)', 'v':'Vikidia (French) (712MB)', 'w':'Kuyers Christian Ed Resources (44MB)',
+                'x':'Wikivoyage (English) (761MB)', 'y':'Wikivoyage (Spanish) (94MB)', 'z':'Wikivoyage (French) (157MB)',
+                'A':'PhET Simulations (English) (66MB)', 'B':'PhET Simulations (Spanish) (69MB)', 'C':'PhET Simulations (French) (68MB)',
                 'S':'Science Made Easy videos (1.7GB)' }
 
     # root URL for Kiwix resources
