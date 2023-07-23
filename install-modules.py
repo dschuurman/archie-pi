@@ -334,13 +334,13 @@ def main(screen):
             do('mv science-made-easy /var/www/modules/en-science-made-easy') or sys.exit('Error moving content')
         print('Done')
 
+    # restart kiwix server
+    do('pkill -SIGHUP kiwix-serve')   # restart kiwix server
+
     # update ownership and permissions of modules
     print('Setting module folder permissions and ownerships (this may take a while)...')
     do('chown -R www-data.www-data /var/www/modules') or sys.exit('Error changing ownership of modules folder to www-data')
     do('chmod -R 755 /var/www/modules') or sys.exit('Error changing permissions of module files')
-
-    # restart kiwix server
-    do('pkill -SIGHUP kiwix-serve')   # restart kiwix server
 
     # Once content is installed and configured, return root partition to read-only mode
     do('mount -o remount,ro /')
