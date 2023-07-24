@@ -145,7 +145,7 @@ replace_line('#DAEMON_CONF=""','DAEMON_CONF="/etc/hostapd/hostapd.conf"','/etc/d
 
 #Create and edit a new dnsmasq configuration file to set IP address and DNS lease time
 do('mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig')
-settings='interface=wlan0\ndhcp-range=10.10.10.11,10.10.10.61,12h\n'
+settings='interface=wlan0\ndhcp-range=10.10.10.11,10.10.10.111,12h\n'
 append_file('/etc/dnsmasq.conf', settings) or sys.exit('Error adding lines to dnsmasq.conf file')
 
 # Add the country code to wpa_supplicant.conf in case it is needed
