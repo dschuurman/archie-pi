@@ -48,6 +48,10 @@ Note that it is possible to use an external USB *drive* rather than a microSD ca
 For more information, consult the Raspberry Pi documentation describing 
 [USB mass storage devices](https://www.raspberrypi.org/documentation/hardware/raspberrypi/bootmodes/msd.md).
 
+During installation a separate wired Ethernet connection to the internet is temporarily required to download and install content for the
+ARCHIE Pi. The wi-fi connection is not available for internet access since it is configured as a stand-alone access point. Once the installation is complete, 
+the Ethernet connection and the internet are no longer required.
+
 ## Installation instructions
 
 Create a fresh image of the latest 
@@ -138,14 +142,14 @@ Next, run the module installer as follows:
 sudo ./install-modules.py
 ```
 A menu will appear allowing you to select and install various modules. 
-Once the script completes, the new content should be visible at: `http://10.10.10.10`
-(note that some content may require a reboot before it appears - see the instructions given in the final steps).
+The installer will allow you to select multiple modules at once by pressing
+the key association with each module.
+Depending on size of the modules selected and your internet spped, the installation may take a long time to complete and may be left unattended during the install.
+Once the script completes, the new content should be visible at: `http://10.10.10.10`.
 
-The installation may take some time, depending in the size of the package(s)
-and the speed of your connection. 
 Note that some content requires substantial storage space,
-so it is important to ensure that you select an adequately sized microSD card or
-USB drive.
+so it is important to ensure that you select an adequately sized microSD card (or
+USB drive).
 
 Another script is included module removal. To remove a module, type:
 ```
@@ -207,14 +211,18 @@ sudo ./set-country.py
 ### Final Steps
 
 After the setup and installation scripts have run successfully,
-the ethernet cable is no longer needed and may be removed. 
+the Ethernet cable is no longer needed and may be removed. 
 At this point you should also reboot the Raspberry Pi so that the 
 new configuration settings can take effect. This can
 be accomplished by typing the following from the command line:
 ```
 sudo reboot
 ```
-After the Raspberry Pi reboots, ensure that the wi-fi access point is visible 
-and then confirm that you are able to access the web content as expected.
-At this point, the ARCHIE Pi can run *headless*, without a monitor or
-keyboard attached.
+The ACRHIE Pi can now be run *headless* without a screen, keyboard, or mouse
+attached. After the Raspberry Pi reboots, ensure that the wi-fi access point is visible 
+on a client computer and that you can connect.
+If you are connecting from a smartphone, be sure to turn off your cellular data
+access to ensure that all traffic is routed to the ARCHIE Pi.
+Navigate a browser to the URL `http://10.10.10.10` and ensure that
+you see the main webpage for the ARCHI Pi. 
+Confirm that you are able to access all the web content as expected.
