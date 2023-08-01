@@ -160,7 +160,28 @@ list to appear since the file storage size is computed as the the list is displa
 Enter the number corresponding to the module you wish to remove and it will be removed.
 Repeat to remove additional modules or type `q` to exit the script.
 
-### Installing Custom Content
+## Final Steps
+
+After the setup and installation scripts have run successfully,
+the Ethernet cable is no longer needed and may be removed. 
+At this point you should also reboot the Raspberry Pi so that the 
+new configuration settings can take effect. This can
+be accomplished by typing the following from the command line:
+```
+sudo reboot
+```
+The ACRHIE Pi can now be run *headless* without a screen, keyboard, or mouse
+attached. After the Raspberry Pi reboots, ensure that the Wi-Fi access point is visible 
+on a client computer and that you can connect.
+If you are connecting from a smartphone, be sure to turn off your cellular data
+access to ensure that all traffic is routed to the ARCHIE Pi.
+Navigate a browser to the URL `http://10.10.10.10` and ensure that
+you see the main webpage for the ARCHI Pi. 
+Confirm that you are able to access all the web content as expected.
+
+---
+
+## Installing Custom Content
 
 While the `install-modules` provides a convenient way to add existing content, 
 you can also curate your own content and manually add it to your ARCHIE Pi. 
@@ -201,28 +222,9 @@ sudo mount -o remount,ro /
 Note that the `install-modules.py` script performs all of these steps automatically; 
 these steps are only required when installing custom content.
 
-### Setting the Country Code
+### Changing the Country Code
 At any point after the initial setup is complete, you can modify the Wi-Fi country code using 
 the `set-country.py` utility as follows:
 ```
 sudo ./set-country.py
 ```
-
-### Final Steps
-
-After the setup and installation scripts have run successfully,
-the Ethernet cable is no longer needed and may be removed. 
-At this point you should also reboot the Raspberry Pi so that the 
-new configuration settings can take effect. This can
-be accomplished by typing the following from the command line:
-```
-sudo reboot
-```
-The ACRHIE Pi can now be run *headless* without a screen, keyboard, or mouse
-attached. After the Raspberry Pi reboots, ensure that the wi-fi access point is visible 
-on a client computer and that you can connect.
-If you are connecting from a smartphone, be sure to turn off your cellular data
-access to ensure that all traffic is routed to the ARCHIE Pi.
-Navigate a browser to the URL `http://10.10.10.10` and ensure that
-you see the main webpage for the ARCHI Pi. 
-Confirm that you are able to access all the web content as expected.
