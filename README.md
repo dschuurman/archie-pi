@@ -48,9 +48,11 @@ Note that it is possible to use an external USB *drive* rather than a microSD ca
 For more information, consult the Raspberry Pi documentation describing 
 [USB mass storage devices](https://www.raspberrypi.org/documentation/hardware/raspberrypi/bootmodes/msd.md).
 
-During installation a separate wired Ethernet connection to the internet is temporarily required to download and install content for the
-ARCHIE Pi. The wi-fi connection is not available for internet access since it is configured as a stand-alone access point. Once the installation is complete, 
-the Ethernet connection and the internet are no longer required.
+During installation a separate wired Ethernet connection to the internet is temporarily required to download 
+and install content for the ARCHIE Pi. The Wi-Fi connection is not available for internet access since it is 
+configured as a stand-alone access point. If you don't have an Ethernet connection available, consider 
+using another Raspberry Pi as a Wi-Fi to Ethernet bridge (tutorials are available online).
+Once the installation is complete, the Ethernet connection will no longer required.
 
 ## Installation instructions
 
