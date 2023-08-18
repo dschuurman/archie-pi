@@ -52,7 +52,7 @@ During installation a separate wired Ethernet connection to the internet is temp
 and install content for the ARCHIE Pi. The Wi-Fi connection is not available for internet access since it is 
 configured as a stand-alone access point. If you don't have an Ethernet connection available, consider 
 using another Raspberry Pi as a Wi-Fi to Ethernet bridge (tutorials are available online).
-Once the installation is complete, the Ethernet connection will no longer required.
+Once the installation is complete, the Ethernet connection will no longer be required.
 
 ## Installation instructions
 
