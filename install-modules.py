@@ -190,7 +190,7 @@ def main(screen):
             print('Installing Wiktionary (French)...')
             do('mkdir /var/www/modules/fr-wiktionary')
             kiwix_url = KIWIX_URL + 'wiktionary'
-            filename = get_latest_kiwix_filename('wiktionary_fr_app_maxi_',kiwix_url)
+            filename = get_latest_kiwix_filename('wiktionary_fr_all_maxi_',kiwix_url)
             print(f'Downloading {filename}...')
             do(f'wget --no-check-certificate -nv --show-progress -O /var/www/modules/fr-wiktionary/fr-wiktionary.zim {filename}')
             do(f'{HOME}/kiwix/kiwix-manage {HOME}/kiwix/library_zim.xml add /var/www/modules/fr-wiktionary/fr-wiktionary.zim')
