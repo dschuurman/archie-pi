@@ -5,8 +5,8 @@ and **E**ducation for use with the [Raspberry Pi](https://www.raspberrypi.org).
 
 The ARCHIE Pi implements an offline web server that can be used to deliver educational content 
 in remote locations where no internet access is available. Using a variety of open-source software 
-(such as Linux, nginx, kiwix, and hostapd), this platform provides an "internet in a box" in the form of an
-open wi-fi access point that can be accessed by locally connected web browsers.
+(such as Linux, nginx, kiwix, and NetworkManager), this platform provides an "internet in a box" 
+in the form of an open wi-fi access point that can be accessed by locally connected web browsers.
 This access point uses a local web server to deliver educational content which may
 include a wide variety of open educational resources like Wikipedia and Project Gutenberg.
 
@@ -35,14 +35,16 @@ unplugged.
 
 ## Requirements
 
-The ARCHIE Pi platform requires a recent version of Raspberry PI OS Lite
-(32-bit or 64-bit) and runs on any recent model of the Raspberry Pi that includes a builtin wifi adapter (including the latest Raspberry Pi 4).
+The ARCHIE Pi platform requires a recent version of Raspberry PI OS Lite (32-bit or 64-bit) 
+and runs on any recent model of the Raspberry Pi that includes a builtin wifi adapter (including the latest Raspberry Pi 5).
 
 A suitably sized microSD card is required, depending on the amount of content you want to install
-(we have used 64GB and 128GB cards).
+(we have used 64GB, 128GB, and 256GB cards).
 Note that not all microSD cards are created equal in terms of speed and reliability, so you may want to consult the 
 [Raspberry Pi microSD guidelines](https://www.raspberrypi.org/documentation/installation/sd-cards.md).
 It is recommended that you select a high-speed microSD card, such as cards rated for UHS Speed Class 3.
+For the Raspberry Pi 5, it is recommend to use Class A2 compatible SD cards which include enhancements
+such as command queueing of read/write requests.
 
 Note that it is possible to use an external USB *drive* rather than a microSD card. 
 For more information, consult the Raspberry Pi documentation describing 
@@ -69,13 +71,12 @@ on how to install an image of the OS (using a handy tool called the
 
 Note that the installation requires an Ethernet connection during setup since the wifi adapter 
 will be configured as an access point during the installation and therefore cannot be used as an
-internet connection. Once the setup is complete the Ethernet connection is no longer required.
+internet connection. Once the setup is complete, the ethernet connection is no longer required.
 
 Plug in an ethernet cable with internet access and power up the Raspberry Pi.
 Raspberry Pi OS Lite will perform an initial boot requiring you to configure a username, password, and
-the keyboard settings. A typical default username for
-the Raspberry Pi is `pi` and you can select a suitable password (for security purposes, avoid using the default
-password of `raspberry`).
+the keyboard settings. A typical default username for the Raspberry Pi is `pi` and you can select a 
+suitable password (for security purposes, avoid using the default password of `raspberry`).
 
 Next, install the `git` package as follows:
 ```
@@ -125,9 +126,8 @@ http://10.10.10.10
 Note that you will still need to install content for the ARCHIE Pi, a process described in the section that follows.
 > ***Note:***
 > The `setup.py` script requires a fresh install of the Raspberry Pi OS.
-> If the `setup.py` script fails for some reason you will need to correct the problem and start the installation again
-> from a fresh installation of Raspberry Pi OS. Attempting to run the `setup.py` script a second
-> time will result in duplicate configuration modifications which will fail or cause problems.
+> If the `setup.py` script fails for some reason you will need to correct the problem and start the installation again.
+> It is recommended to use a fresh installation of Raspberry Pi OS when running the `setup.py` script.
 
 ### Installing and Removing Content on the ARCHIE Pi
 
@@ -145,20 +145,19 @@ sudo ./install-modules.py
 ```
 A menu will appear allowing you to select and install various modules. 
 The installer will allow you to select multiple modules at once by pressing
-the key association with each module.
-Depending on size of the modules selected and your internet spped, the installation may take a long time to complete and may be left unattended during the install.
+the key association with each module. Depending on size of the modules selected and your internet speed, 
+the installation may take a *long* time to complete and may be left unattended during the install.
 Once the script completes, the new content should be visible at: `http://10.10.10.10`.
 
 Note that some content requires substantial storage space,
-so it is important to ensure that you select an adequately sized microSD card (or
-USB drive).
+so it is important to ensure that you select an adequately sized microSD card (or USB drive).
 
 Another script is included module removal. To remove a module, type:
 ```
 sudo ./remove-modules.py
 ```
 An enumerated list of all installed modules will appear. Note that it may take a few moments for the complete
-list to appear since the file storage size is computed as the the list is displayed.
+list to appear since the file storage size is computed as the the list is sequentially displayed.
 Enter the number corresponding to the module you wish to remove and it will be removed.
 Repeat to remove additional modules or type `q` to exit the script.
 
@@ -178,7 +177,7 @@ on a client computer and that you can connect.
 If you are connecting from a smartphone, be sure to turn off your cellular data
 access to ensure that all traffic is routed to the ARCHIE Pi.
 Navigate a browser to the URL `http://10.10.10.10` and ensure that
-you see the main webpage for the ARCHI Pi. 
+you see the main webpage for the ARCHIE Pi. 
 Confirm that you are able to access all the web content as expected.
 
 ---
