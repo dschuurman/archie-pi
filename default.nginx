@@ -1,0 +1,21 @@
+# ARCHIE Pi nginx config file
+#
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	root /var/www;
+	index index.php index.html index.htm;
+	server_name _;
+	location / {
+		# First attempt to serve request as file, then
+		# as directory, then fall back to displaying a 404.
+		try_files $uri $uri/ =404;
+	}
+    
+	# pass PHP scripts to FastCGI server
+	location ~ \.php$ {
+		include snippets/fastcgi-php.conf;
+	#	Use php-fpm
+		fastcgi_pass unix:/run/php/phpPHP_VERSION-fpm.sock;
+	}
+}

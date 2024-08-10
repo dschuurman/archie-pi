@@ -71,8 +71,8 @@ def append_file(file, line):
         return False
     return True
 
-def replace_line(orig_line, new_line, infile):
-    ''' Replace a line with matching text in a specified file
+def replace_in_file(orig_line, new_line, infile):
+    ''' Replace a string with matching text in a specified file
     '''
     # Return if content already found
     if find_content(new_line, infile):
@@ -87,32 +87,6 @@ def replace_line(orig_line, new_line, infile):
             found = True
         else:
             print(line, end='')
-    return found
-
-def uncomment_line(matching_text, infile):
-    ''' Uncomment a line with matching text in a specified file
-    '''
-    found = False
-    for line in fileinput.input(infile, inplace = True):
-        if not found and matching_text in line:
-            print(line.replace('#',''), end='')
-            found = True
-        else:
-            print(line, end='')
-    return found
-
-def uncomment_line_after(matching_text, infile):
-    ''' Uncomment line *after* a line with matching text in a specified file
-    '''
-    found = False
-    lastline = ''
-    for line in fileinput.input(infile, inplace = True):
-        if not found and matching_text in lastline:
-            print(line.replace('#',''), end='')
-            found = True
-        else:
-            print(line, end='')
-        lastline = line
     return found
 
 def get_latest_kiwix_tools(filename_prefix, url):
@@ -182,62 +156,43 @@ def install_dependencies():
     do('apt -y install ntpdate') or sys.exit('Error: cannot install ntpdate')
     do('ntpdate 0.pool.ntp.org')
 
-    # Install vim because we like it:
+    # Install vim because we like it
     do('apt install vim -y') or sys.exit('Unable to install vim')
 
     # Ensure git is installed:
     do('apt install git -y') or sys.exit('Unable to install git')
 
-
 ############################
-# Setup wifi hotspot
+# Setup WiFi hotspot
 ############################
 def wifi_hotspot_setup(): 
-    ''' Setup wifi hotspot
+    ''' Setup wifi hotspot using NetworkManager
     '''
-    print('Setting up wifi hotspot...')
-
-   # install hostapd, dnsmasq, and dhcpcd
-    do('apt-get -y install hostapd dnsmasq dhcpcd') or sys.exit('Unable to install hotspot packages')
-
-    # Configure hostapd dnsmasq
-    do('systemctl stop hostapd') or sys.exit('Error: unable to stop hostapd.')
-    do('systemctl stop dnsmasq') or sys.exit('Error: unable to stop dnsmasq.')
-
-    # Configure dhcpd
-    settings='interface wlan0\nstatic ip_address=10.10.10.10\nnohook wpa_supplicant\n'
-    append_file('/etc/dhcpcd.conf', settings)
-    do('systemctl restart dhcpcd') or sys.exit('Error: dhcpcd restart failed')
-
-    # adjust settings in hostapd config file
-    settings=f'interface=wlan0\ndriver=nl80211\nhw_mode=g\nchannel=4\nieee80211n=1\nwmm_enabled=0\nauth_algs=1\nssid={args.ssid}\nieee80211d=1\ncountry_code={args.country}\n'
-    append_file('/etc/hostapd/hostapd.conf', settings) or sys.exit('Error: hostapd.conf append failed')
-    replace_line('#DAEMON_CONF=""','DAEMON_CONF="/etc/hostapd/hostapd.conf"','/etc/default/hostapd') or sys.exit('Error: Line to replace not found in hostapd')
-
-    #Create and edit a new dnsmasq configuration file to set IP address and DNS lease time
-    do('mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig')
-    settings='interface=wlan0\ndhcp-range=10.10.10.11,10.10.10.111,12h\n'
-    append_file('/etc/dnsmasq.conf', settings) or sys.exit('Error adding lines to dnsmasq.conf file')
-
-    # Add the country code to wpa_supplicant.conf in case it is needed
-    append_file('/etc/wpa_supplicant/wpa_supplicant.conf',f'country={args.country}') or sys.exit('Error: adding wpa country code')
+    print('Setting up wifi hotspot using NetworkManager...')
 
     # update WIFI country
     do(f'raspi-config nonint do_wifi_country {args.country}')
     print('WiFi country = ', end='', flush=True)
     do('raspi-config nonint get_wifi_country', True)
 
+    # install dnsmasq-base and network-manager
+    do('apt-get -y install dnsmasq-base network-manager')
+
+    # Use NetworkManager to setup WiFi access point
+    do('nmcli connection delete ap-wlan0')   # delete if already present
+    do('nmcli connection add type wifi ifname wlan0 con-name ap-wlan0 wifi.mode ap autoconnect true wifi.ssid ARCHIE-Pi')
+    do('nmcli connection modify ap-wlan0 ipv4.address 10.10.10.10/24')
+    do('nmcli connection modify ap-wlan0 ipv6.method disabled')
+    do('nmcli connection modify ap-wlan0 802-11-wireless.mode ap 802-11-wireless.band bg ipv4.method shared')
+    do('nmcli connection modify ap-wlan0 802-11-wireless.channel 7')
+
     # Disable Bluetooth and enable wifi
     # NOTE: wifi should only be enabled when country code is set properly (which it should be here)
     do('rfkill block bluetooth') or sys.exit('Error: bluetooth disable failed')
     do('rfkill unblock wifi') or sys.exit('Error: wifi enable failed')
 
-    # Unmask, enable and start open wifi access point
-    do('systemctl unmask hostapd') or sys.exit('Error: unable to unmask hostapd')
-    do('systemctl enable hostapd') or sys.exit('Error: unable to enable hostapd')
-    do('systemctl start hostapd') or sys.exit('Error: unable to start hostapd')
-    do('systemctl restart hostapd') or sys.exit('Error: unable to restart hostapd')
-    do('service dnsmasq start') or sys.exit('Error: service dnsmasq failed to start')
+    # bring up the new access point
+    do('nmcli connection up ap-wlan0')
 
 ###################################################
 # Setup web server and ARCHIE Pi index page
@@ -247,24 +202,21 @@ def web_server_setup():
     '''
     print('Setting up web server...')
 
-    # Install nginx, PHP, and SQLite3
+    # Install nginx
     do('apt install nginx -y') or sys.exit('Unable to install nginx')
+
+    # Install php related packages. Note: do not install php package since it includes apache2 as a dependency.
     do('apt install php-fpm php-cli -y') or sys.exit('Error: unable to install php')
     do('apt install php-sqlite3 -y') or sys.exit('Error: unable to install sqlite3')
 
     # Get actual PHP version
-    PHP_VERSION = get_php_version()
+    php_version = get_php_version()
 
-    # Enable PHP in nginx config file
+    # Backup orignal nginx config file and then copy new config file
     conf_file = '/etc/nginx/sites-enabled/default'
-    replace_line('root /var/www/html;','root /var/www;',conf_file) or sys.exit('Error: nginx config update failed')
-    replace_line('index index.html index.htm index.nginx-debian.html;','index index.php index.html index.htm;', conf_file) or sys.exit('Error: nginx config update failed')
-    uncomment_line('location ~ \\.php$', conf_file) or sys.exit('Error: nginx config update failed')
-    uncomment_line('include snippets/fastcgi-php.conf', conf_file) or sys.exit('Error: nginx config update failed')
-    uncomment_line('fastcgi_pass unix', conf_file) or sys.exit('Error: nginx config update failed')
-    replace_line("fastcgi_pass unix:/run/php/php7.4-fpm.sock;", f"fastcgi_pass unix:/run/php/php{PHP_VERSION}-fpm.sock;",conf_file) or sys.exit('Error: nginx config update failed')
-    uncomment_line_after('fastcgi_pass 127.0.0.1',conf_file) or sys.exit('Error: nginx config update failed')
-
+    do(f'cp default.nginx {conf_file}') or sys.exit('Error: copy new conf file')
+    replace_in_file("PHP_VERSION", f'{php_version}', conf_file) or sys.exit('Error: nginx config update failed')
+    
     # Install ARCHIE Pi web front page:
     print('Installing ARCHIE Pi web front end...')
     do('cp -r www/. /var/www/') or sys.exit('Error copying www files to /var/www')
@@ -288,7 +240,7 @@ def kiwix_server_setup():
     do(f'tar xzf {HOME}/kiwix-tools.tgz -C {HOME}/kiwix --strip-components=1')
     do(f'rm {HOME}/kiwix-tools.tgz')
     do(f'touch {HOME}/kiwix/library_zim.xml')
-    replace_line('fi',f'fi\n\n{HOME}/kiwix/kiwix-serve --library --port 81 --blockexternal --nolibrarybutton --daemon {HOME}/kiwix/library_zim.xml', '/etc/rc.local') or sys.exit('rc.local line not updated')
+    replace_in_file('fi',f'fi\n\n{HOME}/kiwix/kiwix-serve --library --port 81 --blockexternal --nolibrarybutton --daemon {HOME}/kiwix/library_zim.xml', '/etc/rc.local') or sys.exit('rc.local line not updated')
 
 ##############################
 ### Harden the install
@@ -319,33 +271,24 @@ def harden_setup():
     do('systemctl disable systemd-timesyncd.service') or sys.exit('Error: timesync diasable error')
 
     # Mount /boot and / partition in read-only mode to eliminate possiblitiy SD card writes
-    replace_line('vfat    defaults','vfat    ro','/etc/fstab')
-    replace_line('defaults,noatime','ro','/etc/fstab')
+    replace_in_file('vfat    defaults','vfat    ro','/etc/fstab')
+    replace_in_file('defaults,noatime','ro','/etc/fstab')
 
     # Move folders that require writing from the SD card to various tmpfs mounts
     append_file('/etc/fstab','tmpfs   /var/log    tmpfs     noatime,nosuid,mode=0755,size=50M  0 0') or sys.exit('fstab append error')
     append_file('/etc/fstab','tmpfs   /tmp        tmpfs     noatime,nosuid,mode=0755,size=20M  0 0') or sys.exit('fstab append error')
     append_file('/etc/fstab','tmpfs   /var/tmp    tmpfs     noatime,nosuid,mode=0755,size=64k  0 0') or sys.exit('fstab append error')
-    append_file('/etc/fstab','tmpfs   /var/lib/dhcpcd       tmpfs   noatime,nosuid,mode=0755,size=64k  0 0') or sys.exit('fstab append error')
-    append_file('/etc/fstab','tmpfs   /var/lib/logrotate    tmpfs   nodev,noatime,nosuid,mode=0755,size=16k  0 0') or sys.exit('fstab append error')
-    append_file('/etc/fstab','tmpfs   /var/lib/php/sessions tmpfs   nodev,noatime,nosuid,mode=0777,size=64k  0 0') or sys.exit('fstab append error')
+    append_file('/etc/fstab','tmpfs   /var/lib/NetworkManager tmpfs   noatime,nosuid,mode=0755,size=64k  0 0') or sys.exit('fstab append error')
+    append_file('/etc/fstab','tmpfs   /var/lib/logrotate      tmpfs   nodev,noatime,nosuid,mode=0755,size=16k  0 0') or sys.exit('fstab append error')
+    append_file('/etc/fstab','tmpfs   /var/lib/php/sessions   tmpfs   nodev,noatime,nosuid,mode=0777,size=64k  0 0') or sys.exit('fstab append error')
 
     # nginx requires the log folder be present; create folder in the tmpfs at each startup
     append_file('/var/spool/cron/crontabs/root','@reboot mkdir /var/log/nginx') or sys.exit('crontab append error')
-    do('chmod 600 /var/spool/cron/crontabs/root') or sys.exit('Error: chmod failed')
-
-    # Move dhcp-leasefile to a tmpfs folder
-    append_file('/etc/dnsmasq.conf','dhcp-leasefile=/var/log/dnsmasq.leases') or sys.exit('Error updating dhcp-leasefile location')
+    do('chmod 600 /var/spool/cron/crontabs/root') or sys.exit('Error: crontab chmod failed')
 
     # Move hwclock to a tmpfs folder
     do('rm /etc/fake-hwclock.data') or sys.exit('Error removing existing hwclock file')
     do('ln -s /tmp/fake-hwclock.data /etc/fake-hwclock.data') or sys.exit('Error moving hwclock data file')
-
-    # Move resolv.conf to a tmpfs folder
-    do('systemctl stop dhcpcd') or sys.exit('Error: dhcpcd stop failed')
-    do('mv /etc/resolv.conf /tmp/resolv.conf') or print('resolv.conf already moved?')
-    do('ln -s /tmp/resolv.conf /etc/resolv.conf') or sys.exit('Error creating link to resolv.conf')
-    do('systemctl start dhcpcd') or sys.exit('Error: dhcpcd start failed')
 
 ##################
 # Clean up
