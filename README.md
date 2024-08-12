@@ -16,12 +16,13 @@ acknowledge that it was inspired by other projects, such as the
 
 ## Features
 
-The ARCHIE Pi is compatible with the latest Raspberry Pi operating system and hardware versions.
+The ARCHIE Pi is compatible with the latest \(Bookworm\) Raspberry Pi operating system and hardware versions.
 This project includes a script to setup the ARCHIE Pi on a fresh image of Raspberry Pi OS Lite and
 another script to install selected open education resources.
 
-The ARCHIE Pi runs both a web server (nginx) for delivering general web content as well as a Kiwix 
-server for delivering wiki content stored in [ZIM](https://wiki.openzim.org/wiki/OpenZIM) files.
+The ARCHIE Pi runs both a web server (nginx) for delivering general web content as well as a 
+[Kiwix](https://kiwix.org/en/) server for delivering wiki content stored in 
+[ZIM](https://wiki.openzim.org/wiki/OpenZIM) files.
 
 The developers of this project were concerned about *robustness*. This is crucial since the ARCHIE Pi
 is intended to be deployed in remote locations without ready access to replacement parts or IT support.
@@ -35,48 +36,46 @@ unplugged.
 
 ## Requirements
 
-The ARCHIE Pi platform requires a recent version of Raspberry PI OS Lite (32-bit or 64-bit) 
-and runs on any recent model of the Raspberry Pi that includes a builtin wifi adapter (including the latest Raspberry Pi 5).
+The ARCHIE Pi platform requires the current *Bookworm* version of Raspberry PI OS Lite 
+(32-bit or 64-bit) and runs on any recent model of the Raspberry Pi that includes a builtin wifi adapter 
+\(including the latest Raspberry Pi 5\).
 
 A suitably sized microSD card is required, depending on the amount of content you want to install
-(we have used 64GB, 128GB, and 256GB cards).
-Note that not all microSD cards are created equal in terms of speed and reliability, so you may want to consult the 
-[Raspberry Pi microSD guidelines](https://www.raspberrypi.org/documentation/installation/sd-cards.md).
+(we have used 64GB, 128GB, and 256GB cards). Note that not all microSD cards are created equal in terms of speed and reliability, 
+so you may want to consult the [Raspberry Pi microSD guidelines](https://www.raspberrypi.org/documentation/installation/sd-cards.md).
 It is recommended that you select a high-speed microSD card, such as cards rated for UHS Speed Class 3.
 For the Raspberry Pi 5, it is recommend to use Class A2 compatible SD cards which include enhancements
 such as command queueing of read/write requests.
 
-Note that it is possible to use an external USB *drive* rather than a microSD card. 
-For more information, consult the Raspberry Pi documentation describing 
-[USB mass storage devices](https://www.raspberrypi.org/documentation/hardware/raspberrypi/bootmodes/msd.md).
-
 During installation a separate wired Ethernet connection to the internet is temporarily required to download 
-and install content for the ARCHIE Pi. The Wi-Fi connection is not available for internet access since it is 
+and install content for the ARCHIE Pi. The WiFi connection is not available for internet access since it is 
 configured as a stand-alone access point. If you don't have an Ethernet connection available, consider 
-using another Raspberry Pi as a Wi-Fi to Ethernet bridge (tutorials are available online).
+using another Raspberry Pi as a WiFi to Ethernet bridge \(tutorials are available online\).
 Once the installation is complete, the Ethernet connection will no longer be required.
 
 ## Installation instructions
 
-Create a fresh image of the latest 
+Create a fresh image of the **Bookworm** version of 
 [Raspberry PI OS Lite](https://www.raspberrypi.org/software/operating-systems/)
 on a suitably sized microSD card. Either 32-bit or 64-bit versions
 of the OS can be used, but the 64-bit version is recommended if you
-are using a Raspberry Pi model 3 B+ or newer model. We recommend the Lite version
+are using a Raspberry Pi model 3 B+ or newer. We recommend the *Lite* version
 of the Raspberry Pi OS since it requires less space on the SD card. 
-Consult the Raspberry Pi documentation for 
-[instructions](https://www.raspberrypi.org/software/) 
-on how to install an image of the OS (using a handy tool called the
-[Raspberry Pi Imager](https://www.raspberrypi.com/news/raspberry-pi-imager-imaging-utility/) is recommended).
+Consult the Raspberry Pi documentation for [instructions](https://www.raspberrypi.org/software/) 
+on how to install an image of the OS \(a handy tool called the
+[Raspberry Pi Imager](https://www.raspberrypi.com/news/raspberry-pi-imager-imaging-utility/) is recommended\).
 
 Note that the installation requires an Ethernet connection during setup since the wifi adapter 
 will be configured as an access point during the installation and therefore cannot be used as an
 internet connection. Once the setup is complete, the ethernet connection is no longer required.
 
 Plug in an ethernet cable with internet access and power up the Raspberry Pi.
-Raspberry Pi OS Lite will perform an initial boot requiring you to configure a username, password, and
+The Ethernet connection is required to retrieve packages from the Internet during setup since
+the WiFi adapter will used for a WiFi access point.
+
+The Raspberry Pi OS Lite will perform an initial boot requiring you to configure a username, password, and
 the keyboard settings. A typical default username for the Raspberry Pi is `pi` and you can select a 
-suitable password (for security purposes, avoid using the default password of `raspberry`).
+suitable password.
 
 Next, install the `git` package as follows:
 ```
