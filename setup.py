@@ -19,8 +19,6 @@ import fileinput
 
 # Global Varaible declaration
 args: argparse.Namespace = argparse.Namespace()
-# Set home folder location (username may be different than the default pi)
-HOME = ""
 
 # Helper functions
 
@@ -121,21 +119,17 @@ def get_php_version():
 def setup_init():
     ''' Read comand line parameters and set home folder
     '''
+    global args
     parser = argparse.ArgumentParser()
     parser.add_argument("--country", dest="country", help="Wi-Fi country code",
                         type=str, required=True)
     parser.add_argument("--ssid", dest="ssid", help="Wi-Fi acces point station id",
                         type=str, required=False, default='ARCHIE-Pi')
-    global args, HOME
     args = parser.parse_args()
     
     # Check to ensure we are running with root privileges
     if os.getuid() != 0:
         sys.exit(f"Please run this script as root.")
-
-    # global HOME
-    HOME = f'/home/{os.getlogin()}'
-    print(f'Home folder set to: {HOME}')
 
 ############################################################
 # Update and upgrade OS and install ALL dependencies
@@ -209,13 +203,10 @@ def web_server_setup():
     do('apt install php-fpm php-cli -y') or sys.exit('Error: unable to install php')
     do('apt install php-sqlite3 -y') or sys.exit('Error: unable to install sqlite3')
 
-    # Get actual PHP version
-    php_version = get_php_version()
-
-    # Backup orignal nginx config file and then copy new config file
-    conf_file = '/etc/nginx/sites-enabled/default'
-    do(f'cp default.nginx {conf_file}') or sys.exit('Error: copy new conf file')
-    replace_in_file("PHP_VERSION", f'{php_version}', conf_file) or sys.exit('Error: nginx config update failed')
+    # Copy nginx config file and update version in php-fpm settings
+    NGINX_CONF_FILE = '/etc/nginx/conf.d/archie-pi.conf'
+    do(f'cp archie-pi.conf {NGINX_CONF_FILE}') or sys.exit('Error: copy new conf file')
+    replace_in_file("PHP_VERSION", get_php_version(), NGINX_CONF_FILE) or sys.exit('Error: nginx php version update failed')
     
     # Install ARCHIE Pi web front page:
     print('Installing ARCHIE Pi web front end...')
@@ -233,6 +224,11 @@ def kiwix_server_setup():
     ''' Setup Kiwix server
     '''
     print('Setting up kiwix server (requires a reboot to run)...')
+
+    # Determine home folder location (may be different than the default user pi)
+    HOME = f'/home/{os.getlogin()}'
+    print(f'Home folder set to: {HOME}')
+
     filename = get_latest_kiwix_tools('kiwix-tools_linux-armhf','https://download.kiwix.org/release/kiwix-tools/')
     print(f'Downloading {filename}...')
     do(f'wget -nv --show-progress -O {HOME}/kiwix-tools.tgz {filename}') or sys.exit('kiwix download failed')
@@ -314,7 +310,7 @@ if __name__ == "__main__" :
     clean_up()                  # Step 6
     
     print('\nThe ARCHIE Pi access point has installed successfully!')
-    print('Note that this program cannot be rerun since it requires a fresh install of the OS.')
     print(f'Connect a computer to the wifi access point named {args.ssid} and point a browser to: http://10.10.10.10/.')
-    print('Note that these new settings will require a reboot to take effect\nand you will need to install some content modules next.')
-    print('Don\'t forget the password for the default Raspberry Pi OS user!')
+    print('Note that some installation settings require a reboot to take effect.')
+    print('To install some content modules now, run:')
+    print('\tsudo ./install-modules.py')
