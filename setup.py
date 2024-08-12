@@ -203,8 +203,9 @@ def web_server_setup():
     do('apt install php-fpm php-cli -y') or sys.exit('Error: unable to install php')
     do('apt install php-sqlite3 -y') or sys.exit('Error: unable to install sqlite3')
 
-    # Copy nginx config file and update version in php-fpm settings
+    # Remove default nginx config, copy new config file, and update version in php-fpm settings
     NGINX_CONF_FILE = '/etc/nginx/conf.d/archie-pi.conf'
+    do('rm /etc/nginx/sites-enabled/default')
     do(f'cp archie-pi.conf {NGINX_CONF_FILE}') or sys.exit('Error: copy new conf file')
     replace_in_file("PHP_VERSION", get_php_version(), NGINX_CONF_FILE) or sys.exit('Error: nginx php version update failed')
     
