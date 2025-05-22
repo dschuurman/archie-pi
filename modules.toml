@@ -1,0 +1,212 @@
+[m]
+name="Wikipedia for Schools"
+source="rachelmods"
+[m.source_info]
+rachel_uri="en-wikipedia_for_schools-static"
+
+[n]
+name="Wikipedia (English)"
+source="kiwix"
+[n.source_info]
+module_path="en-wikipedia"
+kiwix_directory="wikipedia"
+kiwix_filename_prefix="wikipedia_en_simple_all_mini_"
+
+[o]
+name="Wikipedia (Spansih)"
+source="kiwix"
+[o.source_info]
+module_path="es-wikipedia"
+kiwix_directory="wikipedia"
+kiwix_filename_prefix="wikipedia_es_top_mini_"
+
+[p]
+name="Wikipedia (French)"
+source="kiwix"
+[p.source_info]
+module_path="fr-wikipedia"
+kiwix_directory="wikipedia"
+kiwix_filename_prefix="wikipedia_fr_top_mini_"
+
+[q]
+name="Wiktionary (English)"
+source="kiwix"
+[q.source_info]
+module_path="en-wiktionary"
+kiwix_directory="wiktionary"
+kiwix_filename_prefix="wiktionary_en_simple_all_maxi_"
+
+[r]
+name="Wiktionary (Spanish)"
+source="kiwix"
+[r.source_info]
+module_path="es-wiktionary"
+kiwix_directory="wiktionary"
+kiwix_filename_prefix="wiktionary_es_all_maxi_"
+
+[s]
+name="Wiktionary (French)"
+source="kiwix"
+[s.source_info]
+module_path="fr-wiktionary"
+kiwix_directory="wiktionary"
+kiwix_filename_prefix="wiktionary_fr_all_maxi_"
+
+[t]
+name="Vikidia (English)"
+source="kiwix"
+[t.source_info]
+module_path="en-vikidia"
+kiwix_directory="vikidia"
+kiwix_filename_prefix="vikidia_en_all_maxi_"
+
+[u]
+name="Vikidia (Spanish)"
+source="kiwix"
+[u.source_info]
+module_path="es-vikidia"
+kiwix_directory="vikidia"
+kiwix_filename_prefix="vikidia_es_all_maxi_"
+
+[v]
+name="Vikidia (French)"
+source="kiwix"
+[v.source_info]
+module_path="fr-vikidia"
+kiwix_directory="vikidia"
+kiwix_filename_prefix="vikidia_fr_all_maxi_"
+
+[x]
+name="Wikivoyage (English)"
+source="kiwix"
+[x.source_info]
+module_path="en-wikivoyage"
+kiwix_directory="wikivoyage"
+kiwix_filename_prefix="wikivoyage_en_all_maxi_"
+
+[y]
+name="Wikivoyage (Spansih)"
+source="kiwix"
+[y.source_info]
+module_path="es-wikivoyage"
+kiwix_directory="wikivoyage"
+kiwix_filename_prefix="wikivoyage_es_all_maxi_"
+
+[z]
+name="Wikivoyage (French)"
+source="kiwix"
+[z.source_info]
+module_path="fr-wikivoyage"
+kiwix_directory="wikivoyage"
+kiwix_filename_prefix="wikivoyage_fr_all_maxi_"
+
+[A]
+name="PhET Simulations (English)"
+source="kiwix"
+[A.source_info]
+module_path="en-phet"
+kiwix_directory="phet"
+kiwix_filename_prefix="phet_en_"
+
+[B]
+name="PhET Simulations (Spanish)"
+source="kiwix"
+[B.source_info]
+module_path="es-phet"
+kiwix_directory="phet"
+kiwix_filename_prefix="phet_es_"
+
+[C]
+name="PhET Simulations (French)"
+source="kiwix"
+[C.source_info]
+module_path="fr-phet"
+kiwix_directory="phet"
+kiwix_filename_prefix="phet_fr_"
+
+[a]
+name="Algebra2Go (English)"
+source="rachelmods"
+[a.source_info]
+rachel_uri="en-algebra2go"
+
+[b]
+name="Blockly Games (English)"
+source="rachelmods"
+[b.source_info]
+rachel_uri="en-blockly-games"
+
+[c]
+name="CK-12 (English)"
+source="rachelmods"
+[c.source_info]
+rachel_uri="en-ck12"
+
+[d]
+name="Boundless (English)"
+source="rachelmods"
+[d.source_info]
+rachel_uri="en-boundless-static"
+
+[e]
+name="Mustard Seed Books (English)"
+source="rachelmods"
+[e.source_info]
+rachel_uri="en-mustardseedbooks"
+
+[f]
+name="Project Gutenberg (English)"
+source="rachelmods"
+[f.source_info]
+rachel_uri="en-ebooks"
+
+[g]
+name="World Map (English)"
+source="rachelmods"
+[g.source_info]
+rachel_uri="en-worldmap-10"
+
+[k]
+name="Khan Academy (English)"
+source="rachelmods"
+[k.source_info]
+rachel_uri="en-kaos"
+
+[l]
+name="Khan Academy (Spanish)"
+source="rachelmods"
+[l.source_info]
+rachel_uri="es-kaos"
+
+[h]
+name="Openstax Textbooks (English)"
+source="rachelmods"
+[h.source_info]
+rachel_uri="en-openstax"
+
+[i]
+name="Rasp Pi User Guide (English)"
+source="rachelmods"
+[i.source_info]
+rachel_uri="en-rpi_guide"
+
+[j]
+name="Scratch (English)"
+source="rachelmods"
+[j.source_info]
+rachel_uri="en-scratch"
+
+[w]
+name="Kuyers Christian Education Resources (English)"
+source="github"
+[w.source_info]
+repo_host="dschuurman"
+repo_name="en-kuyers-cer"
+
+[S]
+name="Science Made Easy (English)"
+source="github"
+[S.source_info]
+repo_host="dschuurman"
+repo_name="science-made-easy"
+
