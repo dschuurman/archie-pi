@@ -71,20 +71,34 @@ def append_file(file, line):
 
 def replace_in_file(orig_line, new_line, infile):
     ''' Replace a string with matching text in a specified file
+
+    :param orig_line: the line already in the file to be replaced
+    :param new_line: the string to replace orig_line
+    :param infile: the file in which to search
+    :returns: boolean representing if orig line was replaced
     '''
     # Return if content already found
     if find_content(new_line, infile):
         print('skip replace_line')
         return True
     
+    # Ensure target file actually exists
+    if not os.path.exists(infile):
+        print(f"making {infile}")
+
+        # new file necessarily won't have any content
+        # so just write the desired content
+        with open(infile, "w") as f: f.write(new_line)
+        return True
+
     found = False
     for line in fileinput.input(infile, inplace = True):
-
         if not found and orig_line in line:
             print(line.replace(orig_line, new_line), end='')
             found = True
         else:
             print(line, end='')
+
     return found
 
 def get_latest_kiwix_tools(filename_prefix, url):
@@ -237,7 +251,7 @@ def kiwix_server_setup():
     do(f'tar xzf {HOME}/kiwix-tools.tgz -C {HOME}/kiwix --strip-components=1')
     do(f'rm {HOME}/kiwix-tools.tgz')
     do(f'touch {HOME}/kiwix/library_zim.xml')
-    replace_in_file('fi',f'fi\n\n{HOME}/kiwix/kiwix-serve --library --port 81 --blockexternal --nolibrarybutton --daemon {HOME}/kiwix/library_zim.xml', '/etc/rc.local') or sys.exit('rc.local line not updated')
+    append_file("/etc/rc.local", f'\n\n{HOME}/kiwix/kiwix-serve --library --port 81 --blockexternal --nolibrarybutton --daemon {HOME}/kiwix/library_zim.xml\n')
 
 ##############################
 ### Harden the install
