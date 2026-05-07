@@ -88,7 +88,11 @@ while True:
         break
 
     # Store module directory name corresponing to selection
-    module_dir = installed_modules[int(selection)]
+    try:
+        module_dir = installed_modules[int(selection)]
+    except (ValueError, KeyError):
+        print("Invalid selection.")
+        continue
 
     # Temporarily mount root partion in read-write mode for removing content
     do('mount -o remount,rw /')

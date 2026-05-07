@@ -25,11 +25,12 @@ if (count($files) == 2) {
  else {
     echo "Installed modules are listed below:<br>";
     foreach ($files as $file) {
-    if ($file == '.') continue;
-    if ($file == '..') continue;
-    $module = '/var/www/modules/'.$file.'/index.htmlf';
-    $dir = 'modules/'.$file;
-    include $module;
+        if ($file == '.') continue;
+        if ($file == '..') continue;
+        $module = '/var/www/modules/'.$file.'/index.htmlf';
+        $dir = 'modules/'.$file;
+        if (file_exists($module))
+            include $module;
     }
  }
 ?>
