@@ -269,8 +269,8 @@ def harden_setup():
     print('Disabling swap...')
     do('dphys-swapfile swapoff') or sys.exit('Error: swapoff failed!')
     do('dphys-swapfile uninstall') or sys.exit('Error: swap uninstall failed!')
-    do('update-rc.d dphys-swapfile remove') or sys.exit('Error: swapfile remove failed!')
-    do('apt -y purge dphys-swapfile') or sys.exit('Error: could not purge swapfile')
+    do('systemctl disable dphys-swapfile') or sys.exit('Error: swapfile service disable failed!')
+    #do('apt -y purge dphys-swapfile') or sys.exit('Error: could not purge swapfile')
 
     # Disable periodic man page indexing
     print("Disabling periodic man page indexing...")
