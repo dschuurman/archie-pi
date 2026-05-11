@@ -78,7 +78,7 @@ def main(screen):
     # Set home folder location (username may be different than the default pi)
     HOME = f'/home/{os.getlogin()}'
 
-    selections: list[chr] = []
+    selections: list[str] = []
     try:
         while True:
             row = 1
@@ -184,4 +184,8 @@ def main(screen):
     print("** To reboot, type 'sudo reboot' at the command-line.")
 
 # Use wrapper function to ensure original state of terminal is restored on exit
-wrapper(main)
+try:
+    wrapper(main)
+except Exception as e:
+    print(f"Error: {e}", file=sys.stderr)
+    sys.exit(1)
