@@ -140,6 +140,9 @@ def setup_init():
     parser.add_argument("--ssid", dest="ssid", help="Wi-Fi acces point station id",
                         type=str, required=False, default='ARCHIE-Pi')
     args = parser.parse_args()
+
+    # Set current date and time
+    do('timedatectl set-ntp true') or sys.exit('Error: cannot set date and time')
     
     # Check to ensure we are running with root privileges
     if os.getuid() != 0:
@@ -157,12 +160,9 @@ def install_dependencies():
     do('dpkg --configure -a') or sys.exit('Error: Unable to upgrade the system packages.')
     do('apt dist-upgrade -y') or sys.exit('Error: Unable to dist-upgrade Raspberry Pi OS.')
 
+    do('apt -y install dphys-swapfile') or sys.exit('Error: cannot install dphys-swapfile')
     do('apt -y install lynx') or sys.exit('Error: cannot install lynx dependency')
     do('apt -y install python3-pip python3-psutil python3-pycountry python3-xmltodict') or sys.exit('Error: cannot install Python dependencies')
-
-    # Set current data and time
-    do('apt -y install ntpdate') or sys.exit('Error: cannot install ntpdate')
-    do('ntpdate 0.pool.ntp.org')
 
     # Install vim because we like it
     do('apt install vim -y') or sys.exit('Unable to install vim')
@@ -318,7 +318,7 @@ if __name__ == "__main__" :
     print('Note that this setup program runs best with a fresh install of the Raspberry Pi OS Lite.')
     setup_init()                # initializations
     install_dependencies()      # Step 1
-    wifi_hotspot_setup(ssid)    # Step 2
+    wifi_hotspot_setup()        # Step 2
     web_server_setup()          # Step 3
     kiwix_server_setup()        # Step 4
     harden_setup()              # Step 5
