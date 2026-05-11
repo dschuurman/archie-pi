@@ -272,6 +272,7 @@ def harden_setup():
     do('dphys-swapfile uninstall') or sys.exit('Error: swap uninstall failed!')
     do('systemctl disable dphys-swapfile') or sys.exit('Error: swapfile service disable failed!')
     #do('apt -y purge dphys-swapfile') or sys.exit('Error: could not purge swapfile')
+    do('apt -y remove systemd-zram-generator') or sys.exit('Error: could not remove zram-generator')
 
     # Disable periodic man page indexing
     print("Disabling periodic man page indexing...")
