@@ -188,7 +188,7 @@ def wifi_hotspot_setup():
 
     # Use NetworkManager to setup WiFi access point
     do('nmcli connection delete ap-wlan0')   # delete if already present
-    do('nmcli connection add type wifi ifname wlan0 con-name ap-wlan0 wifi.mode ap autoconnect true wifi.ssid ARCHIE-Pi')
+    do(f'nmcli connection add type wifi ifname wlan0 con-name ap-wlan0 wifi.mode ap autoconnect true wifi.ssid {args.ssid}')
     do('nmcli connection modify ap-wlan0 ipv4.address 10.10.10.10/24')
     do('nmcli connection modify ap-wlan0 ipv6.method disabled')
     do('nmcli connection modify ap-wlan0 802-11-wireless.mode ap 802-11-wireless.band bg ipv4.method shared')
@@ -318,7 +318,7 @@ if __name__ == "__main__" :
     print('Note that this setup program runs best with a fresh install of the Raspberry Pi OS Lite.')
     setup_init()                # initializations
     install_dependencies()      # Step 1
-    wifi_hotspot_setup()        # Step 2
+    wifi_hotspot_setup(ssid)    # Step 2
     web_server_setup()          # Step 3
     kiwix_server_setup()        # Step 4
     harden_setup()              # Step 5
