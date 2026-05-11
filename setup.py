@@ -141,9 +141,10 @@ def setup_init():
                         type=str, required=False, default='ARCHIE-Pi')
     args = parser.parse_args()
 
-    # Set current date and time
+    # Set current date and time and disable cloud-init
     do('timedatectl set-ntp true') or sys.exit('Error: cannot set date and time')
-    
+    do('touch /etc/cloud/cloud-init.disabled') or sys.exit('Error: disable cloud-init')
+
     # Check to ensure we are running with root privileges
     if os.getuid() != 0:
         sys.exit(f"Please run this script as root.")
