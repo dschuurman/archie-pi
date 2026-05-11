@@ -128,8 +128,8 @@ def main(screen):
     # Temporarily mount root partion in read-write mode for adding content
     do('mount -o remount,rw /')
 
-    # Update current date and time
-    do('ntpdate 0.pool.ntp.org')
+    # Set current date and time
+    do('timedatectl set-ntp true') or sys.exit('Error: cannot set date and time')
 
     # Install the selected modules from various open education resources
     for selection in selections:
