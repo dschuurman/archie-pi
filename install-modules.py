@@ -20,6 +20,12 @@ import psutil
 import subprocess
 import tomllib
 
+# collection of available modules and related information
+with open("modules.toml", "rb") as f:
+    MODULES_INFO = tomllib.load(f)
+
+selected_modules: list[str] = []   # list of selected modules to install
+
 # Helper functions
 def do(cmd):
     ''' Execute system command and return result
@@ -58,27 +64,12 @@ def get_latest_kiwix_filename(filename_prefix, url):
 def main(screen):
     ''' module installer main function
     '''
-
-    # collection of available modules and related information
-    # OPTIONS = { 'a':'Algebra2Go (1.2GB)', 'b':'Blockly (English) (4.5MB)', 'c':'CK-12 (2.1GB)', 'd':'Boundless (3.5GB)', 'e':'Mustard Seed Books (39MB)', 
-    #             'f':'Project Gutenberg (897MB)', 'g':'World Map (20GB)', 'h':'openstax Textbooks (2.9GB)', 'i':'Rasp Pi User Guide (6MB)', 
-    #             'j':'Scratch (254MB)', 'k':'Khan Academy (English) (12GB)', 'l':'Khan Academy (Spanish) (8.7GB)',
-    #             'm':'Wikipedia for schools (6.1GB)', 'n':'Wikipedia (English) (367MB)', 'o':'Wikipedia (Spanish) (187MB)', 'p':'Wikipedia (French) (1.5GB)', 
-    #             'q':'Wiktionary (English) (48MB)', 'r':'Wiktionary (Spanish) (658MB)', 's':'Wiktionary (French) (1.5GB)', 
-    #             't':'Vikidia (English) (47MB)', 'u':'Vikidia (Spanish) (47MB)', 'v':'Vikidia (French) (712MB)', 'w':'Kuyers Christian Ed Resources (44MB)',
-    #             'x':'Wikivoyage (English) (761MB)', 'y':'Wikivoyage (Spanish) (94MB)', 'z':'Wikivoyage (French) (157MB)',
-    #             'A':'PhET Simulations (English) (66MB)', 'B':'PhET Simulations (Spanish) (69MB)', 'C':'PhET Simulations (French) (68MB)',
-    #             'S':'Science Made Easy videos (1.7GB)' }
-    with open("modules.toml", "rb") as f:
-        MODULES_INFO = tomllib.load(f)
-
     # root URL for Kiwix resources
     KIWIX_URL = 'http://download.kiwix.org/zim/'
 
     # Set home folder location (username may be different than the default pi)
     HOME = f'/home/{os.getlogin()}'
 
-    selections: list[str] = []
     try:
         while True:
             row = 1
@@ -86,7 +77,7 @@ def main(screen):
             for key in MODULES_INFO.keys():
 
                 # Highlight modules that are currently selected
-                if key in selections:
+                if key in selected_modules:
                     screen.addstr(row, column, '{}) {}'.format(key,MODULES_INFO[key]["name"]), curses.A_BOLD|curses.A_REVERSE)
                 else:
                     screen.addstr(row, column, '{}) {}'.format(key,MODULES_INFO[key]["name"]))
@@ -104,35 +95,36 @@ def main(screen):
             c = chr(screen.getch())
             if ord(c)==10 or ord(c)==13:     # check for ENTER key
                 break
-            elif c in selections:            # unselect if key is already selected
-                selections.remove(c)
+            elif c in selected_modules:            # unselect if key is already selected
+                selected_modules.remove(c)
                 continue
             elif c in MODULES_INFO.keys():        # if key is recognized, add it to selections
-                selections.append(c)
+                selected_modules.append(c)
             else:                            # Beep if key is unrecognized
                 curses.beep()
     except KeyboardInterrupt:                # quit gracefully if ctrl-c is pressed
         sys.exit(0)
 
-    curses.endwin()
-    if len(selections) == 0:
+def do_selected_install():
+    '''Install the selected modules'''
+    if len(selected_modules) == 0:
         print('No modules selected... Done')
         sys.exit(0)
 
     # List selected modules to install
     print('The following modules will be installed: ', end='')
-    for selection in selections:
+    for selection in selected_modules:
         print(MODULES_INFO[selection]["name"], end=', ')
     print('\b\b...\n')
 
-    # Temporarily mount root partion in read-write mode for adding content
+    # Temporarily mount root partition in read-write mode for adding content
     do('mount -o remount,rw /')
 
     # Set current date and time
     do('timedatectl set-ntp true') or sys.exit('Error: cannot set date and time')
 
     # Install the selected modules from various open education resources
-    for selection in selections:
+    for selection in selected_modules:
         module_info = MODULES_INFO.get(selection)
         if module_info is None:
             print(f"Could not find module for selection {selection}")
@@ -183,9 +175,6 @@ def main(screen):
     print('** Note that a reboot is recommended.')
     print("** To reboot, type 'sudo reboot' at the command-line.")
 
-# Use wrapper function to ensure original state of terminal is restored on exit
-try:
-    wrapper(main)
-except Exception as e:
-    print(f"Error: {e}", file=sys.stderr)
-    sys.exit(1)
+# Use wrapper function to call main and restore original state of terminal on exit
+wrapper(main)
+do_selected_install()
