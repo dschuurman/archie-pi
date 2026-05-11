@@ -169,7 +169,7 @@ def main(screen):
 
     # update ownership and permissions of modules
     print('Setting module folder permissions and ownerships (this may take a while)...')
-    do('chown -R www-data.www-data /var/www/modules') or sys.exit('Error changing ownership of modules folder to www-data')
+    do('chown -R www-data:www-data /var/www/modules') or sys.exit('Error changing ownership of modules folder to www-data')
     do('chmod -R 755 /var/www/modules') or sys.exit('Error changing permissions of module files')
 
     # restart kiwix server
