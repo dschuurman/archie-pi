@@ -298,9 +298,10 @@ def harden_setup():
     append_file('/var/spool/cron/crontabs/root','@reboot mkdir /var/log/nginx') or sys.exit('crontab append error')
     do('chmod 600 /var/spool/cron/crontabs/root') or sys.exit('Error: crontab chmod failed')
 
-    # Move hwclock to a tmpfs folder
-    do('rm /etc/fake-hwclock.data') or sys.exit('Error removing existing hwclock file')
-    do('ln -s /tmp/fake-hwclock.data /etc/fake-hwclock.data') or sys.exit('Error moving hwclock data file')
+    # Move hwclock to a tmpfs folder if it exists
+    if os.path.exists('/etc/fake-hwclock.data'):
+        do('rm /etc/fake-hwclock.data') or sys.exit('Error removing existing hwclock file')
+        do('ln -s /tmp/fake-hwclock.data /etc/fake-hwclock.data') or sys.exit('Error moving hwclock data file')
 
 ##################
 # Clean up
