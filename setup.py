@@ -112,7 +112,7 @@ def get_latest_kiwix_tools(filename_prefix, url):
     files_list = files.split('\n')
     matching_filenames = []   # list of matching filenames
     for file in files_list:
-        if filename_prefix in file:
+        if filename_prefix in file and file.endswith('.tar.gz'):
             matching_filenames.append(file)
     return matching_filenames[-1]  # the last matching file listed should be the most recent
 

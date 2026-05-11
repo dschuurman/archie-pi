@@ -64,12 +64,6 @@ def get_latest_kiwix_filename(filename_prefix, url):
 def main(screen):
     ''' module installer main function
     '''
-    # root URL for Kiwix resources
-    KIWIX_URL = 'http://download.kiwix.org/zim/'
-
-    # Set home folder location (username may be different than the default pi)
-    HOME = f'/home/{os.getlogin()}'
-
     try:
         while True:
             row = 1
@@ -110,6 +104,11 @@ def do_selected_install():
     if len(selected_modules) == 0:
         print('No modules selected... Done')
         sys.exit(0)
+
+    # root URL for Kiwix resources
+    KIWIX_URL = 'http://download.kiwix.org/zim/'
+    # Set home folder location (username may be different than the default pi)
+    HOME = f'/home/{os.getlogin()}'
 
     # List selected modules to install
     print('The following modules will be installed: ', end='')

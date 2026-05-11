@@ -13,7 +13,7 @@ kiwix_directory="wikipedia"
 kiwix_filename_prefix="wikipedia_en_simple_all_mini_"
 
 [o]
-name="Wikipedia (Spansih)"
+name="Wikipedia (Spanish)"
 source="kiwix"
 [o.source_info]
 module_path="es-wikipedia"
@@ -197,7 +197,7 @@ source="rachelmods"
 rachel_uri="en-scratch"
 
 [w]
-name="Kuyers Christian Education Resources (English)"
+name="Kuyers Christian Ed Resources (English)"
 source="github"
 [w.source_info]
 repo_host="dschuurman"
