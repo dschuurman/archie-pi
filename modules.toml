@@ -34,7 +34,7 @@ source="kiwix"
 [q.source_info]
 module_path="en-wiktionary"
 kiwix_directory="wiktionary"
-kiwix_filename_prefix="wiktionary_en_simple_all_maxi_"
+kiwix_filename_prefix="wiktionary_en_simple_all_"
 
 [r]
 name="Wiktionary (Spanish)"

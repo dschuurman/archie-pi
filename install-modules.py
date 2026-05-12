@@ -55,7 +55,7 @@ def get_latest_kiwix_filename(filename_prefix, url):
     files_list = files.split('\n')
     matching_filenames = []   # list of matching filenames
     for file in files_list:
-        if filename_prefix in file:
+        if filename_prefix in file and file.endswith('.zim'):
             matching_filenames.append(file)
     matching_filenames.sort()
     return matching_filenames[-1]  # return the most recent file
@@ -106,7 +106,7 @@ def do_selected_install():
         sys.exit(0)
 
     # root URL for Kiwix resources
-    KIWIX_URL = 'http://download.kiwix.org/zim/'
+    KIWIX_URL = 'https://download.kiwix.org/zim/'
     # Set home folder location (username may be different than the default pi)
     HOME = f'/home/{os.getlogin()}'
 
