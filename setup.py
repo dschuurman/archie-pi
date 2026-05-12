@@ -254,18 +254,19 @@ def kiwix_server_setup():
     do(f'touch {HOME}/kiwix/library_zim.xml')
     do('touch /etc/systemd/system/kiwix.service')
     service = f'''
-    [Unit]
-    Description=Start Kiwix server
-    After=network-online.target
-    [Service]
-    ExecStart=/bin/sh -c "{HOME}/kiwix/kiwix-serve --library --port 81 --blockexternal --nolibrarybutton --daemon {HOME}/kiwix/library_zim.xml"
-    WorkingDirectory=/home/pi/kiwix
-    Restart=always
-    User=pi
-    [Install]
-    WantedBy=multi-user.target
+[Unit]
+Description=Start Kiwix server
+After=network-online.target
+[Service]
+Type=forking
+ExecStart={HOME}/kiwix/kiwix-serve --library --port 81 --blockexternal --nolibrarybutton --daemon {HOME}/kiwix/library_zim.xml
+WorkingDirectory=/home/pi/kiwix
+Restart=always
+[Install]
+WantedBy=multi-user.target
     '''
     append_file('/etc/systemd/system/kiwix.service', service)
+    do('systemctl enable kiwix.service') or sys.exit('Error: unable to enable kiwix service')
     
 ##############################
 ### Harden the install
