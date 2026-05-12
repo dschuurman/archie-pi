@@ -252,8 +252,21 @@ def kiwix_server_setup():
     do(f'tar xzf {HOME}/kiwix-tools.tgz -C {HOME}/kiwix --strip-components=1')
     do(f'rm {HOME}/kiwix-tools.tgz')
     do(f'touch {HOME}/kiwix/library_zim.xml')
-    append_file("/etc/rc.local", f'\n\n{HOME}/kiwix/kiwix-serve --library --port 81 --blockexternal --nolibrarybutton --daemon {HOME}/kiwix/library_zim.xml\n')
-
+    do('touch /etc/systemd/system/kiwix.service')
+    service = f'''
+    [Unit]
+    Description=Start Kiwix server
+    After=network-online.target
+    [Service]
+    ExecStart=/bin/sh -c "{HOME}/kiwix/kiwix-serve --library --port 81 --blockexternal --nolibrarybutton --daemon {HOME}/kiwix/library_zim.xml"
+    WorkingDirectory=/home/pi/kiwix
+    Restart=always
+    User=pi
+    [Install]
+    WantedBy=multi-user.target
+    '''
+    append_file('/etc/systemd/system/kiwix.service', service)
+    
 ##############################
 ### Harden the install
 ##############################
